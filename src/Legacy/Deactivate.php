@@ -46,10 +46,18 @@ class Deactivate implements Helper_Interface_Actions {
 		$this->add_actions();
 	}
 
+	/**
+	 * @since 1.0
+	 */
 	public function add_actions() {
 		add_action( 'admin_init', [ $this, 'maybe_deactivate_legacy_plugin' ] );
 	}
 
+	/**
+	 * Deactivate our Tier 2 plugin (if it exists) as the Dev Toolkit is a drop-in replacement
+	 *
+	 * @since 1.0
+	 */
 	public function maybe_deactivate_legacy_plugin() {
 		$legacy_plugin = 'gravity-pdf-tier-2/plus.php';
 

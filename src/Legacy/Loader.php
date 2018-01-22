@@ -2,7 +2,6 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Legacy;
 
-use GFPDF\Helper\Helper_Interface_Actions;
 use GFPDF\Helper\Helper_Interface_Filters;
 
 /**
@@ -40,18 +39,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Loader
  *
- * @package GFPDF\Plugins\DeveloperToolkit\Loader
+ * @package GFPDF\Plugins\DeveloperToolkit\Legacy
  *
  * @since   1.0
  */
-class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
+class Loader implements Helper_Interface_Filters {
 
 	/**
 	 * @since 1.0
 	 */
 	public function init() {
 		$this->add_filters();
-		$this->add_actions();
 	}
 
 	/**
@@ -59,22 +57,14 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 */
 	public function add_filters() {
 		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybe_skip_pdf_html_render' ], 10, 2 );
-		add_filter( 'gfpdf_developer_toolkit_template_args', [ $this, 'maybe_add_legacy_template_args' ], 10, 3 );
-	}
-
-	/**
-	 * @since 1.0
-	 */
-	public function add_actions() {
-
+		add_filter( 'gfpdf_developer_toolkit_template_args', [ $this, 'maybe_add_legacy_template_args' ], 10, 2 );
 	}
 
 	/**
 	 * Determine if the current template has the "Toolkit" header and skip the standard Mpdf HTML sandbox
 	 *
-	 * @param bool       $skip       Whether we should skip the HTML sandbox
-	 * @param array      $args
-	 * @param Helper_PDF $pdf_helper The current PDF Helper object handling the PDF generation
+	 * @param bool  $skip Whether we should skip the HTML sandbox
+	 * @param array $args
 	 *
 	 * @return bool
 	 *
@@ -90,7 +80,15 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 		return $skip;
 	}
 
-	public function maybe_add_legacy_template_args( $args, $old_args, $pdf_helper ) {
+	/**
+	 * Include variables needed for legacy templates
+	 *
+	 * @param array $args
+	 * @param array $old_args
+	 *
+	 * @return array
+	 */
+	public function maybe_add_legacy_template_args( $args, $old_args ) {
 		if ( isset( $args['settings']['advanced_template'] ) && $args['settings']['advanced_template'] === 'Yes' ) {
 			global $pdf, $writer;
 
@@ -104,5 +102,4 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 
 		return $args;
 	}
-
 }
