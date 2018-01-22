@@ -77,7 +77,7 @@ class Import extends AbstractWriter {
 	 */
 	public function addPdf( $path ) {
 		$this->path = $path;
-		$this->get_pdf_page_sizes( $path );
+		$this->set_pdf_page_sizes( $path );
 		$this->load_pdf_pages( $this->mpdf, $path );
 	}
 
@@ -122,13 +122,35 @@ class Import extends AbstractWriter {
 	}
 
 	/**
+	 * Returns the current loaded PDF page sizes
+	 *
+	 * @return array
+	 *
+	 * @since 1.0
+	 */
+	public function getPdfPageSize() {
+		return $this->page_sizes;
+	}
+
+	/**
+	 * Returns the current loaded PDF page IDs
+	 *
+	 * @return array
+	 *
+	 * @since 1.0
+	 */
+	public function getPdfPageIds() {
+		return $this->page_id;
+	}
+
+	/**
 	 * Create a temporary Mpdf object and find out/store the PDF page sizes
 	 *
 	 * @param string $path The path to the PDF being loaded
 	 *
 	 * @since 1.0
 	 */
-	protected function get_pdf_page_sizes( $path ) {
+	protected function set_pdf_page_sizes( $path ) {
 		$class = get_class( $this->mpdf );
 		$this->load_pdf_pages( new $class(), $path, true );
 	}

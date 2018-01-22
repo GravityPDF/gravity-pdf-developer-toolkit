@@ -2,8 +2,10 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit;
 
+use GFPDF\Plugins\DeveloperToolkit\Legacy\Deactivate;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Header;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Loader;
+use GFPDF\Plugins\DeveloperToolkit\Legacy\Loader as LegacyLoader;
 
 use GFPDF\Helper\Licensing\EDD_SL_Plugin_Updater;
 use GFPDF\Helper\Helper_Abstract_Addon;
@@ -49,6 +51,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /* Load Composer */
 require_once( __DIR__ . '/../vendor/autoload.php' );
 
+/* Load our legacy class */
+require_once( __DIR__ . '/deprecated.php' );
+
 /**
  * Class Bootstrap
  *
@@ -67,10 +72,13 @@ class Bootstrap extends Helper_Abstract_Addon {
 	 * @since 1.0
 	 */
 	public function init( $classes = [] ) {
+
 		/* Register our classes and pass back up to the parent initialiser */
 		$classes = array_merge( $classes, [
 			new Loader(),
+			new LegacyLoader(),
 			new Header(),
+			new Deactivate(),
 		] );
 
 		/* Run the setup */

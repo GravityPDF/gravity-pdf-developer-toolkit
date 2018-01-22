@@ -1,9 +1,8 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
+namespace GFPDF\Plugins\DeveloperToolkit\Legacy;
 
-use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
-use BadMethodCallException;
+use GFPDF\Helper\Helper_Interface_Actions;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -37,29 +36,26 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-/**
- * Class Ellipse
- *
- * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
- *
- * @since   1.0
- */
-class Ellipse extends AbstractWriter {
+
+class Deactivate implements Helper_Interface_Actions {
 
 	/**
-	 * Adds an Ellipse to the PDF being rendered
-	 *
-	 * @param array $position The X, Y, Width and Height of the Ellipse to be added to the PDF.
-	 *
-	 * @throws BadMethodCallException
-	 *
 	 * @since 1.0
 	 */
-	public function ellipse( $position = [] ) {
-		if ( ! is_array( $position) || count( $position ) !== 4 ) {
-			throw new \BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
-		}
-
-		$this->mpdf->Ellipse( $position[0], $position[1], $position[2], $position[3] );
+	public function init() {
+		$this->add_actions();
 	}
+
+	public function add_actions() {
+		add_action( 'admin_init', [ $this, 'maybe_deactivate_legacy_plugin' ] );
+	}
+
+	public function maybe_deactivate_legacy_plugin() {
+		$legacy_plugin = 'gravity-pdf-tier-2/plus.php';
+
+		if ( is_plugin_active( $legacy_plugin ) ) {
+			deactivate_plugins( 'gravity-pdf-tier-2/plus.php' );
+		}
+	}
+
 }

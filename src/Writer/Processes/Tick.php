@@ -77,7 +77,7 @@ class Tick extends AbstractWriter {
 	 *
 	 * @since 1.0
 	 */
-	public function configTick( $config = [] ) {
+	public function configTick( $config ) {
 		foreach ( $config as $name => $value ) {
 			switch ( $name ) {
 				case 'markup':

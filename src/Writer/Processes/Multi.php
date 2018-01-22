@@ -102,7 +102,7 @@ class Multi extends AbstractWriter {
 	 * @since 1.0
 	 */
 	public function addMulti( $html, $position = [], $overflow = 'auto', $config = [] ) {
-		if ( count( $position ) !== 4 ) {
+		if ( ! is_array( $position ) || count( $position ) !== 4 ) {
 			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}
 

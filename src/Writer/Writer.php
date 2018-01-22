@@ -43,6 +43,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer
  *
+ * @method void addPdf ( string $path )
+ * @method void addPage ( int $id, array $args = [] )
+ * @method void addBlankPage( array $args = [] )
+ * @method array getPdfPageSize()
+ * @method array getPdfPageId()
+ * @method void add( string $html, array $position = [], string $overflow = 'auto' )
+ * @method void configMulti( array $config )
+ * @method void addMulti( string $html, array $position = [], string $overflow = 'auto', array $config = [] )
+ * @method void configTick( array $config )
+ * @method void tick( array $position, array $config = [] )
+ * @method void ellipse( array $position )
+ * @method void addHtml( string $html )
+ * @method void beginStyles()
+ * @method void endStyles()
+ *
  * @since   1.0
  */
 class Writer extends AbstractWriter {

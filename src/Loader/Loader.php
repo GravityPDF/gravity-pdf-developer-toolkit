@@ -122,7 +122,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 		$writer = FactoryWriter::get();
 		$writer->set_mpdf( $pdf_helper->get_pdf_class() );
 
-		$new_args = [
+		$new_args = apply_filters( 'gfpdf_developer_toolkit_template_args', [
 			'w'         => $writer,
 			'mpdf'      => $pdf_helper->get_pdf_class(),
 			'form'      => $args['form'],
@@ -132,7 +132,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 			'config'    => $args['config'],
 			'settings'  => $args['settings'],
 			'gfpdf'     => $args['gfpdf'],
-		];
+		], $args, $pdf_helper );
 
 		return $new_args;
 	}
