@@ -1,0 +1,10 @@
+{
+  "name": "gravity-pdf-developer-toolkit",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-wp-pot": "^2.0.6"
+  },
+  "scripts": {}
+}
