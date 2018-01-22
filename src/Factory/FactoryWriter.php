@@ -43,8 +43,22 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class FactoryWriter
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Factory
+ *
+ * @since   1.0
+ */
 class FactoryWriter {
+
+	/**
+	 * Build our PDF Writer object and inject all required writer classes
+	 *
+	 * @return Writer
+	 *
+	 * @since 1.0
+	 */
 	public static function get() {
 		$writer = new Writer( [
 			new Import(),

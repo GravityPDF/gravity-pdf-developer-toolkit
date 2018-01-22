@@ -2,6 +2,8 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Writer;
 
+use BadMethodCallException;
+
 /**
  * @package     Gravity PDF Developer Toolkit
  * @copyright   Copyright (c) 2018, Blue Liquid Designs
@@ -34,13 +36,30 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * This class acts as a router for all method calls. We register classes that impliment InterfaceWriter
+ * and then search through each class for a matching method name. If found, we pass the arguments directly to the method.
+ * This allows us to provide a simple API to our users without creating a God class.
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer
+ *
+ * @since   1.0
+ */
 class Writer extends AbstractWriter {
+
 	/**
 	 * @var InterfaceWriter[]
+	 * @since 1.0
 	 */
 	protected $classes = [];
 
+	/**
+	 * Register all our classes
+	 *
+	 * @param InterfaceWriter[] $classes
+	 *
+	 * @since 1.0
+	 */
 	public function __construct( $classes = [] ) {
 		foreach ( $classes as $class ) {
 			$this->register_class( $class );
@@ -48,7 +67,11 @@ class Writer extends AbstractWriter {
 	}
 
 	/**
+	 * Register the class with Writer
+	 *
 	 * @param InterfaceWriter $class
+	 *
+	 * @since 1.0
 	 */
 	public function register_class( InterfaceWriter $class ) {
 		$this->classes[] = $class;
@@ -62,7 +85,7 @@ class Writer extends AbstractWriter {
 	 *
 	 * @return mixed
 	 *
-	 * @throws \BadMethodCallException
+	 * @throws BadMethodCallException
 	 */
 	public function __call( $name, $arguments ) {
 		foreach ( $this->classes as $class ) {
@@ -73,16 +96,19 @@ class Writer extends AbstractWriter {
 			}
 		}
 
-		throw new \BadMethodCallException( sprintf( 'The method "%s" could not be found.', $name ) );
+		throw new BadMethodCallException( sprintf( 'The method "%s" could not be found.', $name ) );
 	}
 
 	/**
+	 * Inject Mpdf to our registered classes right before calling the chosen method
+	 *
 	 * @param InterfaceWriter $class
+	 *
+	 * @since 1.0
 	 */
 	public function maybe_inject_mpdf( $class ) {
 		if ( ! $class->is_mpdf_set() ) {
 			$class->set_mpdf( $this->mpdf );
 		}
 	}
-
 }

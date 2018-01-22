@@ -87,7 +87,7 @@ class Import extends AbstractWriter {
 	 * @param int|array $id   The current page to load, or a range of pages to load
 	 * @param array     $args Additional Mpdf page settings to pass to Mpdf. See http://mpdf.github.io/reference/mpdf-functions/addpagebyarray.html for all available options
 	 *
-	 * @throws BadMethodCallException If passing a range of pages to the $id paramter, only two parameters can be passed in signifying the first page and last pages in the range to be loaded.
+	 * @throws BadMethodCallException
 	 *
 	 * @since 1.0
 	 */
@@ -162,7 +162,7 @@ class Import extends AbstractWriter {
 	 * @param int   $id
 	 * @param array $args
 	 *
-	 * @throws BadMethodCallException When the current loaded PDF doesn't have the page that was requested
+	 * @throws BadMethodCallException
 	 *
 	 * @since 1.0
 	 */

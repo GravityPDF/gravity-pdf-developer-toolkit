@@ -36,17 +36,40 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class Header
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Loader
+ *
+ * @since   1.0
+ */
 class Header implements Helper_Interface_Filters {
 
+	/**
+	 * @since 1.0
+	 */
 	public function init() {
 		$this->add_filters();
 	}
 
+	/**
+	 * @since 1.0
+	 */
 	public function add_filters() {
 		add_filter( 'gfpdf_template_header_details', [ $this, 'add_toolkit_header' ] );
 	}
 
+	/**
+	 * Register a new PDF Template Header "Toolkit"
+	 *
+	 * @Internal Templates that impliment this header will override the standard Mpdf HTML sandbox
+	 *
+	 * @param array $headers
+	 *
+	 * @return array
+	 *
+	 * @since    1.0
+	 */
 	public function add_toolkit_header( $headers ) {
 		$headers['toolkit'] = 'Toolkit';
 

@@ -2,10 +2,11 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Loader;
 
+use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryWriter;
 use GFPDF\Helper\Helper_Interface_Actions;
 use GFPDF\Helper\Helper_Interface_Filters;
 use GFPDF\Helper\Helper_PDF;
-use GFPDF\Plugins\DeveloperToolkit\Writer\InterfaceWriter;
+use GPDFAPI;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -39,31 +40,51 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class Loader
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Loader
+ *
+ * @since   1.0
+ */
 class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 
-	protected $writer;
-
-	public function __construct( InterfaceWriter $writer ) {
-		$this->writer = $writer;
-	}
-
+	/**
+	 * @since 1.0
+	 */
 	public function init() {
 		$this->add_filters();
 		$this->add_actions();
 	}
 
+	/**
+	 * @since 1.0
+	 */
 	public function add_filters() {
 		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybe_skip_pdf_html_render' ], 10, 3 );
 	}
 
+	/**
+	 * @since 1.0
+	 */
 	public function add_actions() {
 		add_action( 'gfpdf_skipped_html_render', [ $this, 'handle_toolkit_template' ], 10, 2 );
 	}
 
+	/**
+	 * Determine if the current template has the "Toolkit" header and skip the standard Mpdf HTML sandbox
+	 *
+	 * @param bool       $skip       Whether we should skip the HTML sandbox
+	 * @param array      $args
+	 * @param Helper_PDF $pdf_helper The current PDF Helper object handling the PDF generation
+	 *
+	 * @return bool
+	 *
+	 * @since 1.0
+	 */
 	public function maybe_skip_pdf_html_render( $skip, $args, $pdf_helper ) {
 		/* Read template Header */
-		$template = \GPDFAPI::get_templates_class();
+		$template = GPDFAPI::get_templates_class();
 		$headers  = $template->get_template_info_by_path( $pdf_helper->get_template_path() );
 
 		if ( isset( $headers['toolkit'] ) && $headers['toolkit'] == 'true' ) {
@@ -73,22 +94,36 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 		return $skip;
 	}
 
+	/**
+	 * Loads the current PDF template and injects our Toolkit helper classes
+	 *
+	 * @param array      $args
+	 * @param Helper_PDF $pdf_helper
+	 *
+	 * @since 1.0
+	 */
 	public function handle_toolkit_template( $args, $pdf_helper ) {
 		$args = $this->prepare_arguments( $args, $pdf_helper );
 		$this->load_template( $pdf_helper->get_template_path(), $args );
 	}
 
 	/**
-	 * @param            $args
+	 * Prepare the variables to be injected into the PDF template being loaded
+	 *
+	 * @param array      $args
 	 * @param Helper_PDF $pdf_helper
 	 *
 	 * @return array
+	 *
+	 * @since 1.0
 	 */
 	protected function prepare_arguments( $args, $pdf_helper ) {
-		$this->writer->set_mpdf( $pdf_helper->get_pdf_class() );
+		/* Create a new Writer object and inject the current Mpdf object */
+		$writer = FactoryWriter::get();
+		$writer->set_mpdf( $pdf_helper->get_pdf_class() );
 
 		$new_args = [
-			'w'         => $this->writer,
+			'w'         => $writer,
 			'mpdf'      => $pdf_helper->get_pdf_class(),
 			'form'      => $args['form'],
 			'entry'     => $args['entry'],
@@ -102,9 +137,16 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 		return $new_args;
 	}
 
+	/**
+	 * Load the PDF template
+	 *
+	 * @param string $template Absolute path to PDF template file
+	 * @param array  $args     Variables to be passed to the template
+	 *
+	 * @since 1.0
+	 */
 	protected function load_template( $template, $args ) {
 		extract( $args, EXTR_SKIP );
 		include $template;
 	}
-
 }

@@ -3,6 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
+use BadMethodCallException;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -36,13 +37,46 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class Tick
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ *
+ * @since   1.0
+ */
 class Tick extends AbstractWriter {
+
+	/**
+	 * @var string The default HTML to display
+	 * @since 1.0
+	 */
 	protected $markup = '&#10004;';
+
+	/**
+	 * @var string The default font to use
+	 * @since 1.0
+	 */
 	protected $font = 'DejavuSansCondensed';
+
+	/**
+	 * @var int The default font size in points
+	 * @since 1.0
+	 */
 	protected $font_size = '16';
+
+	/**
+	 * @var int The default line height in points
+	 * @since 1.0
+	 */
 	protected $line_height = '16';
 
+	/**
+	 * Sets the new default configuration to apply to all new tick elements
+	 *
+	 * @param array $config Accepted array keys include 'markup', 'font', 'font-size', 'line-height'
+	 *
+	 * @since 1.0
+	 */
 	public function configTick( $config = [] ) {
 		foreach ( $config as $name => $value ) {
 			switch ( $name ) {
@@ -65,9 +99,19 @@ class Tick extends AbstractWriter {
 		}
 	}
 
+	/**
+	 * Adds a tick character to the PDF at the requested coordinates.
+	 *
+	 * @param array $position The X and Y position of the element
+	 * @param array $config   Override the default configuration on a per-element basis. Accepted array keys include 'markup', 'font', 'font-size', 'line-height'
+	 *
+	 * @throws BadMethodCallException
+	 *
+	 * @since 1.0
+	 */
 	public function tick( $position = [], $config = [] ) {
 		if ( count( $position ) !== 2 ) {
-			throw new \BadMethodCallException( '$position needs to include an array with two elements: $x, $y' );
+			throw new BadMethodCallException( '$position needs to include an array with two elements: $x, $y' );
 		}
 
 		$font        = ( isset( $config['font'] ) ) ? (string) $config['font'] : $this->font;

@@ -3,6 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
+use BadMethodCallException;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -36,15 +37,33 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class Single
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ *
+ * @since   1.0
+ */
 class Single extends AbstractWriter {
+
+	/**
+	 * Add content to the PDF that has a fixed positioned and is better suited for a single line of text
+	 *
+	 * @param string $html     The content to add to the PDF being rendered
+	 * @param array  $position The X, Y, Width and Height of the element
+	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto", "visible" or "hidden"
+	 *
+	 * @throws BadMethodCallException
+	 *
+	 * @since 1.0
+	 */
 	public function add( $html, $position = [], $overflow = 'auto' ) {
 		if ( count( $position ) !== 4 ) {
-			throw new \BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
+			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}
 
 		if ( ! in_array( $overflow, [ 'auto', 'visible', 'hidden' ] ) ) {
-			throw new \BadMethodCallException( '$overflow can only be "auto", "visible" or "hidden".' );
+			throw new BadMethodCallException( '$overflow can only be "auto", "visible" or "hidden".' );
 		}
 
 		$output = sprintf(

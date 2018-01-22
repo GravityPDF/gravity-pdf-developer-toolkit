@@ -36,12 +36,31 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class Styles
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ *
+ * @since 1.0
+ */
 class Styles extends AbstractWriter {
+
+	/**
+	 * Captures any output and stores it in our buffer
+	 *
+	 * @since 1.0
+	 */
 	public function beginStyles() {
 		ob_start();
 	}
 
+	/**
+	 * Takes the captured buffer, strips the <style> HTML tags and adds it to Mpdf
+	 *
+	 * @Internal Refer to Mpdf's document for valid CSS http://mpdf.github.io/css-stylesheets/supported-css.html
+	 *
+	 * @since 1.0
+	 */
 	public function endStyles() {
 		$styles = ob_get_clean();
 		$styles = str_replace( [ '<style>', '</style>' ], '', $styles );

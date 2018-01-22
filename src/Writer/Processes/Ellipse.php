@@ -3,6 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
+use BadMethodCallException;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -36,8 +37,24 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class Ellipse
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ *
+ * @since   1.0
+ */
 class Ellipse extends AbstractWriter {
+
+	/**
+	 * Adds an Ellipse to the PDF being rendered
+	 *
+	 * @param array $position The X, Y, Width and Height of the Ellipse to be added to the PDF.
+	 *
+	 * @throws BadMethodCallException
+	 *
+	 * @since 1.0
+	 */
 	public function ellipse( $position = [] ) {
 		if ( count( $position ) !== 4 ) {
 			throw new \BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );

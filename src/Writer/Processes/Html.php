@@ -36,8 +36,22 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Class Html
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ *
+ * @since 1.0
+ */
 class Html extends AbstractWriter {
+
+	/**
+	 * Add HTML directly to Mpdf using the current Y pointer position
+	 *
+	 * @param string $html The freeflow HTML markup to add to Mpdf
+	 *
+	 * @since 1.0
+	 */
 	public function addHtml( $html ) {
 		$this->mpdf->WriteHTML( $html );
 	}

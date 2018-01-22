@@ -36,17 +36,39 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+/**
+ * Class AbstractWriter
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer
+ *
+ * @since   1.0
+ */
+abstract class AbstractWriter implements InterfaceWriter {
 
-abstract class AbstractWriter implements InterfaceWriter  {
 	/**
 	 * @var mPDF
+	 * @since 1.0
 	 */
 	protected $mpdf;
 
+	/**
+	 * Our Mpdf Setter
+	 *
+	 * @param mPDF $mpdf
+	 *
+	 * @since 1.0
+	 */
 	public function set_mpdf( mPDF $mpdf ) {
 		$this->mpdf = $mpdf;
 	}
 
+	/**
+	 * Determine if our Mpdf Setter has been run
+	 *
+	 * @return bool
+	 *
+	 * @since 1.0
+	 */
 	public function is_mpdf_set() {
 		return $this->mpdf !== null;
 	}
