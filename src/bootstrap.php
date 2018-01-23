@@ -2,6 +2,7 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit;
 
+use GFPDF\Plugins\DeveloperToolkit\Cli\Register;
 use GFPDF\Plugins\DeveloperToolkit\Legacy\Deactivate;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Header;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Loader;
@@ -79,6 +80,7 @@ class Bootstrap extends Helper_Abstract_Addon {
 			new LegacyLoader(),
 			new Header(),
 			new Deactivate(),
+			new Register(),
 		] );
 
 		/* Run the setup */
