@@ -43,3 +43,6 @@ _notes
 _notes/*
 Thumbs.db
 *.pot
+
+# Documentation
+dev-documentation/*
