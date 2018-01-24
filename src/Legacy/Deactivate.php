@@ -36,10 +36,20 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
+/**
+ * Detects if the Gravity PDF Tier 2 plugin is enabled and deactivates it automatically.
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Legacy
+ *
+ * @since   1.0
+ */
 class Deactivate implements Helper_Interface_Actions {
 
 	/**
+	 * Initialise class
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function init() {
@@ -47,6 +57,10 @@ class Deactivate implements Helper_Interface_Actions {
 	}
 
 	/**
+	 * Add WordPress actions
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function add_actions() {
@@ -54,7 +68,13 @@ class Deactivate implements Helper_Interface_Actions {
 	}
 
 	/**
-	 * Deactivate our Tier 2 plugin (if it exists) as the Dev Toolkit is a drop-in replacement
+	 * Deactivate the Gravity PDF Tier 2 plugin (if it exists)
+	 *
+	 * The Gravity PDF Developer Toolkit is a drop-in replacement for the Gravity PDF Tier 2 plugin.
+	 *
+	 * Triggered via the `admin_init` action.
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */

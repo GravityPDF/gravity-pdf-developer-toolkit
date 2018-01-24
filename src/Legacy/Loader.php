@@ -37,7 +37,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class Loader
+ * Detects when the legacy Advanced Template option is enabled, bypasses the PDF sandbox, and injects our Toolkit helper
+ * classes and legacy variables automatically.
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Legacy
  *
@@ -46,6 +47,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Loader implements Helper_Interface_Filters {
 
 	/**
+	 * Initialise class
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function init() {
@@ -53,6 +58,10 @@ class Loader implements Helper_Interface_Filters {
 	}
 
 	/**
+	 * Add WordPress filters
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function add_filters() {
@@ -61,19 +70,21 @@ class Loader implements Helper_Interface_Filters {
 	}
 
 	/**
-	 * Determine if the current template has the "Toolkit" header and skip the standard Mpdf HTML sandbox
+	 * Check if the legacy setting is enabled and skip the sandbox
+	 *
+	 * Check if the `advanced_template` PDF setting exists and is set to "Yes" and skip the PDF sandbox
+	 *
+	 * Triggered via the `gfpdf_skip_pdf_html_render` filter.
 	 *
 	 * @param bool  $skip Whether we should skip the HTML sandbox
-	 * @param array $args
+	 * @param array $args The current PDF settings
 	 *
 	 * @return bool
 	 *
 	 * @since 1.0
 	 */
 	public function maybe_skip_pdf_html_render( $skip, $args ) {
-
-		/* Check for Legacy template */
-		if ( isset( $args['settings']['advanced_template'] ) && $args['settings']['advanced_template'] === 'Yes' ) {
+		if ( $this->is_legacy_advanced_template( $args ) ) {
 			return true;
 		}
 
@@ -83,13 +94,17 @@ class Loader implements Helper_Interface_Filters {
 	/**
 	 * Include variables needed for legacy templates
 	 *
-	 * @param array $args
-	 * @param array $old_args
+	 * Triggered via the `gfpdf_developer_toolkit_template_args` filter
+	 *
+	 * @param array $args     New variables being injected into PDF template
+	 * @param array $old_args Old variables that we're overriding
 	 *
 	 * @return array
+	 *
+	 * @since 1.0
 	 */
 	public function maybe_add_legacy_template_args( $args, $old_args ) {
-		if ( isset( $args['settings']['advanced_template'] ) && $args['settings']['advanced_template'] === 'Yes' ) {
+		if ( $this->is_legacy_advanced_template( $args ) ) {
 			global $pdf, $writer;
 
 			$pdf    = $args['mpdf'];
@@ -101,5 +116,18 @@ class Loader implements Helper_Interface_Filters {
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Check if the legacy setting is enabled
+	 *
+	 * @param array $args
+	 *
+	 * @return bool
+	 *
+	 * @since 1.0
+	 */
+	protected function is_legacy_advanced_template( $args ) {
+		return ( isset( $args['settings']['advanced_template'] ) && $args['settings']['advanced_template'] === 'Yes' );
 	}
 }

@@ -37,8 +37,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class Html
- *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @since 1.0

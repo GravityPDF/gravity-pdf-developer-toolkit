@@ -44,8 +44,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class FactoryWriter
- *
  * @package GFPDF\Plugins\DeveloperToolkit\Factory
  *
  * @since   1.0
@@ -53,13 +51,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class FactoryWriter {
 
 	/**
-	 * Build our PDF Writer object and inject all required writer classes
+	 * Initialise our PDF Writer object and inject all required writer classes automatically
 	 *
 	 * @return Writer
 	 *
 	 * @since 1.0
 	 */
-	public static function get() {
+	public static function build() {
 		$writer = new Writer( [
 			new Import(),
 			new Styles(),

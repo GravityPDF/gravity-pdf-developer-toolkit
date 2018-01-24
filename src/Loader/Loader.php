@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class Loader
+ * Detects when the Toolkit header is included, bypasses the PDF sandbox and injects our Toolkit helper classes automatically.
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Loader
  *
@@ -50,6 +50,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 
 	/**
+	 * Initialise class
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function init() {
@@ -58,6 +62,10 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	}
 
 	/**
+	 * Add WordPress filters
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function add_filters() {
@@ -65,6 +73,10 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	}
 
 	/**
+	 * Add WordPress actions
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function add_actions() {
@@ -73,6 +85,8 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 
 	/**
 	 * Determine if the current template has the "Toolkit" header and skip the standard Mpdf HTML sandbox
+	 *
+	 * Triggered via the `gfpdf_skip_pdf_html_render` filter.
 	 *
 	 * @param bool       $skip       Whether we should skip the HTML sandbox
 	 * @param array      $args
@@ -97,8 +111,12 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	/**
 	 * Loads the current PDF template and injects our Toolkit helper classes
 	 *
-	 * @param array      $args
-	 * @param Helper_PDF $pdf_helper
+	 * Triggered via the `gfpdf_skipped_html_render` action.
+	 *
+	 * @param array      $args       The variables to inject into the PDF template
+	 * @param Helper_PDF $pdf_helper The PDF generation helper class
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */
@@ -110,8 +128,8 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	/**
 	 * Prepare the variables to be injected into the PDF template being loaded
 	 *
-	 * @param array      $args
-	 * @param Helper_PDF $pdf_helper
+	 * @param array      $args       The variables to inject into the PDF template
+	 * @param Helper_PDF $pdf_helper The PDF generation helper class
 	 *
 	 * @return array
 	 *
@@ -119,7 +137,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 */
 	protected function prepare_arguments( $args, $pdf_helper ) {
 		/* Create a new Writer object and inject the current Mpdf object */
-		$writer = FactoryWriter::get();
+		$writer = FactoryWriter::build();
 		$writer->set_mpdf( $pdf_helper->get_pdf_class() );
 
 		$new_args = apply_filters( 'gfpdf_developer_toolkit_template_args', [
@@ -141,7 +159,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 * Load the PDF template
 	 *
 	 * @param string $template Absolute path to PDF template file
-	 * @param array  $args     Variables to be passed to the template
+	 * @param array  $args     Variables to be passed to the template which are run through `extract()`
 	 *
 	 * @since 1.0
 	 */

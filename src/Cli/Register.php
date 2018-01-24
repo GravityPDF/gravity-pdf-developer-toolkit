@@ -2,7 +2,6 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Cli;
 
-use GFPDF\Helper\Helper_Interface_Actions;
 use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\CreateTemplate;
 use WP_CLI;
 
@@ -38,21 +37,19 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
-class Register implements Helper_Interface_Actions {
+/**
+ * Registers our WP CLI Commands
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Cli
+ */
+class Register {
 
 	/**
+	 * Register our WP CLI Commands
+	 *
 	 * @since 1.0
 	 */
 	public function init() {
-		$this->add_actions();
-	}
-
-
-	/**
-	 * @since 1.0
-	 */
-	public function add_actions() {
 		global $gfpdf;
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {

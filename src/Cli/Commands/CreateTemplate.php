@@ -37,10 +37,25 @@ if ( ! defined( 'ABSPATH' ) ) {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+/**
+ * Processes the `wp gpdf create-template` WP CLI Command
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Cli\Commands
+ */
 class CreateTemplate {
 
+	/**
+	 * @var string The absolute path to the PDF Working Directory
+	 *
+	 * @since 1.0
+	 */
 	protected $working_directory;
 
+	/**
+	 * @param string $working_directory The absolute path to the PDF Working Directory
+	 *
+	 * @since 1.0
+	 */
 	public function __construct( $working_directory ) {
 		$this->working_directory = $working_directory;
 	}
@@ -81,10 +96,10 @@ class CreateTemplate {
 	 *
 	 * @since 1.0
 	 *
-	 * @param array $template_array
-	 * @param array $args
+	 * @param array $template_array The PDF Template Name the use has entered. If they used quotes it'll be an array with one element, otherwise each space will signify a new array element.
+	 * @param array $args           The additional arguments passed to the cli. May include `enable-config`, `enable-toolkit` and `skip-headers`
 	 *
-	 * @throws \Exception
+	 * @throws WP_CLI\ExitException
 	 */
 	public function __invoke( $template_array, $args = [] ) {
 		$template_name     = implode( ' ', array_filter( $template_array ) );
@@ -111,7 +126,9 @@ class CreateTemplate {
 	 *
 	 * @param string $template_name     The PDF Template Name provided by the user
 	 * @param string $full_path_to_file The full path to the PDF template we want to create
-	 * @param array  $args              The additional CLI arguments being passed
+	 * @param array  $args              The additional CLI arguments being passed. May include `enable-config`, `enable-toolkit` and `skip-headers`
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */
@@ -140,6 +157,8 @@ class CreateTemplate {
 	 *
 	 * @param string $class_name The generated class name the config file names
 	 * @param string $filename   The filename (not full path) of the config file
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */
@@ -240,7 +259,9 @@ class CreateTemplate {
 	}
 
 	/**
-	 * Our template loader which is used to parse our template files and decode the PHP opening and closing braces
+	 * Our basic template loader
+	 *
+	 * The loader will include the chosen template file and decode any PHP opening and closing braces
 	 *
 	 * @param array  $data Data to be used in the PDF template
 	 * @param string $name The filename (minus the extension) for the template to load

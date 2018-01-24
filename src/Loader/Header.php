@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class Header
+ * Adds support for our Toolkit header in PDF Templates.
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Loader
  *
@@ -46,6 +46,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Header implements Helper_Interface_Filters {
 
 	/**
+	 * Initialise class
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function init() {
@@ -53,6 +57,10 @@ class Header implements Helper_Interface_Filters {
 	}
 
 	/**
+	 * Add WordPress filters
+	 *
+	 * @return void
+	 *
 	 * @since 1.0
 	 */
 	public function add_filters() {
@@ -62,13 +70,15 @@ class Header implements Helper_Interface_Filters {
 	/**
 	 * Register a new PDF Template Header "Toolkit"
 	 *
-	 * @Internal Templates that impliment this header will override the standard Mpdf HTML sandbox
+	 * Templates that impliment this header will override the standard Mpdf HTML sandbox
+	 *
+	 * Triggered via the `gfpdf_template_header_details` filter.
 	 *
 	 * @param array $headers
 	 *
 	 * @return array
 	 *
-	 * @since    1.0
+	 * @since 1.0
 	 */
 	public function add_toolkit_header( $headers ) {
 		$headers['toolkit'] = 'Toolkit';
