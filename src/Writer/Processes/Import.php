@@ -69,7 +69,22 @@ class Import extends AbstractWriter {
 	protected $page_sizes = [];
 
 	/**
-	 * Load a PDF with verison 1.4/1.5 of the Adobe Spec for use with Mpdf
+	 * Load a PDF with verison 1.4/1.5 of the Adobe Spec for use with Mpdf. An exception will be thrown if you load a PDF
+	 * created with a higher version.
+	 *
+	 * ## Example
+	 *
+	 *      // Import a PDF
+	 *      $w->addPdf( __DIR__ . '/pdfs/load-document.pdf' );
+	 *
+	 *      // Load page #1 from PDF imported
+	 *      $w->addPage(1);
+	 *
+	 *      // Import a 2nd PDF (you won't be able to load pages from PDF #1 after importing PDF #2)
+	 *      $w->addPdf( __DIR__ . '/pdfs/load-another-document.pdf' );
+	 *
+	 *      // Load page #1 from 2nd PDF Imported
+	 *      $w->addPage(1);
 	 *
 	 * @param string $path The absolute path to the PDF being loaded
 	 *
@@ -84,8 +99,22 @@ class Import extends AbstractWriter {
 	/**
 	 * Display a page, or range of pages, from the loaded PDF in the PDF being rendered
 	 *
-	 * @param int|array $id   The current page to load, or a range of pages to load
-	 * @param array     $args Additional Mpdf page settings to pass to Mpdf. See http://mpdf.github.io/reference/mpdf-functions/addpagebyarray.html for all available options
+	 * ## Example
+	 *
+	 *      // Import a PDF
+	 *      $w->addPdf( __DIR__ . '/pdfs/load-document.pdf' );
+	 *
+	 *      // Load page #1 from PDF
+	 *      $w->addPage( 1 );
+	 *
+	 *      // Load a range of pages (pages 2 / 3 / 4 / 5) from the PDF
+	 *      $w->addPage( [ 2, 5 ] );
+	 *
+	 *      // Load page #2 and set the top-margin to 20mm from the top of the page. This is useful when used with `$w->html()`
+	 *      $w->addPage( 2, [ 'margin-top' => 20 ] )
+	 *
+	 * @param int|array $id   The current page to load, or a range of pages to load (max 2 array items)
+	 * @param array     $args Additional page settings to pass to Mpdf. We recommend against trying to override `sheet-size` or `orientation` as the method calculates this automatically based off the PDF page size. See http://mpdf.github.io/reference/mpdf-functions/addpagebyarray.html for all available options
 	 *
 	 * @throws BadMethodCallException
 	 *
@@ -107,9 +136,14 @@ class Import extends AbstractWriter {
 	}
 
 	/**
-	 * Add a blank page to the PDF being rendered
+	 * Add a blank page to the PDF being rendered. Use in conjunction with `$w->html()`.
 	 *
-	 * @param array $args Additional Mpdf page settings to pass to Mpdf. See http://mpdf.github.io/reference/mpdf-functions/addpagebyarray.html for all available options
+	 * ## Example
+	 *
+	 *      // Load a new page in the generated PDF with a sheet size of 200mm wide by 400mm heigh
+	 *      $w->addBlankPage( [ 'sheet-size' => [ 200, 400 ] ] );
+	 *
+	 * @param array $args Additional page settings to pass to Mpdf. See http://mpdf.github.io/reference/mpdf-functions/addpagebyarray.html for all available options
 	 *
 	 * @since 1.0
 	 */
@@ -122,9 +156,9 @@ class Import extends AbstractWriter {
 	}
 
 	/**
-	 * Returns the current loaded PDF page sizes
+	 * Returns the current imported PDF page sizes (with `$w->addPdf()`). The class handles the page sizes internally, so you shouldn't need to use this method in your templates.
 	 *
-	 * @return array
+	 * @return array The returned format will include the array key referencing the page number and the value referencing the page width and height: [ 1 => [ 200, 400 ], 2 => [ 150, 400 ] ]
 	 *
 	 * @since 1.0
 	 */
@@ -133,9 +167,9 @@ class Import extends AbstractWriter {
 	}
 
 	/**
-	 * Returns the current loaded PDF page IDs
+	 * Returns the current loaded PDF page IDs. The class handles the IDs internally, so you shouldn't need to use this method in your templates.
 	 *
-	 * @return array
+	 * @return array The returned format will include the array key referencing the page number and the value referencing the page ID: [ 1 => 'ID1', 2 => 'ID2' ]
 	 *
 	 * @since 1.0
 	 */
