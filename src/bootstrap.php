@@ -56,7 +56,7 @@ require_once( __DIR__ . '/../vendor/autoload.php' );
 require_once( __DIR__ . '/deprecated.php' );
 
 /**
- * Class Bootstrap
+ * Class to bootstrap the Gravity PDF Developer Toolkit plugin
  *
  * @package  GFPDF\Plugins\DeveloperToolkit
  *
@@ -65,10 +65,12 @@ require_once( __DIR__ . '/deprecated.php' );
 class Bootstrap extends Helper_Abstract_Addon {
 
 	/**
-	 * Initialise the plugin classes and pass them to our parent class to
+	 * Initialise the plugin classes and pass them to our parent class which is included in the Gravity PDF plugin to
 	 * handle the rest of the bootstrapping (licensing ect)
 	 *
-	 * @param array $classes An array of classes to store in our singleton
+	 * @param array $classes An array of additional classes to store in our object
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */
@@ -89,6 +91,8 @@ class Bootstrap extends Helper_Abstract_Addon {
 
 	/**
 	 * Check the plugin's license is active and initialise the EDD Updater
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */
