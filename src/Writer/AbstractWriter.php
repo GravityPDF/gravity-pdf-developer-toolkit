@@ -37,8 +37,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class AbstractWriter
- *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer
  *
  * @since   1.0

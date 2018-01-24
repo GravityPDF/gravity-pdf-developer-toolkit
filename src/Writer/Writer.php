@@ -82,7 +82,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *      // Add an Ellipse to page 4 at 120mm from the left and 50mm from the top (this will mark the center of the ellipse), with a 5mm width and 3mm height
  *      $w->ellipse( [ 120, 50, 5, 3 ] );
  *
- * For more examples, view the documentation in GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ * For more examples, view the individual class documentation in GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer
  *

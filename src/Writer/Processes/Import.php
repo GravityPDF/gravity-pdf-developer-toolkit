@@ -39,8 +39,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class Import
- *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @since   1.0
@@ -69,8 +67,7 @@ class Import extends AbstractWriter {
 	protected $page_sizes = [];
 
 	/**
-	 * Load a PDF with verison 1.4/1.5 of the Adobe Spec for use with Mpdf. An exception will be thrown if you load a PDF
-	 * created with a higher version.
+	 * Load a PDF with version 1.4 or 1.5 of the Adobe Spec for use with Mpdf.
 	 *
 	 * ## Example
 	 *
@@ -87,6 +84,8 @@ class Import extends AbstractWriter {
 	 *      $w->addPage(1);
 	 *
 	 * @param string $path The absolute path to the PDF being loaded
+	 *
+	 * @throws \Exception An exception will be thrown if you load a PDF that isn't version 1.4 or 1.5 of the Adobe Specification
 	 *
 	 * @since 1.0
 	 */
@@ -116,7 +115,7 @@ class Import extends AbstractWriter {
 	 * @param int|array $id   The current page to load, or a range of pages to load (max 2 array items)
 	 * @param array     $args Additional page settings to pass to Mpdf. We recommend against trying to override `sheet-size` or `orientation` as the method calculates this automatically based off the PDF page size. See http://mpdf.github.io/reference/mpdf-functions/addpagebyarray.html for all available options
 	 *
-	 * @throws BadMethodCallException
+	 * @throws BadMethodCallException When `$id` is an array it should only contain two array items that signify the start and end of the PDF pages to load
 	 *
 	 * @since 1.0
 	 */
@@ -197,6 +196,7 @@ class Import extends AbstractWriter {
 	 * @param bool   $get_sizes Whether to load the PDF pages and get the sizes, or just import the pages
 	 *
 	 * @since 1.0
+	 *
 	 */
 	protected function load_pdf_pages( mPDF $mpdf, $path, $get_sizes = false ) {
 		$mpdf->SetImportUse();

@@ -38,8 +38,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class Tick
- *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @since   1.0
@@ -71,9 +69,103 @@ class Tick extends AbstractWriter {
 	protected $line_height = '16';
 
 	/**
-	 * Sets the new default configuration to apply to all new tick elements
+	 * Adds a tick character to the PDF
+	 *
+	 * A symbol will be added to the PDF with a fixed position.
+	 *
+	 * <b>The `$position` is always calculated in millimeters and the units should NOT be included</b>.
+	 *
+	 * The default configuration is as follows, but can be overriden for each call:
+	 *
+	 * - markup: `&#10004;` - The symbol to output
+	 * - font: `Dejavusanscondensed` - The registered font name (use the Font Manager to install additional fonts)
+	 * - font-size: `10pt` - Controls the font size used
+	 * - line-height: `14pt` - Controls the line height used
+	 *
+	 * This element will not be resized to fit within a container. The symbol will be wrapped in a DIV with the class
+	 * `tick` for more convenient styling (don't try style the `font`, `font-size` or `line-height` as this method handles those
+	 * styles automatically).
+	 *
+	 * The `font-size` and `line-height` are always calculated in points and the units should NOT be included when changing
+	 * the configuration defaults.
+	 *
+	 * ## Example
+	 *
+	 *      // Add tick positioned 20mm from the left and 50mm from the top
+	 *      $w->tick( [ 20, 50 ] );
+	 *
+	 *      // Add X to PDF instead of default tick
+	 *      $w->tick( [ 20, 60 ], [ 'markup' => 'X' ] );
+	 *
+	 *      // Change default font size
+	 *      $w->configTick( [
+	 *          'font-size' => 20,
+	 *          'line-height' => 20,
+	 *      ] );
+	 *
+	 *      // Add tick that uses new defaults (20pt font and 20pt line-height)
+	 *      $w->tick( [ 20, 70 ] );
+	 *
+	 * @param array $position The X and Y position of the element
+	 * @param array $config   Override the default configuration on a per-element basis. Accepted array keys include 'markup', 'font', 'font-size', 'line-height'
+	 *
+	 * @throws BadMethodCallException
+	 *
+	 * @since 1.0
+	 */
+	public function tick( $position = [], $config = [] ) {
+		if ( count( $position ) !== 2 ) {
+			throw new BadMethodCallException( '$position needs to include an array with two elements: $x, $y' );
+		}
+
+		$font        = ( isset( $config['font'] ) ) ? (string) $config['font'] : $this->font;
+		$font_size   = ( isset( $config['font-size'] ) ) ? (int) $config['font-size'] : $this->font_size;
+		$line_height = ( isset( $config['line-height'] ) ) ? (int) $config['line-height'] : $this->line_height;
+		$markup      = ( isset( $config['markup'] ) ) ? (string) $config['markup'] : $this->markup;
+
+		$output = sprintf(
+			'<div class="tick" style="font: %s; font-size: %s; line-height: %s">%s</div> &nbsp;',
+			$font,
+			$font_size . 'pt',
+			$line_height . 'pt',
+			$markup
+		);
+
+		$this->mpdf->WriteFixedPosHTML( $output, $position[0], $position[1], 5, 5, 'visible' );
+	}
+
+	/**
+	 * Sets the new tick configuration
+	 *
+	 * Once called, all future calls to `$w->tick()` will use these defaults.
+	 *
+	 * The `font-size` and `line-height` are always calculated in points and the units should NOT be included when changing
+	 * the configuration defaults.
+	 *
+	 * The default configuration is:
+	 *
+	 * - markup: `&#10004;` - The symbol to output
+	 * - font: `Dejavusanscondensed` - The registered font name (use the Font Manager to install additional fonts)
+	 * - font-size: `10pt` - Controls the font size used
+	 * - line-height: `14pt` - Controls the line height used
+	 *
+	 * ## Example
+	 *
+	 *      // Adds a tick with the defaults
+	 *      $w->tick( [ 100, 30 ] );
+	 *
+	 *      // Changes the default config font size and line height
+	 *      $w->configTick( [
+	 *          'font-size' => 20,
+	 *          'line-height' => 20,
+	 *      ] );
+	 *
+	 *      // Adds tick text with the new defaults
+	 *      $w->tick( [ 100, 40 ] );
 	 *
 	 * @param array $config Accepted array keys include 'markup', 'font', 'font-size', 'line-height'
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */
@@ -97,36 +189,5 @@ class Tick extends AbstractWriter {
 				break;
 			}
 		}
-	}
-
-	/**
-	 * Adds a tick character to the PDF at the requested coordinates.
-	 *
-	 * @param array $position The X and Y position of the element
-	 * @param array $config   Override the default configuration on a per-element basis. Accepted array keys include 'markup', 'font', 'font-size', 'line-height'
-	 *
-	 * @throws BadMethodCallException
-	 *
-	 * @since 1.0
-	 */
-	public function tick( $position = [], $config = [] ) {
-		if ( count( $position ) !== 2 ) {
-			throw new BadMethodCallException( '$position needs to include an array with two elements: $x, $y' );
-		}
-
-		$font        = ( isset( $config['font'] ) ) ? (string) $config['font'] : $this->font;
-		$font_size   = ( isset( $config['font-size'] ) ) ? (int) $config['font-size'] : $this->font_size;
-		$line_height = ( isset( $config['line-height'] ) ) ? (int) $config['line-height'] : $this->line_height;
-		$markup      = ( isset( $config['markup'] ) ) ? (string) $config['markup'] : $this->markup;
-
-		$output = sprintf(
-			'<div class="tick" style="font: %s; font_size: %s; line-height: %s">%s</div> &nbsp;',
-			$font,
-			$font_size . 'pt',
-			$line_height . 'pt',
-			$markup
-		);
-
-		$this->mpdf->WriteFixedPosHTML( $output, $position[0], $position[1], 5, 5, 'visible' );
 	}
 }

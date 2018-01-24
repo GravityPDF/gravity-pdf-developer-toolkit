@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Interface InterfaceWriter
+ * The Mpdf setter contract for use with our Writer classes
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer
  *

@@ -38,8 +38,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class Multi
- *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @since   1.0
@@ -65,39 +63,48 @@ class Multi extends AbstractWriter {
 	protected $strip_br = false;
 
 	/**
-	 * Sets the new default configuration to apply to all new multi elements
+	 * Add Multi-line content to the PDF
 	 *
-	 * @param array $config Accepted array keys include 'font-size', 'line-height', 'strip-br'
+	 * Add content to the PDF which has a fixed positioned and is better configured for multiline output (better line
+	 * height defaults at the expense of less accurate Y positioning).
 	 *
-	 * @since 1.0
-	 */
-	public function configMulti( $config ) {
-		foreach ( $config as $name => $value ) {
-			switch ( $name ) {
-				case 'font-size':
-					$this->font_size = (int) $value;
-				break;
-
-				case 'line-height':
-					$this->line_height = (int) $value;
-				break;
-
-				case 'strip-br':
-					$this->strip_br = (bool) $value;
-				break;
-			}
-		}
-	}
-
-	/**
-	 * Add content to the PDF that has a fixed positioned and is better configured for multiline output
+	 * <b>The `$position` is always calculated in millimeters and the units should NOT be included</b>.
+	 *
+	 * The default configuration is as follows, but can be overriden for each call:
+	 *
+	 * - font-size: `10pt` - Controls the font size used
+	 * - line-height: `14pt` - Controls the line height used
+	 * - strip-br: `false` - Whether to strip BR tags and replace them with 3 hard spaces.
+	 *
+	 * By default, if the text extends outside the container it will be shrunk to fit (this can be overriden). All content
+	 * added with this method will be wrapped in a DIV with the class `.multi` for more convenient styling. The X/Y
+	 * positioning is from the top-left of the element being included.
+	 *
+	 * The `font-size` and `line-height` are always calculated in points and the units should NOT be included when changing
+	 * the configuration defaults.
+	 *
+	 * ## Example
+	 *
+	 *      // Add multi-line content to the current page positioned 20mm from the left, 50mm from the top, with a width of 30mm and a height of 5mm
+	 *      $w->addMulti( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ] );
+	 *
+	 *      // Instead of shrinking the content to fit the container, the 'visible' property will allow it to overflow the container
+	 *      $w->addMulti( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ], 'visible' );
+	 *
+	 *      // The 'hidden' property will crop any content that extends outside the container
+	 *      $w->addMulti( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ], 'hidden' );
+	 *
+	 *      // Will override the default configuration and auto-strip BR tags and increase the font size on a one-time basis
+	 *      $w->addMulti( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ], 'auto', [ 'font-size' => 14, 'line-height' => 20, 'strip-br' => true ] );
 	 *
 	 * @param string $html     The content to add to the PDF being rendered
 	 * @param array  $position The X, Y, Width and Height of the element
-	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto", "visible" or "hidden"
+	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted arguments include "auto", "visible" or "hidden"
 	 * @param array  $config   Override the default configuration on a per-element basis. Accepted array keys include 'font-size', 'line-height', 'strip-br'
 	 *
-	 * @throws BadMethodCallException
+	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), or if `$overflow` doesn't include an accepted argument.
+	 *
+	 * @return void
 	 *
 	 * @since 1.0
 	 */
@@ -126,5 +133,60 @@ class Multi extends AbstractWriter {
 		);
 
 		$this->mpdf->WriteFixedPosHTML( $output, $position[0], $position[1], $position[2], $position[3], $overflow );
+	}
+
+	/**
+	 * Sets the new mult-line configuration
+	 *
+	 * Once called, all future calls to `$w->addMulti()` will use these defaults
+	 *
+	 * The default configuration is:
+	 *
+	 * - font-size: `10pt` - Controls the font size used
+	 * - line-height: `14pt` - Controls the line height used
+	 * - strip-br: `false` - Whether to strip BR tags and replace them with 3 hard spaces.
+	 *
+	 * The `font-size` and `line-height` are always calculated in points and the units should NOT be included when changing
+	 * the configuration defaults.
+	 *
+	 * ## Example
+	 *
+	 *      // Adds multi-line text with the default
+	 *      $w->addMulti( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ] );
+	 *
+	 *      // Changes the default config font size and line height
+	 *      $w->configMulti( [
+	 *          'font-size' => 14,
+	 *          'line-height' => 20,
+	 *      ] );
+	 *
+	 *      // Adds multi-line text with the new defaults
+	 *      $w->addMulti( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ] );
+	 *
+	 *      // Will override the defaults just for this content
+	 *      $w->addMulti( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ], 'auto', [ 'font-size' => 8, 'line-height' => 12 ] );
+	 *
+	 * @param array $config Accepted array keys include 'font-size', 'line-height', 'strip-br'
+	 *
+	 * @return void
+	 *
+	 * @since 1.0
+	 */
+	public function configMulti( $config ) {
+		foreach ( $config as $name => $value ) {
+			switch ( $name ) {
+				case 'font-size':
+					$this->font_size = (int) $value;
+				break;
+
+				case 'line-height':
+					$this->line_height = (int) $value;
+				break;
+
+				case 'strip-br':
+					$this->strip_br = (bool) $value;
+				break;
+			}
+		}
 	}
 }
