@@ -2,7 +2,7 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Legacy;
 
-use GFPDF\Helper\Helper_Interface_Actions;
+use GFPDF\Helper\Helper_Interface_Filters;
 use GFPDF\Helper\Helper_Abstract_Options;
 
 /**
@@ -38,13 +38,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Detects if the Gravity PDF Tier 2 plugin is enabled and deactivates it automatically.
+ * Removes the Advanced Template option from the PDF settings if not upgrading from a legacy plugin
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Legacy
  *
  * @since   1.0
  */
-class Deactivate implements Helper_Interface_Actions {
+class AdvancedTemplate implements Helper_Interface_Filters {
 
 	/**
 	 * @var Helper_Abstract_Options
@@ -71,7 +71,7 @@ class Deactivate implements Helper_Interface_Actions {
 	 * @since 1.0
 	 */
 	public function init() {
-		$this->add_actions();
+		$this->add_filters();
 	}
 
 	/**
@@ -81,32 +81,27 @@ class Deactivate implements Helper_Interface_Actions {
 	 *
 	 * @since 1.0
 	 */
-	public function add_actions() {
-		add_action( 'admin_init', [ $this, 'maybe_deactivate_legacy_plugin' ] );
+	public function add_filters() {
+		add_filter( 'gfpdf_form_settings_advanced', [ $this, 'modify_advanced_template_field' ], 20 );
 	}
 
 	/**
-	 * Deactivate the Gravity PDF Tier 2 plugin (if it exists)
+	 * Checks if the legacy "Advanced Template" option should be shown in the PDF options
 	 *
-	 * The Gravity PDF Developer Toolkit is a drop-in replacement for the Gravity PDF Tier 2 plugin.
+	 * @param array $fields
 	 *
-	 * Triggered via the `admin_init` action.
-	 *
-	 * @return void
+	 * @return array
 	 *
 	 * @since 1.0
 	 */
-	public function maybe_deactivate_legacy_plugin() {
-		$legacy_plugin = 'gravity-pdf-tier-2/plus.php';
-
-		if ( is_plugin_active( $legacy_plugin ) ) {
-			/* Store a global setting to say we've upgraded from a legacy plugin */
-			$settings                        = $this->options->get_settings();
-			$settings['advanced_templating'] = true;
-			$this->options->update_settings( $settings );
-
-			deactivate_plugins( 'gravity-pdf-tier-2/plus.php' );
+	public function modify_advanced_template_field( $fields ) {
+		if ( isset( $fields['advanced_template'] ) ) {
+			$settings = $this->options->get_settings();
+			if ( empty( $settings['advanced_templating'] ) ) {
+				unset( $fields['advanced_template'] );
+			}
 		}
-	}
 
+		return $fields;
+	}
 }
