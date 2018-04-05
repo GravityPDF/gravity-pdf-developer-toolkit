@@ -31,7 +31,6 @@ class GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap {
 	 * @since 4.0
 	 */
 	public function __construct() {
-
 		$this->tests_dir    = dirname( __FILE__ );
 		$this->plugin_dir   = dirname( $this->tests_dir ) . '/..';
 		$this->wp_tests_dir = $this->plugin_dir . '/tmp/wordpress-tests-lib';
@@ -65,6 +64,9 @@ class GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap {
 		require $this->plugin_dir . '/tmp/gravity-forms-pdf-extended/vendor/autoload.php';
 		$this->log = new \Monolog\Logger( 'test' );
 		$this->log->pushHandler( new \Monolog\Handler\NullHandler( \Monolog\Logger::INFO ) ); /* throw logs away */
+
+		/* TODO: remove once upgraded to Mpdf v7 */
+		error_reporting( 0 );
 	}
 }
 
