@@ -2,8 +2,8 @@
 
 /**
  * Plugin Name:     Gravity PDF Developer Toolkit
- * Plugin URI:      TODO
- * Description:     TODO
+ * Plugin URI:      https://gravitypdf.com/shop/pdf-developer-toolkit/
+ * Description:     Gravity PDF Developer Toolkit allows developers to easily generate boilerplate PDF templates for Gravity PDF using the WP CLI, as well as provide tools (and documentation) for importing and auto-filling existing PDF documents.
  * Author:          Gravity PDF
  * Author URI:      https://gravitypdf.com
  * Text Domain:     gravity-pdf-developer-toolkit
@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 define( 'GFPDF_DEVELOPER_TOOLKIT_FILE', __FILE__ );
-define( 'GFPDF_DEVELOPER_TOOLKIT_VERSION', '1.0.1' );
+define( 'GFPDF_DEVELOPER_TOOLKIT_VERSION', '1.0.0' );
 
 /**
  * Class GPDF_Core_Booster_Checks
@@ -67,7 +67,7 @@ class GPDF_Developer_Toolkit_Checks {
 	 *
 	 * @since 1.0
 	 */
-	private $required_gravitypdf_version = '4.3.0-beta1';
+	private $required_gravitypdf_version = '4.4.0';
 
 	/**
 	 * Run our pre-checks and if it passes bootstrap the plugin
