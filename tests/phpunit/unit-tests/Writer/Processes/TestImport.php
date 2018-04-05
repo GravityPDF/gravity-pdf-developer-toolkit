@@ -58,7 +58,7 @@ class TestImport extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		$this->class = new Import();
-		$this->class->set_mpdf( new mPDF() );
+		$this->class->setMpdf( new mPDF() );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class TestImport extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testAddBlankPdf() {
-		$mpdf = $this->class->get_mpdf();
+		$mpdf = $this->class->getMpdf();
 
 		$this->class->addBlankPage();
 		$this->class->addBlankPage();
@@ -143,7 +143,7 @@ class TestImport extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testAddPage() {
-		$mpdf = $this->class->get_mpdf();
+		$mpdf = $this->class->getMpdf();
 		$this->class->addPdf( __DIR__ . '/../../pdfs/document1.pdf' );
 		$this->class->addPage( 1 );
 		$this->class->addPage( 1 );

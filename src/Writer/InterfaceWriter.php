@@ -54,12 +54,12 @@ interface InterfaceWriter {
 	 *
 	 * @since 1.0
 	 */
-	public function set_mpdf( mPDF $mpdf );
+	public function setMpdf( mPDF $mpdf );
 
 	/**
 	 * Check if our Mpdf Setter has been run
 	 *
 	 * @return bool
 	 */
-	public function is_mpdf_set();
+	public function isMpdfSet();
 }

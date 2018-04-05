@@ -64,7 +64,7 @@ class Header implements Helper_Interface_Filters {
 	 * @since 1.0
 	 */
 	public function add_filters() {
-		add_filter( 'gfpdf_template_header_details', [ $this, 'add_toolkit_header' ] );
+		add_filter( 'gfpdf_template_header_details', [ $this, 'addToolkitHeader' ] );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Header implements Helper_Interface_Filters {
 	 *
 	 * @since 1.0
 	 */
-	public function add_toolkit_header( $headers ) {
+	public function addToolkitHeader( $headers ) {
 		$headers['toolkit'] = 'Toolkit';
 
 		return $headers;

@@ -3,13 +3,13 @@ Gravity PDF Developer Toolkit
 
 [![Build Status](https://travis-ci.org/GravityPDF/gravity-pdf-developer-toolkit.svg?branch=development)](https://travis-ci.org/GravityPDF/gravity-pdf-developer-toolkit)
 
-Gravity PDF Developer Toolkit is a commercial plugin [available from GravityPDF.com](https://gravitypdf.com/shop/pdf-developer-toolkit/). The plugin is hosted here on a public GitHub repository in order to better facilitate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
+Gravity PDF Developer Toolkit is a commercial plugin [available from GravityPDF.com](https://gravitypdf.com/shop/developer-toolkit/). The plugin is hosted here on a public GitHub repository in order to better facilitate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
 
 If you are using the plugin on a live site, please purchase a valid license from the website. **We cannot provide support to anyone that does not hold a valid license key**.
 
 # About
 
-This Git repository is for developers who want to contribute to Gravity PDF Developer Toolkit. **Don't use it in production**. For production use, [purchase a license and install the packaged version from our online store](https://gravitypdf.com/shop/core-booster-add-on/).
+This Git repository is for developers who want to contribute to Gravity PDF Developer Toolkit. **Don't use it in production**. For production use, [purchase a license and install the packaged version from our online store](https://gravitypdf.com/shop/developer-toolkit/).
 
 The `development` branch is considered our bleeding edge branch, with all new changes pushed to it. The `master` branch is our latest stable version of Gravity PDF Developer Toolkit.
 

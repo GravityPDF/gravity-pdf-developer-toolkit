@@ -61,7 +61,7 @@ class TestWriter extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		$this->class = FactoryWriter::build();
-		$this->class->set_mpdf( new mPDF() );
+		$this->class->setMpdf( new mPDF() );
 	}
 
 	/**
@@ -102,7 +102,7 @@ class TestWriter extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function test_registered_classes() {
-		$this->class->register_class( new test() );
+		$this->class->registerClass( new test() );
 		$this->assertSame( 'yes', $this->class->example() );
 	}
 
@@ -111,11 +111,11 @@ class TestWriter extends WP_UnitTestCase {
 	 */
 	public function test_abstract_classes() {
 		$class = FactoryWriter::build();
-		$this->assertFalse( $class->is_mpdf_set() );
+		$this->assertFalse( $class->isMpdfSet() );
 
-		$class->set_mpdf( new mPDF() );
-		$this->assertTrue( $class->is_mpdf_set() );
-		$this->assertInstanceOf( mPDF::class, $class->get_mpdf() );
+		$class->setMpdf( new mPDF() );
+		$this->assertTrue( $class->isMpdfSet() );
+		$this->assertInstanceOf( mPDF::class, $class->getMpdf() );
 	}
 }
 

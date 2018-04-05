@@ -56,8 +56,19 @@ abstract class AbstractWriter implements InterfaceWriter {
 	 *
 	 * @since 1.0
 	 */
-	public function set_mpdf( mPDF $mpdf ) {
+	public function setMpdf( mPDF $mpdf ) {
 		$this->mpdf = $mpdf;
+	}
+
+	/**
+	 * Get the current Mpdf object
+	 *
+	 * @return mPDF
+	 *
+	 * @since 1.0
+	 */
+	public function getMpdf() {
+		return $this->mpdf;
 	}
 
 	/**
@@ -67,7 +78,7 @@ abstract class AbstractWriter implements InterfaceWriter {
 	 *
 	 * @since 1.0
 	 */
-	public function is_mpdf_set() {
+	public function isMpdfSet() {
 		return $this->mpdf !== null;
 	}
 }

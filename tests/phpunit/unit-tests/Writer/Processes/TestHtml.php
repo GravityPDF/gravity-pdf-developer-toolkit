@@ -58,7 +58,7 @@ class TestHtml extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		$this->class = new Html();
-		$this->class->set_mpdf( new mPDF() );
+		$this->class->setMpdf( new mPDF() );
 	}
 
 	/**

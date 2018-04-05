@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since   1.0
  */
-class Loader implements Helper_Interface_Filters {
+class LegacyLoader implements Helper_Interface_Filters {
 
 	/**
 	 * Initialise class
@@ -65,8 +65,8 @@ class Loader implements Helper_Interface_Filters {
 	 * @since 1.0
 	 */
 	public function add_filters() {
-		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybe_skip_pdf_html_render' ], 10, 2 );
-		add_filter( 'gfpdf_developer_toolkit_template_args', [ $this, 'maybe_add_legacy_template_args' ], 10, 2 );
+		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybeSkipPdfHtmlRender' ], 10, 2 );
+		add_filter( 'gfpdf_developer_toolkit_template_args', [ $this, 'maybeAddLegacyTemplateArgs' ], 10, 2 );
 	}
 
 	/**
@@ -83,8 +83,8 @@ class Loader implements Helper_Interface_Filters {
 	 *
 	 * @since 1.0
 	 */
-	public function maybe_skip_pdf_html_render( $skip, $args ) {
-		if ( $this->is_legacy_advanced_template( $args ) ) {
+	public function maybeSkipPdfHtmlRender( $skip, $args ) {
+		if ( $this->isLegacyAdvancedTemplate( $args ) ) {
 			return true;
 		}
 
@@ -96,23 +96,23 @@ class Loader implements Helper_Interface_Filters {
 	 *
 	 * Triggered via the `gfpdf_developer_toolkit_template_args` filter
 	 *
-	 * @param array $args     New variables being injected into PDF template
-	 * @param array $old_args Old variables that we're overriding
+	 * @param array $args    New variables being injected into PDF template
+	 * @param array $oldArgs Old variables that we're overriding
 	 *
 	 * @return array
 	 *
 	 * @since 1.0
 	 */
-	public function maybe_add_legacy_template_args( $args, $old_args ) {
-		if ( $this->is_legacy_advanced_template( $args ) ) {
+	public function maybeAddLegacyTemplateArgs( $args, $oldArgs ) {
+		if ( $this->isLegacyAdvancedTemplate( $args ) ) {
 			global $pdf, $writer;
 
 			$pdf    = $args['mpdf'];
 			$writer = $args['w'];
 
-			$args['form_id']  = $old_args['form_id'];
-			$args['lead_ids'] = $old_args['lead_ids'];
-			$args['lead_id']  = $old_args['lead_id'];
+			$args['form_id']  = $oldArgs['form_id'];
+			$args['lead_ids'] = $oldArgs['lead_ids'];
+			$args['lead_id']  = $oldArgs['lead_id'];
 		}
 
 		return $args;
@@ -127,7 +127,7 @@ class Loader implements Helper_Interface_Filters {
 	 *
 	 * @since 1.0
 	 */
-	protected function is_legacy_advanced_template( $args ) {
+	protected function isLegacyAdvancedTemplate( $args ) {
 		return ( isset( $args['settings']['advanced_template'] ) && $args['settings']['advanced_template'] === 'Yes' );
 	}
 }

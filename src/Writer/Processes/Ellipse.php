@@ -71,7 +71,7 @@ class Ellipse extends AbstractWriter {
 		}
 
 		if ( ! is_array( $position ) || count( $position ) !== 4 ) {
-			throw new \BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
+			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}
 
 		$this->mpdf->Ellipse( $position[0], $position[1], $position[2], $position[3] );

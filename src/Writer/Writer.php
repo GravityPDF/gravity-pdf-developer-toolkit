@@ -90,7 +90,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @method void addPage( int $id, array $args = [] )  Display a page, or range of pages, from the loaded PDF in the PDF being rendered. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
  * @method void addBlankPage( array $args = [] )  Add a blank page to the PDF being rendered. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
  * @method array getPdfPageSize()  Returns the current loaded PDF page sizes. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
- * @method array getPdfPageId()  Returns the current loaded PDF page IDs. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
+ * @method array getPdfPageIds()  Returns the current loaded PDF page IDs. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
  * @method void add( string $html, array $position = [], string $overflow = 'auto' )  Add content to the PDF that has a fixed positioned and is better suited for a single line of text. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Single for full details.
  * @method void configMulti( array $config )  Sets the new default configuration to apply to all new multi elements. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Multi for full details.
  * @method void addMulti( string $html, array $position = [], string $overflow = 'auto', array $config = [] )  Add content to the PDF that has a fixed positioned and is better configured for multiline output. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Multi for full details.
@@ -120,7 +120,7 @@ class Writer extends AbstractWriter {
 	 */
 	public function __construct( $classes = [] ) {
 		foreach ( $classes as $class ) {
-			$this->register_class( $class );
+			$this->registerClass( $class );
 		}
 	}
 
@@ -133,7 +133,7 @@ class Writer extends AbstractWriter {
 	 *
 	 * @since 1.0
 	 */
-	public function register_class( InterfaceWriter $class ) {
+	public function registerClass( InterfaceWriter $class ) {
 		$this->classes[] = $class;
 	}
 
@@ -150,7 +150,7 @@ class Writer extends AbstractWriter {
 	public function __call( $name, $arguments ) {
 		foreach ( $this->classes as $class ) {
 			if ( is_callable( [ $class, $name ] ) ) {
-				$this->maybe_inject_mpdf( $class );
+				$this->maybeInjectMpdf( $class );
 
 				return call_user_func_array( [ $class, $name ], $arguments );
 			}
@@ -166,9 +166,9 @@ class Writer extends AbstractWriter {
 	 *
 	 * @since 1.0
 	 */
-	protected function maybe_inject_mpdf( $class ) {
-		if ( ! $class->is_mpdf_set() ) {
-			$class->set_mpdf( $this->mpdf );
+	protected function maybeInjectMpdf( $class ) {
+		if ( ! $class->isMpdfSet() ) {
+			$class->setMpdf( $this->mpdf );
 		}
 	}
 }

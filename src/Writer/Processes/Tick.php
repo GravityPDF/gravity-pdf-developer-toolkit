@@ -60,13 +60,13 @@ class Tick extends AbstractWriter {
 	 * @var int The default font size in points
 	 * @since 1.0
 	 */
-	protected $font_size = '16';
+	protected $fontSize = '16';
 
 	/**
 	 * @var int The default line height in points
 	 * @since 1.0
 	 */
-	protected $line_height = '16';
+	protected $lineHeight = '16';
 
 	/**
 	 * Adds a tick character to the PDF
@@ -119,15 +119,15 @@ class Tick extends AbstractWriter {
 		}
 
 		$font        = ( isset( $config['font'] ) ) ? (string) $config['font'] : $this->font;
-		$font_size   = ( isset( $config['font-size'] ) ) ? (int) $config['font-size'] : $this->font_size;
-		$line_height = ( isset( $config['line-height'] ) ) ? (int) $config['line-height'] : $this->line_height;
+		$fontSize   = ( isset( $config['font-size'] ) ) ? (int) $config['font-size'] : $this->fontSize;
+		$lineHeight = ( isset( $config['line-height'] ) ) ? (int) $config['line-height'] : $this->lineHeight;
 		$markup      = ( isset( $config['markup'] ) ) ? (string) $config['markup'] : $this->markup;
 
 		$output = sprintf(
 			'<div class="tick" style="font: %s; font-size: %s; line-height: %s">%s</div> &nbsp;',
 			$font,
-			$font_size . 'pt',
-			$line_height . 'pt',
+			$fontSize . 'pt',
+			$lineHeight . 'pt',
 			$markup
 		);
 
@@ -181,11 +181,11 @@ class Tick extends AbstractWriter {
 				break;
 
 				case 'font-size':
-					$this->font_size = (int) $value;
+					$this->fontSize = (int) $value;
 				break;
 
 				case 'line-height':
-					$this->line_height = (int) $value;
+					$this->lineHeight = (int) $value;
 				break;
 			}
 		}

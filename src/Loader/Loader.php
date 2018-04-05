@@ -69,7 +69,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 * @since 1.0
 	 */
 	public function add_filters() {
-		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybe_skip_pdf_html_render' ], 10, 3 );
+		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybeSkipPdfHtmlRender' ], 10, 3 );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 * @since 1.0
 	 */
 	public function add_actions() {
-		add_action( 'gfpdf_skipped_html_render', [ $this, 'handle_toolkit_template' ], 10, 2 );
+		add_action( 'gfpdf_skipped_html_render', [ $this, 'handleToolkitTemplate' ], 10, 2 );
 	}
 
 	/**
@@ -88,18 +88,18 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 *
 	 * Triggered via the `gfpdf_skip_pdf_html_render` filter.
 	 *
-	 * @param bool       $skip       Whether we should skip the HTML sandbox
+	 * @param bool       $skip      Whether we should skip the HTML sandbox
 	 * @param array      $args
-	 * @param Helper_PDF $pdf_helper The current PDF Helper object handling the PDF generation
+	 * @param Helper_PDF $pdfHelper The current PDF Helper object handling the PDF generation
 	 *
 	 * @return bool
 	 *
 	 * @since 1.0
 	 */
-	public function maybe_skip_pdf_html_render( $skip, $args, $pdf_helper ) {
+	public function maybeSkipPdfHtmlRender( $skip, $args, $pdfHelper ) {
 		/* Read template Header */
 		$template = GPDFAPI::get_templates_class();
-		$headers  = $template->get_template_info_by_path( $pdf_helper->get_template_path() );
+		$headers  = $template->get_template_info_by_path( $pdfHelper->get_template_path() );
 
 		if ( isset( $headers['toolkit'] ) && $headers['toolkit'] == 'true' ) {
 			return true;
@@ -113,36 +113,36 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 *
 	 * Triggered via the `gfpdf_skipped_html_render` action.
 	 *
-	 * @param array      $args       The variables to inject into the PDF template
-	 * @param Helper_PDF $pdf_helper The PDF generation helper class
+	 * @param array      $args      The variables to inject into the PDF template
+	 * @param Helper_PDF $pdfHelper The PDF generation helper class
 	 *
 	 * @return void
 	 *
 	 * @since 1.0
 	 */
-	public function handle_toolkit_template( $args, $pdf_helper ) {
-		$args = $this->prepare_arguments( $args, $pdf_helper );
-		$this->load_template( $pdf_helper->get_template_path(), $args );
+	public function handleToolkitTemplate( $args, $pdfHelper ) {
+		$args = $this->prepareArguments( $args, $pdfHelper );
+		$this->loadTemplate( $pdfHelper->get_template_path(), $args );
 	}
 
 	/**
 	 * Prepare the variables to be injected into the PDF template being loaded
 	 *
-	 * @param array      $args       The variables to inject into the PDF template
-	 * @param Helper_PDF $pdf_helper The PDF generation helper class
+	 * @param array      $args      The variables to inject into the PDF template
+	 * @param Helper_PDF $pdfHelper The PDF generation helper class
 	 *
 	 * @return array
 	 *
 	 * @since 1.0
 	 */
-	protected function prepare_arguments( $args, $pdf_helper ) {
+	protected function prepareArguments( $args, $pdfHelper ) {
 		/* Create a new Writer object and inject the current Mpdf object */
 		$writer = FactoryWriter::build();
-		$writer->set_mpdf( $pdf_helper->get_pdf_class() );
+		$writer->setMpdf( $pdfHelper->get_pdf_class() );
 
 		$new_args = apply_filters( 'gfpdf_developer_toolkit_template_args', [
 			'w'         => $writer,
-			'mpdf'      => $pdf_helper->get_pdf_class(),
+			'mpdf'      => $pdfHelper->get_pdf_class(),
 			'form'      => $args['form'],
 			'entry'     => $args['entry'],
 			'form_data' => $args['form_data'],
@@ -150,7 +150,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 			'config'    => $args['config'],
 			'settings'  => $args['settings'],
 			'gfpdf'     => $args['gfpdf'],
-		], $args, $pdf_helper );
+		], $args, $pdfHelper );
 
 		return $new_args;
 	}
@@ -163,7 +163,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 *
 	 * @since 1.0
 	 */
-	protected function load_template( $template, $args ) {
+	protected function loadTemplate( $template, $args ) {
 		extract( $args, EXTR_SKIP );
 		include $template;
 	}

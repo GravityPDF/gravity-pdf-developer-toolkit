@@ -82,7 +82,7 @@ class AdvancedTemplate implements Helper_Interface_Filters {
 	 * @since 1.0
 	 */
 	public function add_filters() {
-		add_filter( 'gfpdf_form_settings_advanced', [ $this, 'modify_advanced_template_field' ], 20 );
+		add_filter( 'gfpdf_form_settings_advanced', [ $this, 'modifyAdvancedTemplateField' ], 20 );
 	}
 
 	/**
@@ -94,7 +94,7 @@ class AdvancedTemplate implements Helper_Interface_Filters {
 	 *
 	 * @since 1.0
 	 */
-	public function modify_advanced_template_field( $fields ) {
+	public function modifyAdvancedTemplateField( $fields ) {
 		if ( isset( $fields['advanced_template'] ) ) {
 			$settings = $this->options->get_settings();
 			if ( empty( $settings['advanced_templating'] ) ) {

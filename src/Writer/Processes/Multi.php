@@ -48,19 +48,19 @@ class Multi extends AbstractWriter {
 	 * @var int The default font size in points
 	 * @since 1.0
 	 */
-	protected $font_size = 10;
+	protected $fontSize = 10;
 
 	/**
 	 * @var int The default line height in points
 	 * @since 1.0
 	 */
-	protected $line_height = 14;
+	protected $lineHeight = 14;
 
 	/**
 	 * @var bool Whether to remove BR tags from the output
 	 * @since 1.0
 	 */
-	protected $strip_br = false;
+	protected $stripBr = false;
 
 	/**
 	 * Add Multi-line content to the PDF
@@ -117,18 +117,18 @@ class Multi extends AbstractWriter {
 			throw new BadMethodCallException( '$overflow can only be "auto", "visible" or "hidden".' );
 		}
 
-		$font_size   = ( isset( $config['font-size'] ) ) ? (int) $config['font-size'] : $this->font_size;
-		$line_height = ( isset( $config['line-height'] ) ) ? (int) $config['line-height'] : $this->line_height;
-		$strip_br    = ( isset( $config['strip-br'] ) ) ? (int) $config['strip-br'] : $this->strip_br;
+		$fontSize   = ( isset( $config['font-size'] ) ) ? (int) $config['font-size'] : $this->fontSize;
+		$lineHeight = ( isset( $config['line-height'] ) ) ? (int) $config['line-height'] : $this->lineHeight;
+		$stripBr    = ( isset( $config['strip-br'] ) ) ? (int) $config['strip-br'] : $this->stripBr;
 
-		if ( $strip_br ) {
+		if ( $stripBr ) {
 			$html = str_replace( [ '<br>', '<br/>', '<br />' ], ' &nbsp; ', $html );
 		}
 
 		$output = sprintf(
 			'<div class="multi" style="font_size: %s; line-height: %s">%s</div>',
-			$font_size . 'pt',
-			$line_height . 'pt',
+			$fontSize . 'pt',
+			$lineHeight . 'pt',
 			$html
 		);
 
@@ -176,15 +176,15 @@ class Multi extends AbstractWriter {
 		foreach ( $config as $name => $value ) {
 			switch ( $name ) {
 				case 'font-size':
-					$this->font_size = (int) $value;
+					$this->fontSize = (int) $value;
 				break;
 
 				case 'line-height':
-					$this->line_height = (int) $value;
+					$this->lineHeight = (int) $value;
 				break;
 
 				case 'strip-br':
-					$this->strip_br = (bool) $value;
+					$this->stripBr = (bool) $value;
 				break;
 			}
 		}

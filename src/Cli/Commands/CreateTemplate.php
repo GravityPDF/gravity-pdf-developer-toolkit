@@ -49,15 +49,15 @@ class CreateTemplate {
 	 *
 	 * @since 1.0
 	 */
-	protected $working_directory;
+	protected $workingDirectory;
 
 	/**
-	 * @param string $working_directory The absolute path to the PDF Working Directory
+	 * @param string $workingDirectory The absolute path to the PDF Working Directory
 	 *
 	 * @since 1.0
 	 */
-	public function __construct( $working_directory ) {
-		$this->working_directory = $working_directory;
+	public function __construct( $workingDirectory ) {
+		$this->workingDirectory = $workingDirectory;
 	}
 
 	/**
@@ -96,26 +96,26 @@ class CreateTemplate {
 	 *
 	 * @since 1.0
 	 *
-	 * @param array $template_array The PDF Template Name the use has entered. If they used quotes it'll be an array with one element, otherwise each space will signify a new array element.
-	 * @param array $args           The additional arguments passed to the cli. May include `enable-config`, `enable-toolkit` and `skip-headers`
+	 * @param array $templateArray The PDF Template Name the use has entered. If they used quotes it'll be an array with one element, otherwise each space will signify a new array element.
+	 * @param array $args          The additional arguments passed to the cli. May include `enable-config`, `enable-toolkit` and `skip-headers`
 	 *
 	 * @throws WP_CLI\ExitException
 	 */
-	public function __invoke( $template_array, $args = [] ) {
-		$template_name     = implode( ' ', array_filter( $template_array ) );
-		$shortname         = mb_strtolower( str_replace( ' ', '-', $template_name ) );
+	public function __invoke( $templateArray, $args = [] ) {
+		$templateName     = implode( ' ', array_filter( $templateArray ) );
+		$shortname         = mb_strtolower( str_replace( ' ', '-', $templateName ) );
 		$filename          = $shortname . '.php';
-		$full_path_to_file = $this->working_directory . $filename;
+		$fullPathToFile = $this->workingDirectory . $filename;
 
 		/* Check if template already exists */
-		if ( is_file( $full_path_to_file ) ) {
+		if ( is_file( $fullPathToFile ) ) {
 			WP_CLI::error( sprintf( 'A PDF template with the name "%s" already exists. Try a different <template-name>.', $filename ) );
 		}
 
-		$this->generate_base_template( $template_name, $full_path_to_file, $args );
+		$this->generateBaseTemplate( $templateName, $fullPathToFile, $args );
 
 		if ( ! empty( $args['enable-config'] ) ) {
-			$this->generate_config_template( $this->get_class_name( $shortname ), $filename );
+			$this->generateConfigTemplate( $this->getClassName( $shortname ), $filename );
 		}
 
 		WP_CLI::log( 'Happy PDFing!' );
@@ -124,30 +124,30 @@ class CreateTemplate {
 	/**
 	 * Generate and save a PDF template based on the user's responses
 	 *
-	 * @param string $template_name     The PDF Template Name provided by the user
-	 * @param string $full_path_to_file The full path to the PDF template we want to create
-	 * @param array  $args              The additional CLI arguments being passed. May include `enable-config`, `enable-toolkit` and `skip-headers`
+	 * @param string $templateName   The PDF Template Name provided by the user
+	 * @param string $fullPathToFile The full path to the PDF template we want to create
+	 * @param array  $args           The additional CLI arguments being passed. May include `enable-config`, `enable-toolkit` and `skip-headers`
 	 *
 	 * @return void
 	 *
 	 * @since 1.0
 	 */
-	protected function generate_base_template( $template_name, $full_path_to_file, $args ) {
+	protected function generateBaseTemplate( $templateName, $fullPathToFile, $args ) {
 		/* Get the template variables */
-		$data         = $this->get_template_data( empty( $args['skip-headers'] ) );
-		$data['name'] = $template_name;
+		$data         = $this->getTemplateData( empty( $args['skip-headers'] ) );
+		$data['name'] = $templateName;
 
 		/* Create our core template */
-		$base_template = ( ! empty( $args['enable-toolkit'] ) ) ? 'toolkit-base' : 'base';
+		$baseTemplate = ( ! empty( $args['enable-toolkit'] ) ) ? 'toolkit-base' : 'base';
 
 		file_put_contents(
-			$full_path_to_file,
-			$this->load_template( $data, $base_template )
+			$fullPathToFile,
+			$this->loadTemplate( $data, $baseTemplate )
 		);
 
 		WP_CLI::success( sprintf(
 				'Your template has been generated and saved to "%s".',
-				$full_path_to_file
+				$fullPathToFile
 			)
 		);
 	}
@@ -155,23 +155,23 @@ class CreateTemplate {
 	/**
 	 * Generate and save a PDF template configuration file
 	 *
-	 * @param string $class_name The generated class name the config file names
-	 * @param string $filename   The filename (not full path) of the config file
+	 * @param string $className The generated class name the config file names
+	 * @param string $fileName  The filename (not full path) of the config file
 	 *
 	 * @return void
 	 *
 	 * @since 1.0
 	 */
-	protected function generate_config_template( $class_name, $filename ) {
-		$full_path_to_file = $this->working_directory . 'config/' . $filename;
+	protected function generateConfigTemplate( $className, $fileName ) {
+		$full_path_to_file = $this->workingDirectory . 'config/' . $fileName;
 
 		$data = [
-			'name' => $class_name,
+			'name' => $className,
 		];
 
 		file_put_contents(
 			$full_path_to_file,
-			$this->load_template( $data, 'config-base' )
+			$this->loadTemplate( $data, 'config-base' )
 		);
 
 		WP_CLI::success( sprintf(
@@ -185,14 +185,14 @@ class CreateTemplate {
 	/**
 	 * Converts the template shortname to the class name
 	 *
-	 * @param string $shortname The PDF template filename (minus the extension)
+	 * @param string $shortName The PDF template filename (minus the extension)
 	 *
 	 * @return string
 	 *
 	 * @since 1.0
 	 */
-	protected function get_class_name( $shortname ) {
-		$class_name = str_replace( '-', ' ', $shortname );
+	protected function getClassName( $shortName ) {
+		$class_name = str_replace( '-', ' ', $shortName );
 		$class_name = mb_convert_case( $class_name, MB_CASE_TITLE, 'UTF-8' );
 		$class_name = str_replace( ' ', '_', $class_name );
 
@@ -202,13 +202,13 @@ class CreateTemplate {
 	/**
 	 * Get additional information about the PDF template
 	 *
-	 * @param bool $ask_for_headers When true, we'll ask the user additional questions
+	 * @param bool $askForHeaders When true, we'll ask the user additional questions
 	 *
 	 * @return array The user responses to each question
 	 *
 	 * @since 1.0
 	 */
-	protected function get_template_data( $ask_for_headers ) {
+	protected function getTemplateData( $askForHeaders ) {
 		$data = [
 			'desc'             => '',
 			'author'           => '',
@@ -219,7 +219,7 @@ class CreateTemplate {
 			'tags'             => '',
 		];
 
-		if ( $ask_for_headers ) {
+		if ( $askForHeaders ) {
 			WP_CLI::log( "We are going to ask a few questions to help setup the PDF. Leave blank to skip a question.\n" );
 
 			$questions = [
@@ -233,7 +233,7 @@ class CreateTemplate {
 			];
 
 			foreach ( $questions as $key => $q ) {
-				$response = $this->get_response( $q );
+				$response = $this->getResponse( $q );
 
 				if ( strlen( $response ) > 0 ) {
 					$data[ $key ] = $response;
@@ -253,7 +253,7 @@ class CreateTemplate {
 	 *
 	 * @since 1.0
 	 */
-	protected function get_response( $question ) {
+	protected function getResponse( $question ) {
 		fwrite( STDOUT, $question );
 		return trim( fgets( STDIN ) );
 	}
@@ -270,7 +270,7 @@ class CreateTemplate {
 	 *
 	 * @since 1.0
 	 */
-	protected function load_template( $data, $name = 'base' ) {
+	protected function loadTemplate( $data, $name = 'base' ) {
 		ob_start();
 		include __DIR__ . '/templates/' . $name . '.php';
 		return str_replace( [ '&#x3C;', '&#x3E;' ], [ '<', '>' ], ob_get_clean() );

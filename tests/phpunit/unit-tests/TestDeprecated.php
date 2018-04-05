@@ -56,7 +56,7 @@ class TestDeprecated extends WP_UnitTestCase {
 	public function setUp() {
 		global $writer;
 		$writer = FactoryWriter::build();
-		$writer->set_mpdf( new mPDF() );
+		$writer->setMpdf( new mPDF() );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class TestDeprecated extends WP_UnitTestCase {
 	 */
 	public function test_add_template() {
 		global $writer;
-		$mpdf = $writer->get_mpdf();
+		$mpdf = $writer->getMpdf();
 
 		/* Add page 1 */
 		gfpdfe_business_plus::initilise( __DIR__ . '/pdfs/document1.pdf' );

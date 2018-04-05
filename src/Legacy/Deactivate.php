@@ -82,7 +82,7 @@ class Deactivate implements Helper_Interface_Actions {
 	 * @since 1.0
 	 */
 	public function add_actions() {
-		add_action( 'admin_init', [ $this, 'maybe_deactivate_legacy_plugin' ] );
+		add_action( 'admin_init', [ $this, 'maybeDeactivateLegacyPlugin' ] );
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Deactivate implements Helper_Interface_Actions {
 	 *
 	 * @since 1.0
 	 */
-	public function maybe_deactivate_legacy_plugin() {
+	public function maybeDeactivateLegacyPlugin() {
 		$legacy_plugin = 'gravity-pdf-tier-2/plus.php';
 
 		if ( is_plugin_active( $legacy_plugin ) ) {

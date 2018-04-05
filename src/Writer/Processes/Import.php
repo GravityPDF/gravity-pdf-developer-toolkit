@@ -57,14 +57,14 @@ class Import extends AbstractWriter {
 	 * @var array
 	 * @since 1.0
 	 */
-	protected $page_id = [];
+	protected $pageId = [];
 
 	/**
 	 * The current PDF page sizes being used by Mpdf
 	 *
 	 * @var array A multidimentional array containing the PDF page width and height
 	 */
-	protected $page_sizes = [];
+	protected $pageSizes = [];
 
 	/**
 	 * Load a PDF with version 1.4 or 1.5 of the Adobe Spec for use with Mpdf.
@@ -85,14 +85,19 @@ class Import extends AbstractWriter {
 	 *
 	 * @param string $path The absolute path to the PDF being loaded
 	 *
+	 * @throws BadMethodCallException Thrown if the PDF file could not be found
 	 * @throws \Exception An exception will be thrown if you load a PDF that isn't version 1.4 or 1.5 of the Adobe Specification
 	 *
 	 * @since 1.0
 	 */
 	public function addPdf( $path ) {
+		if ( ! is_file( $path ) ) {
+			throw new BadMethodCallException( sprintf( 'Could not find %s', $path ) );
+		}
+
 		$this->path = $path;
-		$this->set_pdf_page_sizes( $path );
-		$this->load_pdf_pages( $this->mpdf, $path );
+		$this->setPdfPageSizes( $path );
+		$this->loadPdfPages( $this->mpdf, $path );
 	}
 
 	/**
@@ -162,7 +167,7 @@ class Import extends AbstractWriter {
 	 * @since 1.0
 	 */
 	public function getPdfPageSize() {
-		return $this->page_sizes;
+		return $this->pageSizes;
 	}
 
 	/**
@@ -173,7 +178,7 @@ class Import extends AbstractWriter {
 	 * @since 1.0
 	 */
 	public function getPdfPageIds() {
-		return $this->page_id;
+		return $this->pageId;
 	}
 
 	/**
@@ -183,31 +188,31 @@ class Import extends AbstractWriter {
 	 *
 	 * @since 1.0
 	 */
-	protected function set_pdf_page_sizes( $path ) {
+	protected function setPdfPageSizes( $path ) {
 		$class = get_class( $this->mpdf );
-		$this->load_pdf_pages( new $class(), $path, true );
+		$this->loadPdfPages( new $class(), $path, true );
 	}
 
 	/**
 	 * Load up the PDF pages for Mpdf to use
 	 *
-	 * @param mPDF   $mpdf      The current Mpdf object we're loading the pages into
-	 * @param string $path      The path to the PDF being loaded
-	 * @param bool   $get_sizes Whether to load the PDF pages and get the sizes, or just import the pages
+	 * @param mPDF   $mpdf     The current Mpdf object we're loading the pages into
+	 * @param string $path     The path to the PDF being loaded
+	 * @param bool   $getSizes Whether to load the PDF pages and get the sizes, or just import the pages
 	 *
 	 * @since 1.0
 	 *
 	 */
-	protected function load_pdf_pages( mPDF $mpdf, $path, $get_sizes = false ) {
+	protected function loadPdfPages( mPDF $mpdf, $path, $getSizes = false ) {
 		$mpdf->SetImportUse();
 
 		$page_total = $mpdf->SetSourceFile( $path );
 
 		for ( $i = 1; $i <= $page_total; $i++ ) {
-			$this->page_id[ $i ] = $mpdf->ImportPage( $i );
+			$this->pageId[ $i ] = $mpdf->ImportPage( $i );
 
-			if ( $get_sizes ) {
-				$this->page_sizes[ $i ] = $mpdf->useTemplate( $this->page_id[ $i ] );
+			if ( $getSizes ) {
+				$this->pageSizes[ $i ] = $mpdf->useTemplate( $this->pageId[ $i ] );
 			}
 		}
 	}
@@ -223,7 +228,7 @@ class Import extends AbstractWriter {
 	 * @since 1.0
 	 */
 	protected function addPageTemplate( $id, $args = [] ) {
-		if ( ! isset( $this->page_id[ $id ] ) ) {
+		if ( ! isset( $this->pageId[ $id ] ) ) {
 			throw new BadMethodCallException( sprintf( 'The loaded PDF "%s" does not have page #%s', $this->path, $id ) );
 		}
 
@@ -231,12 +236,12 @@ class Import extends AbstractWriter {
 			array_merge( [
 				'orientation' => 'P',
 				'sheet-size'  => [
-					$this->page_sizes[ $id ]['w'],
-					$this->page_sizes[ $id ]['h'],
+					$this->pageSizes[ $id ]['w'],
+					$this->pageSizes[ $id ]['h'],
 				],
 			], $args )
 		);
 
-		$this->mpdf->useTemplate( $this->page_id[ $id ] );
+		$this->mpdf->useTemplate( $this->pageId[ $id ] );
 	}
 }

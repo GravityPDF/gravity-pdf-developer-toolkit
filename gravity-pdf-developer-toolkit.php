@@ -3,7 +3,7 @@
 /**
  * Plugin Name:     Gravity PDF Developer Toolkit
  * Plugin URI:      https://gravitypdf.com/shop/pdf-developer-toolkit/
- * Description:     Gravity PDF Developer Toolkit allows developers to easily generate boilerplate PDF templates for Gravity PDF using the WP CLI, as well as provide tools (and documentation) for importing and auto-filling existing PDF documents.
+ * Description:     Gravity PDF Developer Toolkit allows developers to easily generate boilerplate PDF templates for Gravity PDF using the WP CLI, as well as provide tools (and documentation) for importing and auto-filling existing PDF documents. It is a drop-in replacement for the legacy Gravity PDF Tier 2 plugin.
  * Author:          Gravity PDF
  * Author URI:      https://gravitypdf.com
  * Text Domain:     gravity-pdf-developer-toolkit
@@ -51,7 +51,7 @@ define( 'GFPDF_DEVELOPER_TOOLKIT_VERSION', '1.0.0' );
  *
  * @since 1.0
  */
-class GPDF_Developer_Toolkit_Checks {
+class GpdfDeveloperToolkitChecks {
 
 	/**
 	 * Holds any blocker error messages stopping plugin running
@@ -67,7 +67,7 @@ class GPDF_Developer_Toolkit_Checks {
 	 *
 	 * @since 1.0
 	 */
-	private $required_gravitypdf_version = '4.4.0';
+	private $requiredGravitypdfVersion = '4.4.0';
 
 	/**
 	 * Run our pre-checks and if it passes bootstrap the plugin
@@ -79,11 +79,11 @@ class GPDF_Developer_Toolkit_Checks {
 	public function init() {
 
 		/* Test the minimum version requirements are met */
-		$this->check_gravitypdf_version();
+		$this->checkGravitypdfVersion();
 
 		/* Check if any errors were thrown, enqueue them and exit early */
 		if ( sizeof( $this->notices ) > 0 ) {
-			add_action( 'admin_notices', [ $this, 'display_notices' ] );
+			add_action( 'admin_notices', [ $this, 'displayNotices' ] );
 
 			return null;
 		}
@@ -100,17 +100,17 @@ class GPDF_Developer_Toolkit_Checks {
 	 *
 	 * @since 1.0
 	 */
-	public function check_gravitypdf_version() {
+	public function checkGravitypdfVersion() {
 
 		/* Check if the Gravity PDF Minimum version requirements are met */
 		if ( defined( 'PDF_EXTENDED_VERSION' ) &&
-		     version_compare( PDF_EXTENDED_VERSION, $this->required_gravitypdf_version, '>=' )
+		     version_compare( PDF_EXTENDED_VERSION, $this->requiredGravitypdfVersion, '>=' )
 		) {
 			return true;
 		}
 
 		/* Throw error */
-		$this->notices[] = sprintf( esc_html__( 'Gravity PDF Version %s or higher is required to use this add-on. Please upgrade Gravity PDF to the latest version.', 'gravity-pdf-developer-toolkit' ), $this->required_gravitypdf_version );
+		$this->notices[] = sprintf( esc_html__( 'Gravity PDF Version %s or higher is required to use this add-on. Please upgrade Gravity PDF to the latest version.', 'gravity-pdf-developer-toolkit' ), $this->requiredGravitypdfVersion );
 	}
 
 	/**
@@ -120,7 +120,7 @@ class GPDF_Developer_Toolkit_Checks {
 	 *
 	 * @since 1.0
 	 */
-	public function display_notices() {
+	public function displayNotices() {
 		?>
         <div class="error">
             <p>
@@ -140,6 +140,6 @@ class GPDF_Developer_Toolkit_Checks {
 
 /* Initialise the software */
 add_action( 'plugins_loaded', function() {
-	$gravitypdf_developer_toolkit = new GPDF_Developer_Toolkit_Checks();
-	$gravitypdf_developer_toolkit->init();
+	$gravitypdfDeveloperToolkit = new GpdfDeveloperToolkitChecks();
+	$gravitypdfDeveloperToolkit->init();
 } );

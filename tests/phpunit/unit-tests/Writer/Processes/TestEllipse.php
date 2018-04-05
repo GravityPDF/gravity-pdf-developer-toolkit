@@ -58,7 +58,7 @@ class TestEllipse extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		$this->class = new Ellipse();
-		$this->class->set_mpdf( new mPDF() );
+		$this->class->setMpdf( new mPDF() );
 	}
 
 	/**

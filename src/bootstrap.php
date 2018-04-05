@@ -7,7 +7,7 @@ use GFPDF\Plugins\DeveloperToolkit\Legacy\AdvancedTemplate;
 use GFPDF\Plugins\DeveloperToolkit\Legacy\Deactivate;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Header;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Loader;
-use GFPDF\Plugins\DeveloperToolkit\Legacy\Loader as LegacyLoader;
+use GFPDF\Plugins\DeveloperToolkit\Legacy\LegacyLoader;
 
 use GFPDF\Helper\Licensing\EDD_SL_Plugin_Updater;
 use GFPDF\Helper\Helper_Abstract_Addon;
@@ -98,22 +98,21 @@ class Bootstrap extends Helper_Abstract_Addon {
 	 * @since 1.0
 	 */
 	public function plugin_updater() {
+		$licenseInfo = $this->get_license_info();
 
-//		$license_info = $this->get_license_info();
-//
-//		new EDD_SL_Plugin_Updater(
-//			$this->data->store_url,
-//			$this->get_main_plugin_file(),
-//			[
-//				'version'   => $this->get_version(),
-//				'license'   => $license_info['license'],
-//				'item_name' => $this->get_short_name(),
-//				'author'    => $this->get_author(),
-//				'beta'      => false,
-//			]
-//		);
-//
-//		$this->log->notice( sprintf( '%s plugin updater initialised', $this->get_name() ) );
+		new EDD_SL_Plugin_Updater(
+			$this->data->store_url,
+			$this->get_main_plugin_file(),
+			[
+				'version'   => $this->get_version(),
+				'license'   => $licenseInfo['license'],
+				'item_name' => $this->get_short_name(),
+				'author'    => $this->get_author(),
+				'beta'      => false,
+			]
+		);
+
+		$this->log->notice( sprintf( '%s plugin updater initialised', $this->get_name() ) );
 	}
 }
 
@@ -134,8 +133,8 @@ $plugin = apply_filters( 'gfpdf_developer_toolkit_initialise', new Bootstrap(
 	new Helper_Notices()
 ) );
 
-$plugin->set_edd_download_id( 'TODO' );
-$plugin->set_addon_documentation_slug( 'TODO' );
+$plugin->set_edd_download_id( 20716 );
+$plugin->set_addon_documentation_slug( 'shop-plugin-developer-toolkit' );
 $plugin->init();
 
 /* Use the action below to access our Bootstrap class, and any singletons saved in $plugin->singleton */
