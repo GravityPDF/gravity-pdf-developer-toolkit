@@ -2,7 +2,7 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Writer;
 
-use blueliquiddesigns\Mpdf\mPDF;
+use mPDF;
 
 /**
  * @package     Gravity PDF Developer Toolkit

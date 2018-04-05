@@ -33,7 +33,7 @@ if ( ! class_exists( 'GFForms' ) ) {
  * $args (contains an array of all variables - the ones being described right now - passed to the template)
  *
  * @var GFPDF\Plugins\DeveloperToolkit\Writer\Writer $w
- * @var blueliquiddesigns\Mpdf\mPDF $mpdf
+ * @var mPDF $mpdf
  */
 
 /* Load PDF Styles */

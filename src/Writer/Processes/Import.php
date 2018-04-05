@@ -3,7 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
-use blueliquiddesigns\Mpdf\mPDF;
+use mPDF;
 use BadMethodCallException;
 
 /**
