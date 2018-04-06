@@ -25,8 +25,8 @@ before_script:
   - bash tests/bin/install.sh gravitypdf_test root '' localhost $WP_VERSION
 
 script:
- - if [[ $PHPUNIT_COVERAGE_TEST ]]; then ./vendor/bin/phpunit --coverage-clover=coverage/php-coverage1.xml -c tests/phpunit/phpunit.xml.dist; fi
- - if [[ ! $PHPUNIT_COVERAGE_TEST ]]; then ./vendor/bin/phpunit -c tests/phpunit/phpunit.xml.dist; fi
+ - if [[ $PHPUNIT_COVERAGE_TEST ]]; then ./vendor/bin/phpunit --coverage-clover=coverage/php-coverage1.xml -c phpunit.xml; fi
+ - if [[ ! $PHPUNIT_COVERAGE_TEST ]]; then ./vendor/bin/phpunit -c phpunit.xml; fi
 
 after_success:
  - if [[ $PHPUNIT_COVERAGE_TEST ]]; then bash <(curl -s https://codecov.io/bash); fi
