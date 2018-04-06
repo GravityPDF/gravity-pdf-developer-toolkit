@@ -8,25 +8,25 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
 
 matrix:
   include:
-  - php: 5.4
-    env: WP_VERSION=latest WP_MULTISITE=1
-  - php: 7.0
-    env: WP_VERSION=4.5 WP_MULTISITE=0
-  - php: 7.0
-    env: WP_VERSION=4.4 WP_MULTISITE=0
+  - php: 7.1
+    env: WP_VERSION=latest WP_MULTISITE=1 PHPUNIT_COVERAGE_TEST=1
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION != 7.1 ]]; then phpenv config-rm xdebug.ini; fi
+  - if [[ ! $PHPUNIT_COVERAGE_TEST ]]; then phpenv config-rm xdebug.ini; fi
   - if find . -name "*.php" -exec php -l {} \; | grep "unexpected $end"; then exit 1; fi
   - composer install --prefer-source --optimize-autoloader --no-scripts
   - bash tests/bin/install.sh gravitypdf_test root '' localhost $WP_VERSION
 
 script:
- - vendor/bin/phpunit -c tests/phpunit/phpunit.xml.dist
- - vendor/bin/phpunit -c tests/phpunit/phpunit.xml.dist --group ajax
+ - if [[ $PHPUNIT_COVERAGE_TEST ]]; then ./vendor/bin/phpunit --coverage-clover=coverage/php-coverage1.xml -c tests/phpunit/phpunit.xml.dist; fi
+ - if [[ ! $PHPUNIT_COVERAGE_TEST ]]; then ./vendor/bin/phpunit -c tests/phpunit/phpunit.xml.dist; fi
+
+after_success:
+ - if [[ $PHPUNIT_COVERAGE_TEST ]]; then bash <(curl -s https://codecov.io/bash); fi
