@@ -23,6 +23,7 @@
                 <directory suffix=".php">./vendor/</directory>
                 <directory suffix=".php">./bower_components/</directory>
                 <directory suffix=".php">./node_modules/</directory>
+                <file>./.samiconfig.php</file>
             </exclude>
         </whitelist>
     </filter>
