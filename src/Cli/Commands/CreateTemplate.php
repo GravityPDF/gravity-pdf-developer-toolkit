@@ -107,10 +107,12 @@ class CreateTemplate {
 
 		/* Check if template already exists */
 		if ( is_file( $fullPathToFile ) ) {
-			WP_CLI::error( sprintf( 'A PDF template with the name "%s" already exists. Try a different <template-name>.', $filename ) );
+			if ( empty( $args['enable-config'] ) ) {
+				WP_CLI::error( sprintf( 'A PDF template with the name "%s" already exists. Try a different <template-name>.', $filename ) );
+			}
+		} else {
+			$this->generateBaseTemplate( $templateName, $fullPathToFile, $args );
 		}
-
-		$this->generateBaseTemplate( $templateName, $fullPathToFile, $args );
 
 		if ( ! empty( $args['enable-config'] ) ) {
 			$this->generateConfigTemplate( $this->getClassName( $shortname ), $filename );
