@@ -90,7 +90,7 @@ class TestEllipse extends WP_UnitTestCase {
 	public function testEllipse() {
 		$e = null;
 
-		$mpdf = $this->getMock( mPDF::class );
+		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->exactly( 2 ) )
 		     ->method( 'Ellipse' );
 

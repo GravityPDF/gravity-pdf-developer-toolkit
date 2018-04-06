@@ -63,7 +63,7 @@ class TestStyles extends WP_UnitTestCase {
 	}
 
 	public function testStyles() {
-		$mpdf = $this->getMock( mPDF::class );
+		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->once() )
 		     ->method( 'WriteHTML' );
 

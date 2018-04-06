@@ -64,11 +64,10 @@ namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands {
 		public function setUp() {
 			$this->path = __DIR__ . '/../../../../tmp/';
 
-			$class = $this->getMock(
-				CreateTemplate::class,
-				[ 'getResponse' ],
-				[ $this->path ]
-			);
+			$class = $this->getMockBuilder( CreateTemplate::class )
+			              ->setMethods( [ 'getResponse' ] )
+			              ->setConstructorArgs( [ $this->path ] )
+			              ->getMock();
 
 			$class->method( 'getResponse' )
 			      ->will( $this->onConsecutiveCalls(

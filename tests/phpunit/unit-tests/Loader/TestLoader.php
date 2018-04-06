@@ -2,6 +2,7 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Loader;
 
+use GFPDF\Plugins\DeveloperToolkit\Writer\Writer;
 use WP_UnitTestCase;
 use mPDF;
 
@@ -66,7 +67,11 @@ class TestLoader extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testMaybeSkipPdfHtmlRender() {
-		$helper = $this->getMock( Helper::class, [ 'get_template_path' ] );
+
+		$helper = $this->getMockBuilder( Helper::class )
+		               ->setMethods( [ 'get_template_path' ] )
+		               ->getMock();
+
 		$helper->method( 'get_template_path' )
 		       ->will( $this->onConsecutiveCalls(
 			       __DIR__ . '/../pdfs/sample1.php',
@@ -82,17 +87,6 @@ class TestLoader extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testHandleToolkitTemplate() {
-		$this->class->handleToolkitTemplate( [
-			'w'         => '',
-			'mpdf'      => '',
-			'form'      => '',
-			'entry'     => '',
-			'form_data' => '',
-			'fields'    => '',
-			'config'    => '',
-			'settings'  => '',
-			'gfpdf'     => '',
-		], new Helper() );
 
 		add_filter( 'gfpdf_developer_toolkit_template_args', function( $args ) {
 			$this->assertArrayHasKey( 'w', $args );
@@ -107,6 +101,18 @@ class TestLoader extends WP_UnitTestCase {
 
 			$this->assertInstanceOf( Writer::class, $args['w'] );
 		} );
+
+		$this->class->handleToolkitTemplate( [
+			'w'         => '',
+			'mpdf'      => '',
+			'form'      => '',
+			'entry'     => '',
+			'form_data' => '',
+			'fields'    => '',
+			'config'    => '',
+			'settings'  => '',
+			'gfpdf'     => '',
+		], new Helper() );
 	}
 }
 

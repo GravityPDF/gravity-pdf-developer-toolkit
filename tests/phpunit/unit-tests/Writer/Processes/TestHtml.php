@@ -65,7 +65,7 @@ class TestHtml extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testHtml() {
-		$mpdf = $this->getMock( mPDF::class );
+		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->once() )
 		     ->method( 'WriteHTML' );
 

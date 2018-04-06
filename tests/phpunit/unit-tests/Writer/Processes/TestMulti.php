@@ -117,7 +117,7 @@ class TestMulti extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testAddMulti() {
-		$mpdf = $this->getMock( mPDF::class );
+		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->exactly( 3 ) )
 		     ->method( 'WriteFixedPosHTML' );
 
