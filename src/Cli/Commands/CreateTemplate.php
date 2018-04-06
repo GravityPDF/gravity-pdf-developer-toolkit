@@ -98,8 +98,6 @@ class CreateTemplate {
 	 *
 	 * @param array $templateArray The PDF Template Name the use has entered. If they used quotes it'll be an array with one element, otherwise each space will signify a new array element.
 	 * @param array $args          The additional arguments passed to the cli. May include `enable-config`, `enable-toolkit` and `skip-headers`
-	 *
-	 * @throws WP_CLI\ExitException
 	 */
 	public function __invoke( $templateArray, $args = [] ) {
 		$templateName   = implode( ' ', array_filter( $templateArray ) );
