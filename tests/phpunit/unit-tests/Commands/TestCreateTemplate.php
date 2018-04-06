@@ -232,6 +232,7 @@ namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands {
 			$content = ob_get_clean();
 
 			$this->assertRegExp( '/Your template has been generated and saved to/', $content );
+			$this->assertRegExp( '/Your template configuration file has been generated and saved to/', $content );
 			$this->assertRegExp( '/Happy PDFing!/', $content );
 
 			/* Test the contents of the file is correct */
@@ -241,6 +242,28 @@ namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands {
 			$this->assertRegExp( '/public function setUp\(\) {/', $fileContents );
 			$this->assertRegExp( '/public function tearDown\(\) {/', $fileContents );
 			$this->assertRegExp( '/public function configuration\(\) {/', $fileContents );
+		}
+
+		/**
+		 * @since 1.0
+		 */
+		public function testCreateTemplateConfigWithExistingTemplate() {
+			ob_start();
+			$class = $this->class;
+			$class( [ 'My Template' ], [ 'skip-headers' => true ] );
+			$content = ob_get_clean();
+
+			$this->assertRegExp( '/Your template has been generated and saved to/', $content );
+			$this->assertRegExp( '/Happy PDFing!/', $content );
+
+			ob_start();
+			$class = $this->class;
+			$class( [ 'My Template' ], [ 'enable-config' => true ] );
+			$content = ob_get_clean();
+
+			$this->assertNotRegExp( '/Your template has been generated and saved to/', $content );
+			$this->assertRegExp( '/Your template configuration file has been generated and saved to/', $content );
+			$this->assertRegExp( '/Happy PDFing!/', $content );
 		}
 	}
 }
