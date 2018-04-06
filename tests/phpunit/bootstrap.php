@@ -66,7 +66,7 @@ class GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap {
 		$this->log->pushHandler( new \Monolog\Handler\NullHandler( \Monolog\Logger::INFO ) ); /* throw logs away */
 
 		/* TODO: remove once upgraded to Mpdf v7 */
-		//error_reporting( E_ERROR | E_WARNING );
+		error_reporting( E_ALL ^ E_NOTICE ^ E_WARNING );
 	}
 }
 
