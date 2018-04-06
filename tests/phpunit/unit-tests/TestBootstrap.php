@@ -1,8 +1,7 @@
 <?php
 
-namespace GFPDF\Tests;
+namespace GFPDF\Plugins\DeveloperToolkit;
 
-use GFPDF\Plugins\DeveloperToolkit\Bootstrap;
 use GFPDF\Helper\Helper_Singleton;
 use GFPDF\Helper\Helper_Logger;
 use GFPDF\Helper\Helper_Notices;
@@ -53,7 +52,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class TestBootstrap
  *
- * @package GFPDF\Tests\
+ * @package GFPDF\Plugins\DeveloperToolkit
  *
  * @group   bootstrap
  */
@@ -82,6 +81,8 @@ class TestBootstrap extends WP_UnitTestCase {
 			new Helper_Logger( 'slug', 'name' ),
 			new Helper_Notices()
 		);
+
+		parent::setUp();
 	}
 
 	/**

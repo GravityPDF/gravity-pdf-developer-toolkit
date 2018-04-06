@@ -1,9 +1,9 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
+namespace GFPDF\Plugins\DeveloperToolkit\Legacy;
 
 use WP_UnitTestCase;
-use mPDF;
+use GPDFAPI;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -38,16 +38,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class TestHtml
+ * Class TestDeactivate
  *
- * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ * @package GFPDF\Plugins\DeveloperToolkit\Legacy
  *
- * @group   writer
+ * @group   legacy
  */
-class TestHtml extends WP_UnitTestCase {
+class TestDeactivate extends WP_UnitTestCase {
 
 	/**
-	 * @var Html
+	 * @var Deactivate
 	 * @since 1.0
 	 */
 	private $class;
@@ -56,7 +56,7 @@ class TestHtml extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Html();
+		$this->class = new Deactivate( GPDFAPI::get_options_class() );
 
 		parent::setUp();
 	}
@@ -64,28 +64,19 @@ class TestHtml extends WP_UnitTestCase {
 	/**
 	 * @since 1.0
 	 */
-	public function testHtml() {
-		$mpdf = $this->getMock( mPDF::class );
-		$mpdf->expects( $this->once() )
-		     ->method( 'WriteHTML' );
+	public function testMaybeDeactivateLegacyPlugin() {
+		$options = GPDFAPI::get_options_class();
 
-		$this->class->setMpdf( $mpdf );
+		$settings = $options->get_settings();
+		$this->assertArrayNotHasKey( 'advanced_templating', $settings );
 
-		$this->assertTrue( method_exists( $this->class, 'addHtml' ) );
+		$this->class->maybeDeactivateLegacyPlugin();
 
-		$this->class->addHtml('');
+		$settings = $options->get_settings();
+		$this->assertTrue( $settings['advanced_templating'] );
 	}
+}
 
-	/**
-	 * @since 1.0
-	 */
-	public function testHtmlException() {
-		try {
-			$this->class->addHtml( false );
-		} catch ( \BadMethodCallException $e ) {
-
-		}
-
-		$this->assertEquals( '$html needs to be a string. You provided a boolean', $e->getMessage() );
-	}
+function is_plugin_active( $slug ) {
+	return true;
 }

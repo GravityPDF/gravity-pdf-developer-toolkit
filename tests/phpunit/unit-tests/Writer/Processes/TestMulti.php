@@ -38,16 +38,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class TestEllipse
+ * Class TestMulti
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @group   writer
  */
-class TestEllipse extends WP_UnitTestCase {
+class TestMulti extends WP_UnitTestCase {
 
 	/**
-	 * @var Ellipse
+	 * @var Multi
 	 * @since 1.0
 	 */
 	private $class;
@@ -56,7 +56,8 @@ class TestEllipse extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Ellipse();
+		$this->class = new Multi();
+		$this->class->setMpdf( new mPDF() );
 
 		parent::setUp();
 	}
@@ -64,45 +65,66 @@ class TestEllipse extends WP_UnitTestCase {
 	/**
 	 * @since 1.0
 	 */
-	public function testExceptions() {
-		try {
-			$this->class->ellipse();
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
+	public function testConfigMulti() {
+		$config = $this->class->getMultiConfig();
 
-		try {
-			$this->class->ellipse( [ 1, 2 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
+		$this->assertSame( 10, $config['font-size'] );
+		$this->assertSame( 14, $config['line-height'] );
+		$this->assertSame( false, $config['strip-br'] );
 
-		try {
-			$this->class->ellipse( [ 1, 2, 3, 5, 6 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
+		$config['font-size']   = 20;
+		$config['line-height'] = 25;
+		$config['strip-br']    = true;
+
+		$this->class->configMulti( $config );
+
+		$this->assertSame( $config, $this->class->getMultiConfig() );
 	}
 
 	/**
 	 * @since 1.0
 	 */
-	public function testEllipse() {
-		$e = null;
-
-		$mpdf = $this->getMock( mPDF::class );
-		$mpdf->expects( $this->exactly( 2 ) )
-		     ->method( 'Ellipse' );
-
-		$this->class->setMpdf( $mpdf );
-
+	public function testAddMultiExceptions() {
+		/* Test invalid string */
 		try {
-			$this->class->ellipse( [ 1, 1, 2, 4 ] );
-			$this->class->ellipse( [ 1, 1, 2 ] );
+			$this->class->addMulti( false );
 		} catch ( \BadMethodCallException $e ) {
 
 		}
 
-		$this->assertNull( $e );
+		$this->assertEquals( '$html needs to be a string. You provided a boolean', $e->getMessage() );
+
+		/* Test invalid position */
+		try {
+			$this->class->addMulti( '', '' );
+		} catch ( \BadMethodCallException $e ) {
+
+		}
+
+		$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
+
+		/* Test invalid overflow */
+		try {
+			$this->class->addMulti( '', [ 1, 2, 3, 4 ], 'test' );
+		} catch ( \BadMethodCallException $e ) {
+
+		}
+
+		$this->assertEquals( '$overflow can only be "auto", "visible" or "hidden".', $e->getMessage() );
+	}
+
+	/**
+	 * @since 1.0
+	 */
+	public function testAddMulti() {
+		$mpdf = $this->getMock( mPDF::class );
+		$mpdf->expects( $this->exactly( 3 ) )
+		     ->method( 'WriteFixedPosHTML' );
+
+		$this->class->setMpdf( $mpdf );
+
+		$this->class->addMulti( '', [ 10, 10, 10, 10 ] );
+		$this->class->addMulti( '', [ 10, 10, 10, 10 ] );
+		$this->class->addMulti( '', [ 10, 10, 10, 10 ] );
 	}
 }

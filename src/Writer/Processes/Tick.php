@@ -60,13 +60,13 @@ class Tick extends AbstractWriter {
 	 * @var int The default font size in points
 	 * @since 1.0
 	 */
-	protected $fontSize = '16';
+	protected $fontSize = 16;
 
 	/**
 	 * @var int The default line height in points
 	 * @since 1.0
 	 */
-	protected $lineHeight = '16';
+	protected $lineHeight = 16;
 
 	/**
 	 * Adds a tick character to the PDF
@@ -109,19 +109,23 @@ class Tick extends AbstractWriter {
 	 * @param array $position The X and Y position of the element
 	 * @param array $config   Override the default configuration on a per-element basis. Accepted array keys include 'markup', 'font', 'font-size', 'line-height'
 	 *
-	 * @throws BadMethodCallException
+	 * @throws BadMethodCallException Called is $position does not contain two array elements, or if $config is not an array
 	 *
 	 * @since 1.0
 	 */
 	public function tick( $position = [], $config = [] ) {
-		if ( count( $position ) !== 2 ) {
+		if ( ! is_array( $position ) || count( $position ) !== 2 ) {
 			throw new BadMethodCallException( '$position needs to include an array with two elements: $x, $y' );
 		}
 
-		$font        = ( isset( $config['font'] ) ) ? (string) $config['font'] : $this->font;
+		if ( ! is_array( $config ) ) {
+			throw new BadMethodCallException( '$config must be an array.' );
+		}
+
+		$font       = ( isset( $config['font'] ) ) ? (string) $config['font'] : $this->font;
 		$fontSize   = ( isset( $config['font-size'] ) ) ? (int) $config['font-size'] : $this->fontSize;
 		$lineHeight = ( isset( $config['line-height'] ) ) ? (int) $config['line-height'] : $this->lineHeight;
-		$markup      = ( isset( $config['markup'] ) ) ? (string) $config['markup'] : $this->markup;
+		$markup     = ( isset( $config['markup'] ) ) ? (string) $config['markup'] : $this->markup;
 
 		$output = sprintf(
 			'<div class="tick" style="font: %s; font-size: %s; line-height: %s">%s</div> &nbsp;',
@@ -189,5 +193,31 @@ class Tick extends AbstractWriter {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Return the current Tick configuration values
+	 *
+	 * ## Example
+	 *
+	 *      // Get the current Tick config
+	 *      $config = $w->getTickConfig();
+	 *
+	 *      echo $config['markup'];
+	 *      echo $config['font'];
+	 *      echo $config['font-size'];
+	 *      echo $config['line-height'];
+	 *
+	 * @return array Returned array keys include 'markup', 'font', 'font-size', 'line-height'
+	 *
+	 * @since 1.0
+	 */
+	public function getTickConfig() {
+		return [
+			'markup'      => $this->markup,
+			'font'        => $this->font,
+			'font-size'   => $this->fontSize,
+			'line-height' => $this->lineHeight,
+		];
 	}
 }

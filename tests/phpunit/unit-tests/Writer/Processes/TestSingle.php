@@ -38,16 +38,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class TestEllipse
+ * Class TestSingle
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @group   writer
  */
-class TestEllipse extends WP_UnitTestCase {
+class TestSingle extends WP_UnitTestCase {
 
 	/**
-	 * @var Ellipse
+	 * @var Single
 	 * @since 1.0
 	 */
 	private $class;
@@ -56,7 +56,8 @@ class TestEllipse extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Ellipse();
+		$this->class = new Single();
+		$this->class->setMpdf( new mPDF() );
 
 		parent::setUp();
 	}
@@ -64,45 +65,47 @@ class TestEllipse extends WP_UnitTestCase {
 	/**
 	 * @since 1.0
 	 */
-	public function testExceptions() {
+	public function testaddExceptions() {
+		/* Test invalid string */
 		try {
-			$this->class->ellipse();
+			$this->class->add( false );
 		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
+
 		}
 
+		$this->assertEquals( '$html needs to be a string. You provided a boolean', $e->getMessage() );
+
+		/* Test invalid position */
 		try {
-			$this->class->ellipse( [ 1, 2 ] );
+			$this->class->add( '', '' );
 		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
+
 		}
 
+		$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
+
+		/* Test invalid overflow */
 		try {
-			$this->class->ellipse( [ 1, 2, 3, 5, 6 ] );
+			$this->class->add( '', [ 1, 2, 3, 4 ], 'test' );
 		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
+
 		}
+
+		$this->assertEquals( '$overflow can only be "auto", "visible" or "hidden".', $e->getMessage() );
 	}
 
 	/**
 	 * @since 1.0
 	 */
-	public function testEllipse() {
-		$e = null;
-
+	public function testadd() {
 		$mpdf = $this->getMock( mPDF::class );
-		$mpdf->expects( $this->exactly( 2 ) )
-		     ->method( 'Ellipse' );
+		$mpdf->expects( $this->exactly( 3 ) )
+		     ->method( 'WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
-		try {
-			$this->class->ellipse( [ 1, 1, 2, 4 ] );
-			$this->class->ellipse( [ 1, 1, 2 ] );
-		} catch ( \BadMethodCallException $e ) {
-
-		}
-
-		$this->assertNull( $e );
+		$this->class->add( '', [ 10, 10, 10, 10 ] );
+		$this->class->add( '', [ 10, 10, 10, 10 ] );
+		$this->class->add( '', [ 10, 10, 10, 10 ] );
 	}
 }

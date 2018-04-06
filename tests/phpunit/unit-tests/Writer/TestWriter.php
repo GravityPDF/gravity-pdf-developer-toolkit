@@ -1,10 +1,8 @@
 <?php
 
-namespace GFPDF\Tests\Writer;
+namespace GFPDF\Plugins\DeveloperToolkit\Writer;
 
 use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryWriter;
-use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
-use GFPDF\Plugins\DeveloperToolkit\Writer\Writer;
 
 use mPDF;
 use WP_UnitTestCase;
@@ -44,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class TestWriter
  *
- * @package GFPDF\Tests\Writer
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer
  *
  * @group   writer
  */
@@ -62,6 +60,8 @@ class TestWriter extends WP_UnitTestCase {
 	public function setUp() {
 		$this->class = FactoryWriter::build();
 		$this->class->setMpdf( new mPDF() );
+
+		parent::setUp();
 	}
 
 	/**

@@ -1,13 +1,6 @@
 <?php
 
-namespace GFPDF\Tests;
-
 use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryWriter;
-
-use gfpdfe_business_plus;
-use mPDF;
-
-use WP_UnitTestCase;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -44,8 +37,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class TestDeprecated
  *
- * @package GFPDF\Tests\
- *
  * @group   deprecated
  */
 class TestDeprecated extends WP_UnitTestCase {
@@ -57,6 +48,8 @@ class TestDeprecated extends WP_UnitTestCase {
 		global $writer;
 		$writer = FactoryWriter::build();
 		$writer->setMpdf( new mPDF() );
+
+		parent::setUp();
 	}
 
 	/**

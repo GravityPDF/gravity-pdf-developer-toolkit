@@ -38,16 +38,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class TestEllipse
+ * Class TestStyles
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @group   writer
  */
-class TestEllipse extends WP_UnitTestCase {
+class TestStyles extends WP_UnitTestCase {
 
 	/**
-	 * @var Ellipse
+	 * @var Styles
 	 * @since 1.0
 	 */
 	private $class;
@@ -56,53 +56,28 @@ class TestEllipse extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Ellipse();
+		$this->class = new Styles();
+		$this->class->setMpdf( new mPDF() );
 
 		parent::setUp();
 	}
 
-	/**
-	 * @since 1.0
-	 */
-	public function testExceptions() {
-		try {
-			$this->class->ellipse();
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
-
-		try {
-			$this->class->ellipse( [ 1, 2 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
-
-		try {
-			$this->class->ellipse( [ 1, 2, 3, 5, 6 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
-	}
-
-	/**
-	 * @since 1.0
-	 */
-	public function testEllipse() {
-		$e = null;
-
+	public function testStyles() {
 		$mpdf = $this->getMock( mPDF::class );
-		$mpdf->expects( $this->exactly( 2 ) )
-		     ->method( 'Ellipse' );
+		$mpdf->expects( $this->once() )
+		     ->method( 'WriteHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
-		try {
-			$this->class->ellipse( [ 1, 1, 2, 4 ] );
-			$this->class->ellipse( [ 1, 1, 2 ] );
-		} catch ( \BadMethodCallException $e ) {
+		/* Ensure buffer opens */
+		$this->class->beginStyles();
+		echo 'testing';
 
-		}
+		$this->assertSame( 'testing', ob_get_clean() );
 
-		$this->assertNull( $e );
+		/* Ensure buffer writes */
+		$this->class->beginStyles();
+		echo '<style>div {}</style>';
+		$this->class->endStyles();
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands;
 
-use QueryPath\Exception;
+use RuntimeException;
 use WP_CLI;
 
 /**
@@ -102,9 +102,9 @@ class CreateTemplate {
 	 * @throws WP_CLI\ExitException
 	 */
 	public function __invoke( $templateArray, $args = [] ) {
-		$templateName     = implode( ' ', array_filter( $templateArray ) );
-		$shortname         = mb_strtolower( str_replace( ' ', '-', $templateName ) );
-		$filename          = $shortname . '.php';
+		$templateName   = implode( ' ', array_filter( $templateArray ) );
+		$shortname      = mb_strtolower( str_replace( ' ', '-', $templateName ) );
+		$filename       = $shortname . '.php';
 		$fullPathToFile = $this->workingDirectory . $filename;
 
 		/* Check if template already exists */
@@ -160,23 +160,33 @@ class CreateTemplate {
 	 *
 	 * @return void
 	 *
+	 * @throws RuntimeException
+	 *
 	 * @since 1.0
 	 */
 	protected function generateConfigTemplate( $className, $fileName ) {
-		$full_path_to_file = $this->workingDirectory . 'config/' . $fileName;
+		$pathToConfig = $this->workingDirectory . 'config/';
+
+		if ( ! is_dir( $pathToConfig ) ) {
+			if ( ! mkdir( $pathToConfig ) ) {
+				throw new RuntimeException( sprintf( 'Could not create config directory at %s', $pathToConfig ) );
+			}
+		}
+
+		$pathToFile = $pathToConfig . $fileName;
 
 		$data = [
 			'name' => $className,
 		];
 
 		file_put_contents(
-			$full_path_to_file,
+			$pathToFile,
 			$this->loadTemplate( $data, 'config-base' )
 		);
 
 		WP_CLI::success( sprintf(
 				'Your template configuration file has been generated and saved to "%s".',
-				$full_path_to_file
+				$pathToFile
 			)
 		);
 
@@ -192,11 +202,11 @@ class CreateTemplate {
 	 * @since 1.0
 	 */
 	protected function getClassName( $shortName ) {
-		$class_name = str_replace( '-', ' ', $shortName );
-		$class_name = mb_convert_case( $class_name, MB_CASE_TITLE, 'UTF-8' );
-		$class_name = str_replace( ' ', '_', $class_name );
+		$className = str_replace( '-', ' ', $shortName );
+		$className = mb_convert_case( $className, MB_CASE_TITLE, 'UTF-8' );
+		$className = str_replace( ' ', '_', $className );
 
-		return $class_name;
+		return $className;
 	}
 
 	/**

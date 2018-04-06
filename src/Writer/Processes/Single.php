@@ -71,11 +71,16 @@ class Single extends AbstractWriter {
 	 * @param array  $position The X, Y, Width and Height of the element
 	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto", "visible" or "hidden"
 	 *
-	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), or if `$overflow` doesn't include an accepted argument.
+	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), if `$overflow` doesn't include an accepted argument, or $html is not a string
 	 *
 	 * @since 1.0
 	 */
 	public function add( $html, $position = [], $overflow = 'auto' ) {
+
+		if ( ! is_string( $html ) ) {
+			throw new BadMethodCallException( sprintf( '$html needs to be a string. You provided a %s', gettype( $html ) ) );
+		}
+
 		if ( ! is_array( $position ) || count( $position ) !== 4 ) {
 			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}

@@ -4,6 +4,8 @@ namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
 
+use BadMethodCallException;
+
 /**
  * @package     Gravity PDF Developer Toolkit
  * @copyright   Copyright (c) 2018, Blue Liquid Designs
@@ -39,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
- * @since 1.0
+ * @since   1.0
  */
 class Html extends AbstractWriter {
 
@@ -57,9 +59,16 @@ class Html extends AbstractWriter {
 	 *
 	 * @param string $html The freeflow HTML markup to add to Mpdf. Refer to the Mpdf documentation about supported markup: http://mpdf.github.io/
 	 *
+	 * @throws BadMethodCallException
+	 *
 	 * @since 1.0
 	 */
 	public function addHtml( $html ) {
+
+		if ( ! is_string( $html ) ) {
+			throw new BadMethodCallException( sprintf( '$html needs to be a string. You provided a %s', gettype( $html ) ) );
+		}
+
 		$this->mpdf->WriteHTML( $html );
 	}
 }

@@ -38,16 +38,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class TestEllipse
+ * Class TestTick
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @group   writer
  */
-class TestEllipse extends WP_UnitTestCase {
+class TestTick extends WP_UnitTestCase {
 
 	/**
-	 * @var Ellipse
+	 * @var Tick
 	 * @since 1.0
 	 */
 	private $class;
@@ -56,7 +56,8 @@ class TestEllipse extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Ellipse();
+		$this->class = new Tick();
+		$this->class->setMpdf( new mPDF() );
 
 		parent::setUp();
 	}
@@ -64,45 +65,59 @@ class TestEllipse extends WP_UnitTestCase {
 	/**
 	 * @since 1.0
 	 */
-	public function testExceptions() {
-		try {
-			$this->class->ellipse();
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
+	public function testConfigTick() {
+		$config = $this->class->getTickConfig();
 
-		try {
-			$this->class->ellipse( [ 1, 2 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
+		$this->assertSame( '&#10004;', $config['markup'] );
+		$this->assertSame( 'DejavuSansCondensed', $config['font'] );
+		$this->assertSame( 16, $config['font-size'] );
+		$this->assertSame( 16, $config['line-height'] );
 
-		try {
-			$this->class->ellipse( [ 1, 2, 3, 5, 6 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
+		$config['markup']      = 'X';
+		$config['font']        = 'Times';
+		$config['font-size']   = 20;
+		$config['line-height'] = 15;
+
+		$this->class->configTick( $config );
+
+		$this->assertSame( $config, $this->class->getTickConfig() );
 	}
 
 	/**
 	 * @since 1.0
 	 */
-	public function testEllipse() {
-		$e = null;
-
-		$mpdf = $this->getMock( mPDF::class );
-		$mpdf->expects( $this->exactly( 2 ) )
-		     ->method( 'Ellipse' );
-
-		$this->class->setMpdf( $mpdf );
-
+	public function testTickExceptions() {
+		/* Test invalid string */
 		try {
-			$this->class->ellipse( [ 1, 1, 2, 4 ] );
-			$this->class->ellipse( [ 1, 1, 2 ] );
+			$this->class->tick( '' );
 		} catch ( \BadMethodCallException $e ) {
 
 		}
 
-		$this->assertNull( $e );
+		$this->assertEquals( '$position needs to include an array with two elements: $x, $y', $e->getMessage() );
+
+		/* Test invalid array */
+		try {
+			$this->class->tick( [ 1, 2, 3 ] );
+		} catch ( \BadMethodCallException $e ) {
+
+		}
+
+		$this->assertEquals( '$position needs to include an array with two elements: $x, $y', $e->getMessage() );
+	}
+
+	/**
+	 * @since 1.0
+	 */
+	public function testTick() {
+		$mpdf = $this->getMock( mPDF::class );
+		$mpdf->expects( $this->exactly( 3 ) )
+		     ->method( 'WriteFixedPosHTML' );
+
+		$this->class->setMpdf( $mpdf );
+
+		$this->class->tick( [ 10, 10 ] );
+		$this->class->tick( [ 10, 10 ], [ 'font' => '' ] );
+		$this->class->tick( [ 10, 10 ] );
 	}
 }

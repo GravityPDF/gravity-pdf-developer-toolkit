@@ -1,9 +1,9 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
+namespace GFPDF\Plugins\DeveloperToolkit\Legacy;
 
 use WP_UnitTestCase;
-use mPDF;
+use GPDFAPI;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -38,16 +38,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class TestEllipse
+ * Class TestLegacyLoader
  *
- * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ * @package GFPDF\Plugins\DeveloperToolkit\Legacy
  *
- * @group   writer
+ * @group   legacy
  */
-class TestEllipse extends WP_UnitTestCase {
+class TestLegacyLoader extends WP_UnitTestCase {
 
 	/**
-	 * @var Ellipse
+	 * @var LegacyLoader
 	 * @since 1.0
 	 */
 	private $class;
@@ -56,7 +56,7 @@ class TestEllipse extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Ellipse();
+		$this->class = new LegacyLoader();
 
 		parent::setUp();
 	}
@@ -64,45 +64,39 @@ class TestEllipse extends WP_UnitTestCase {
 	/**
 	 * @since 1.0
 	 */
-	public function testExceptions() {
-		try {
-			$this->class->ellipse();
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
-
-		try {
-			$this->class->ellipse( [ 1, 2 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
-
-		try {
-			$this->class->ellipse( [ 1, 2, 3, 5, 6 ] );
-		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( '$position needs to include an array with four elements: $x, $y, $width, $height', $e->getMessage() );
-		}
+	public function testMaybeSkipPdfHtmlRender() {
+		$this->assertFalse( $this->class->maybeSkipPdfHtmlRender( false, [] ) );
+		$this->assertTrue( $this->class->maybeSkipPdfHtmlRender( false, [ 'settings' => [ 'advanced_template' => 'Yes' ] ] ) );
 	}
 
 	/**
 	 * @since 1.0
 	 */
-	public function testEllipse() {
-		$e = null;
+	public function testMaybeAddLegacyTemplateArgs() {
+		global $pdf, $writer;
 
-		$mpdf = $this->getMock( mPDF::class );
-		$mpdf->expects( $this->exactly( 2 ) )
-		     ->method( 'Ellipse' );
+		$this->assertNull( $pdf );
+		$this->assertNull( $writer );
 
-		$this->class->setMpdf( $mpdf );
+		$results = $this->class->maybeAddLegacyTemplateArgs( [], [] );
+		$this->assertSame( [], $results );
 
-		try {
-			$this->class->ellipse( [ 1, 1, 2, 4 ] );
-			$this->class->ellipse( [ 1, 1, 2 ] );
-		} catch ( \BadMethodCallException $e ) {
+		/*
+		 * Ensure $args is correctly updated
+		 */
+		$results = $this->class->maybeAddLegacyTemplateArgs(
+			[
+				'mpdf'     => 'mpdf',
+				'w'        => 'w',
+				'settings' => [ 'advanced_template' => 'Yes' ],
+			], [ 'form_id' => '', 'lead_ids' => '', 'lead_id' => '' ] );
 
-		}
+		$this->assertArrayHasKey( 'form_id', $results );
+		$this->assertArrayHasKey( 'lead_ids', $results );
+		$this->assertArrayHasKey( 'lead_id', $results );
 
-		$this->assertNull( $e );
+		$this->assertNotNull( $pdf );
+		$this->assertNotNull( $writer );
+
 	}
 }

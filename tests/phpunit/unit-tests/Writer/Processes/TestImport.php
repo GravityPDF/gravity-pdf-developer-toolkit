@@ -1,8 +1,7 @@
 <?php
 
-namespace GFPDF\Tests\Writer\Processes;
+namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
-use GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import;
 use WP_UnitTestCase;
 use mPDF;
 
@@ -41,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class TestImport
  *
- * @package GFPDF\Tests\Writer\Processes
+ * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
  *
  * @group   writer
  */
@@ -59,6 +58,8 @@ class TestImport extends WP_UnitTestCase {
 	public function setUp() {
 		$this->class = new Import();
 		$this->class->setMpdf( new mPDF() );
+
+		parent::setUp();
 	}
 
 	/**

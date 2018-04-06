@@ -1,9 +1,8 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
+namespace GFPDF\Plugins\DeveloperToolkit\Loader;
 
 use WP_UnitTestCase;
-use mPDF;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -38,16 +37,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Class TestHtml
+ * Class TestHeader
  *
- * @package GFPDF\Plugins\DeveloperToolkit\Writer\Processes
+ * @package GFPDF\Plugins\DeveloperToolkit\Loader
  *
- * @group   writer
+ * @group   loader
  */
-class TestHtml extends WP_UnitTestCase {
+class TestHeader extends WP_UnitTestCase {
 
 	/**
-	 * @var Html
+	 * @var Header
 	 * @since 1.0
 	 */
 	private $class;
@@ -56,7 +55,8 @@ class TestHtml extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Html();
+		$this->class = new Header();
+		$this->class->init();
 
 		parent::setUp();
 	}
@@ -64,28 +64,9 @@ class TestHtml extends WP_UnitTestCase {
 	/**
 	 * @since 1.0
 	 */
-	public function testHtml() {
-		$mpdf = $this->getMock( mPDF::class );
-		$mpdf->expects( $this->once() )
-		     ->method( 'WriteHTML' );
+	public function testToolkitHeader() {
+		$results = apply_filters( 'gfpdf_template_header_details', [] );
 
-		$this->class->setMpdf( $mpdf );
-
-		$this->assertTrue( method_exists( $this->class, 'addHtml' ) );
-
-		$this->class->addHtml('');
-	}
-
-	/**
-	 * @since 1.0
-	 */
-	public function testHtmlException() {
-		try {
-			$this->class->addHtml( false );
-		} catch ( \BadMethodCallException $e ) {
-
-		}
-
-		$this->assertEquals( '$html needs to be a string. You provided a boolean', $e->getMessage() );
+		$this->assertArrayHasKey( 'toolkit', $results );
 	}
 }

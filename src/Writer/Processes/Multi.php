@@ -102,13 +102,18 @@ class Multi extends AbstractWriter {
 	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted arguments include "auto", "visible" or "hidden"
 	 * @param array  $config   Override the default configuration on a per-element basis. Accepted array keys include 'font-size', 'line-height', 'strip-br'
 	 *
-	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), or if `$overflow` doesn't include an accepted argument.
+	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), if `$overflow` doesn't include an accepted argument, or $html is not a string
 	 *
 	 * @return void
 	 *
 	 * @since 1.0
 	 */
 	public function addMulti( $html, $position = [], $overflow = 'auto', $config = [] ) {
+
+		if ( ! is_string( $html ) ) {
+			throw new BadMethodCallException( sprintf( '$html needs to be a string. You provided a %s', gettype( $html ) ) );
+		}
+
 		if ( ! is_array( $position ) || count( $position ) !== 4 ) {
 			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}
@@ -188,5 +193,29 @@ class Multi extends AbstractWriter {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Return the current Multi configuration values
+	 *
+	 * ## Example
+	 *
+	 *      // Get the current Multi config
+	 *      $config = $w->getMultiConfig();
+	 *
+	 *      echo $config['font-size'];
+	 *      echo $config['line-height'];
+	 *      echo $config['strip-br'];
+	 *
+	 * @return array Returned array keys include 'font-size', 'line-height', 'strip-br'
+	 *
+	 * @since 1.0
+	 */
+	public function getMultiConfig() {
+		return [
+			'font-size'   => $this->fontSize,
+			'line-height' => $this->lineHeight,
+			'strip-br'    => $this->stripBr,
+		];
 	}
 }
