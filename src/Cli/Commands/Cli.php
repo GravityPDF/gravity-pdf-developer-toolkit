@@ -1,9 +1,7 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Cli;
+namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands;
 
-use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\Cli;
-use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\CreateTemplate;
 use WP_CLI;
 
 /**
@@ -39,22 +37,71 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Registers our WP CLI Commands
+ * Class Cli
  *
- * @package GFPDF\Plugins\DeveloperToolkit\Cli
+ * @package GFPDF\Plugins\DeveloperToolkit\Cli\Commands
+ *
+ * @since   1.0
  */
-class Register {
+class Cli implements InterfaceCli {
 
 	/**
-	 * Register our WP CLI Commands
+	 * Logs a message
+	 *
+	 * @param string $text
 	 *
 	 * @since 1.0
 	 */
-	public function init() {
-		global $gfpdf;
+	public function log( $text ) {
+		WP_CLI::log( $text );
+	}
 
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'gpdf create-template', new CreateTemplate( $gfpdf->data->template_location, new Cli() ) );
-		}
+	/**
+	 * Logs a warning message
+	 *
+	 * @param string $text
+	 *
+	 * @since 1.0
+	 */
+	public function warning( $text ) {
+		WP_CLI::warning( $text );
+	}
+
+	/**
+	 * Logs a success message
+	 *
+	 * @param string $text
+	 *
+	 * @since 1.0
+	 */
+	public function success( $text ) {
+		WP_CLI::success( $text );
+	}
+
+	/**
+	 * Logs an error
+	 *
+	 * @param string $text
+	 * @param bool   $exit
+	 *
+	 * @since 1.0
+	 * @throws WP_CLI\ExitException
+	 */
+	public function error( $text, $exit = true ) {
+		WP_CLI::error( $text, $exit );
+	}
+
+	/**
+	 * Ask the CLI user a question and return their response
+	 *
+	 * @param string $question
+	 *
+	 * @return string
+	 *
+	 * @since 1.0
+	 */
+	public function getResponse( $question ) {
+		fwrite( STDOUT, $question );
+		return trim( fgets( STDIN ) );
 	}
 }

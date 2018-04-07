@@ -3,7 +3,6 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands;
 
 use RuntimeException;
-use WP_CLI;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -52,12 +51,19 @@ class CreateTemplate {
 	protected $workingDirectory;
 
 	/**
+	 * @var \WP_CLI
+	 */
+	protected $cli;
+
+	/**
 	 * @param string $workingDirectory The absolute path to the PDF Working Directory
+	 * @param object $cli              The WP_CLI class, or a suitable drop-in replacement (for testing)
 	 *
 	 * @since 1.0
 	 */
-	public function __construct( $workingDirectory ) {
+	public function __construct( $workingDirectory, $cli ) {
 		$this->workingDirectory = $workingDirectory;
+		$this->cli              = $cli;
 	}
 
 	/**
@@ -98,6 +104,8 @@ class CreateTemplate {
 	 *
 	 * @param array $templateArray The PDF Template Name the use has entered. If they used quotes it'll be an array with one element, otherwise each space will signify a new array element.
 	 * @param array $args          The additional arguments passed to the cli. May include `enable-config`, `enable-toolkit` and `skip-headers`
+	 *
+	 * @throws \WP_CLI\ExitException
 	 */
 	public function __invoke( $templateArray, $args = [] ) {
 		$templateName   = implode( ' ', array_filter( $templateArray ) );
@@ -108,7 +116,7 @@ class CreateTemplate {
 		/* Check if template already exists */
 		if ( is_file( $fullPathToFile ) ) {
 			if ( empty( $args['enable-config'] ) ) {
-				WP_CLI::error( sprintf( 'A PDF template with the name "%s" already exists. Try a different <template-name>.', $filename ) );
+				$this->cli->error( sprintf( 'A PDF template with the name "%s" already exists. Try a different <template-name>.', $filename ) );
 			}
 		} else {
 			$this->generateBaseTemplate( $templateName, $fullPathToFile, $args );
@@ -118,7 +126,7 @@ class CreateTemplate {
 			$this->generateConfigTemplate( $this->getClassName( $shortname ), $filename );
 		}
 
-		WP_CLI::log( 'Happy PDFing!' );
+		$this->cli->log( 'Happy PDFing!' );
 	}
 
 	/**
@@ -145,7 +153,7 @@ class CreateTemplate {
 			$this->loadTemplate( $data, $baseTemplate )
 		);
 
-		WP_CLI::success( sprintf(
+		$this->cli->success( sprintf(
 				'Your template has been generated and saved to "%s".',
 				$fullPathToFile
 			)
@@ -184,7 +192,7 @@ class CreateTemplate {
 			$this->loadTemplate( $data, 'config-base' )
 		);
 
-		WP_CLI::success( sprintf(
+		$this->cli->success( sprintf(
 				'Your template configuration file has been generated and saved to "%s".',
 				$pathToFile
 			)
@@ -230,7 +238,7 @@ class CreateTemplate {
 		];
 
 		if ( $askForHeaders ) {
-			WP_CLI::log( "We are going to ask a few questions to help setup the PDF. Leave blank to skip a question.\n" );
+			$this->cli->log( "We are going to ask a few questions to help setup the PDF. Leave blank to skip a question.\n" );
 
 			$questions = [
 				'desc'             => 'Describe what the PDF template will be used for: ',
@@ -243,7 +251,7 @@ class CreateTemplate {
 			];
 
 			foreach ( $questions as $key => $q ) {
-				$response = $this->getResponse( $q );
+				$response = $this->cli->getResponse( $q );
 
 				if ( strlen( $response ) > 0 ) {
 					$data[ $key ] = $response;
@@ -252,20 +260,6 @@ class CreateTemplate {
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Ask the CLI user a question and return their response
-	 *
-	 * @param string $question
-	 *
-	 * @return string
-	 *
-	 * @since 1.0
-	 */
-	protected function getResponse( $question ) {
-		fwrite( STDOUT, $question );
-		return trim( fgets( STDIN ) );
 	}
 
 	/**
