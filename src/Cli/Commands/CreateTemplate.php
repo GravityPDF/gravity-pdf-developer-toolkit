@@ -225,7 +225,7 @@ class CreateTemplate {
 			'author_uri'       => '',
 			'group'            => 'Custom',
 			'license'          => '',
-			'required_version' => '4.0.0',
+			'required_version' => '4.4.0',
 			'tags'             => '',
 		];
 
@@ -238,7 +238,7 @@ class CreateTemplate {
 				'author_uri'       => 'Author website: ',
 				'group'            => 'Group name: ',
 				'license'          => 'License (if any): ',
-				'required_version' => 'Minimum Gravity PDF version (defaults to 4.0): ',
+				'required_version' => 'Minimum Gravity PDF version (defaults to 4.4.0): ',
 				'tags'             => 'Tags (separate by comma): ',
 			];
 

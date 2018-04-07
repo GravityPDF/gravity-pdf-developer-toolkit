@@ -194,7 +194,7 @@ namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands {
 			$this->assertRegExp( '/\* Author: /', $fileContents );
 			$this->assertRegExp( '/\* Author URI: /', $fileContents );
 			$this->assertRegExp( '/\* Group: /', $fileContents );
-			$this->assertRegExp( '/\* Required PDF Version: 4.0.0/', $fileContents );
+			$this->assertRegExp( '/\* Required PDF Version: 4.4.0/', $fileContents );
 		}
 
 		/**
@@ -218,7 +218,7 @@ namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands {
 			$this->assertRegExp( '/\* Author: /', $fileContents );
 			$this->assertRegExp( '/\* Author URI: /', $fileContents );
 			$this->assertRegExp( '/\* Group: /', $fileContents );
-			$this->assertRegExp( '/\* Required PDF Version: 4.0.0/', $fileContents );
+			$this->assertRegExp( '/\* Required PDF Version: 4.4.0/', $fileContents );
 			$this->assertRegExp( '/\* Toolkit: true/', $fileContents );
 		}
 
