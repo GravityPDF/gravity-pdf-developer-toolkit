@@ -1,10 +1,6 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Cli;
-
-use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\Cli;
-use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\CreateTemplate;
-use WP_CLI;
+namespace GFPDF\Plugins\DeveloperToolkit\Cli\Commands;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -39,22 +35,59 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Registers our WP CLI Commands
+ * Interface InterfaceWriter
  *
- * @package GFPDF\Plugins\DeveloperToolkit\Cli
+ * For use as our WP_CLI Interface
+ *
+ * @package GFPDF\Plugins\DeveloperToolkit\Cli\Commands
+ *
+ * @since   1.0
  */
-class Register {
+interface InterfaceCli {
 
 	/**
-	 * Register our WP CLI Commands
+	 * Logs a message
+	 *
+	 * @param string $text
 	 *
 	 * @since 1.0
 	 */
-	public function init() {
-		global $gfpdf;
+	public function log( $text );
 
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'gpdf create-template', new CreateTemplate( $gfpdf->data->template_location, new Cli() ) );
-		}
-	}
+	/**
+	 * Logs a warning message
+	 *
+	 * @param string $text
+	 *
+	 * @since 1.0
+	 */
+	public function warning( $text );
+
+	/**
+	 * Logs a success message
+	 *
+	 * @param string $text
+	 *
+	 * @since 1.0
+	 */
+	public function success( $text );
+
+	/**
+	 * Logs an error
+	 *
+	 * @param string $text
+	 * @param bool   $exit
+	 *
+	 * @since 1.0
+	 */
+	public function error( $text, $exit = true );
+
+	/**
+	 * Get a user response
+	 *
+	 * @return string
+	 *
+	 * @since 1.0
+	 */
+	public function getResponse( $text );
 }
