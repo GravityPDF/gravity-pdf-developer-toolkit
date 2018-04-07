@@ -5,6 +5,8 @@ namespace GFPDF\Templates\Config;
 use GFPDF\Helper\Helper_Interface_Config;
 use GFPDF\Helper\Helper_Interface_Setup_TearDown;
 
+use GPDFAPI;
+
 /* Exit if accessed directly */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,39 +17,40 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package GFPDF\Templates\Config
  *
- * @Internal See https://gravitypdf.com/documentation/v5/developer-template-configuration-and-image/ for more information about this class
+ * @Internal See https://gravitypdf.com/documentation/v4/developer-template-configuration-and-image/ for more information about this class
  */
 class <?php echo $data['name']; ?> implements Helper_Interface_Config, Helper_Interface_Setup_TearDown {
 
 	/**
-	 * Runs once when the template is initially installed via the PDF Template Manager
+	 * Runs when the template is initially installed via the PDF Template Manager
 	 *
-	 * @Internal Great for installing custom fonts you've shipped with your template
+	 * @Internal Great for installing custom fonts you've shipped with your template.
+     * @Internal Recommend creating the directory structure /install/<?php echo $data['name']; ?>/ for bundled fonts
 	 *
 	 * @since 1.0
 	 */
 	public function setUp() {
 //		$font_data =  [
 //			'font_name'   => 'Font Name',
-//			'regular'     => __DIR__ . '/full/path/to/font.ttf',
-//			'italics'     => __DIR__ . '/full/path/to/font.ttf',
-//			'bold'        => __DIR__ . '/full/path/to/font.ttf',
-//			'bolditalics' => __DIR__ . '/full/path/to/font.ttf',
+//			'regular'     => __DIR__ . '/../install/<?php echo $data['name']; ?>/font-name/regular.ttf',
+//			'italics'     => __DIR__ . '/../install/<?php echo $data['name']; ?>/font-name/italics.ttf',
+//			'bold'        => __DIR__ . '/../install/<?php echo $data['name']; ?>/font-name/bold.ttf',
+//			'bolditalics' => __DIR__ . '/../install/<?php echo $data['name']; ?>/font-name/bold-italics.ttf',
 //		];
 //
-//		\GPDFAPI::add_pdf_font( $font_data );
+//		GPDFAPI::add_pdf_font( $font_data );
 	}
 
 	/**
-	 * Runs once when the template is deleted
+	 * Runs when the template is deleted via the PDF Template Manager
 	 *
 	 * @Internal Great for cleaning up any additional directories
 	 *
 	 * @since 1.0
 	 */
 	public function tearDown() {
-//		$misc = \GPDFAPI::get_misc_class();
-//		$misc->rmdir( __DIR__ . '/full/path/to/directory/' );
+//		$misc = GPDFAPI::get_misc_class();
+//		$misc->rmdir( __DIR__ . '/../install/<?php echo $data['name']; ?>/' );
 	}
 
 	/**
