@@ -72,8 +72,8 @@ class TestMulti extends WP_UnitTestCase {
 		$this->assertSame( 14, $config['line-height'] );
 		$this->assertSame( false, $config['strip-br'] );
 
-		$config['font-size']   = 20;
-		$config['line-height'] = 25;
+		$config['font-size']   = 20.0;
+		$config['line-height'] = 25.0;
 		$config['strip-br']    = true;
 
 		$this->class->configMulti( $config );

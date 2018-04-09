@@ -181,11 +181,11 @@ class Multi extends AbstractWriter {
 		foreach ( $config as $name => $value ) {
 			switch ( $name ) {
 				case 'font-size':
-					$this->fontSize = (int) $value;
+					$this->fontSize = (float) $value;
 				break;
 
 				case 'line-height':
-					$this->lineHeight = (int) $value;
+					$this->lineHeight = (float) $value;
 				break;
 
 				case 'strip-br':
