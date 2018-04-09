@@ -6,6 +6,7 @@ use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryWriter;
 use GFPDF\Helper\Helper_Interface_Actions;
 use GFPDF\Helper\Helper_Interface_Filters;
 use GFPDF\Helper\Helper_PDF;
+use GFPDF\Plugins\DeveloperToolkit\Writer\Writer;
 use GPDFAPI;
 
 /**
@@ -122,6 +123,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 */
 	public function handleToolkitTemplate( $args, $pdfHelper ) {
 		$args = $this->prepareArguments( $args, $pdfHelper );
+		$this->setDefaultStyles( $args['w'], $args['settings'] );
 		$this->loadTemplate( $pdfHelper->get_template_path(), $args );
 	}
 
@@ -137,12 +139,14 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 */
 	protected function prepareArguments( $args, $pdfHelper ) {
 		/* Create a new Writer object and inject the current Mpdf object */
+		$mpdf   = $pdfHelper->get_pdf_class();
+
 		$writer = FactoryWriter::build();
-		$writer->setMpdf( $pdfHelper->get_pdf_class() );
+		$writer->setMpdf( $mpdf );
 
 		$new_args = apply_filters( 'gfpdf_developer_toolkit_template_args', [
 			'w'         => $writer,
-			'mpdf'      => $pdfHelper->get_pdf_class(),
+			'mpdf'      => $mpdf,
 			'form'      => $args['form'],
 			'entry'     => $args['entry'],
 			'form_data' => $args['form_data'],
@@ -156,6 +160,36 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	}
 
 	/**
+	 * Load the default font size and colour based on the user selection
+	 *
+	 * @param Writer $w
+	 * @param array  $settings
+	 */
+	protected function setDefaultStyles( $w, $settings ) {
+		$font       = ( ! empty( $settings['font'] ) ) ? $settings['font'] : 'DejavuSansCondensed';
+		$fontColour = ( ! empty( $settings['font_colour'] ) ) ? $settings['font_colour'] : '#333';
+		$fontSize   = ( ! empty( $settings['font_size'] ) ) ? (int) $settings['font_size'] : 10;
+
+		$w->beginStyles();
+		?>
+        <style>
+            body, th, td, li, a {
+                font-family: "<?php echo $font; ?>", sans-serif;
+                font-size: <?php echo $fontSize; ?>pt;
+                line-height: <?php echo $fontSize; ?>pt;
+                color: <?php echo $fontColour; ?>;
+            }
+        </style>
+		<?php
+		$w->endStyles();
+
+		$w->configMulti( [
+			'font-size'   => $fontSize,
+			'line-height' => round( $fontSize * 1.4, 2 ),
+		] );
+	}
+
+	/**
 	 * Load the PDF template
 	 *
 	 * @param string $template Absolute path to PDF template file
@@ -164,6 +198,8 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 * @since 1.0
 	 */
 	protected function loadTemplate( $template, $args ) {
+		do_action( 'gfpdf_developer_toolkit_pre_load_template', $template, $args );
+
 		extract( $args, EXTR_SKIP );
 		include $template;
 	}

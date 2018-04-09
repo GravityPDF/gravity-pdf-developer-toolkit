@@ -100,7 +100,25 @@ class TestLoader extends WP_UnitTestCase {
 			$this->assertArrayHasKey( 'gfpdf', $args );
 
 			$this->assertInstanceOf( Writer::class, $args['w'] );
+
+			return $args;
 		} );
+
+		add_action( 'gfpdf_developer_toolkit_pre_load_template', function( $template, $args ) {
+			$mpdf    = $args['mpdf'];
+			$content = $mpdf->sampleContent;
+
+			$this->assertRegExp( '/font\-family\: \"My custom font\", sans\-serif\;/', $content );
+			$this->assertRegExp( '/font\-size\: 14pt\;/', $content );
+			$this->assertRegExp( '/line\-height\: 14pt\;/', $content );
+			$this->assertRegExp( '/color\: \#EEE\;/', $content );
+
+			$w           = $args['w'];
+			$multiConfig = $w->getMultiConfig();
+
+			$this->assertEquals( 14, $multiConfig['font-size'] );
+			$this->assertEquals( 19.6, $multiConfig['line-height'] );
+		}, 10, 2 );
 
 		$this->class->handleToolkitTemplate( [
 			'w'         => '',
@@ -110,9 +128,15 @@ class TestLoader extends WP_UnitTestCase {
 			'form_data' => '',
 			'fields'    => '',
 			'config'    => '',
-			'settings'  => '',
+			'settings'  => [
+				'font'        => 'My custom font',
+				'font_size'   => 14,
+				'font_colour' => '#EEE',
+			],
 			'gfpdf'     => '',
 		], new Helper() );
+
+
 	}
 }
 
@@ -121,6 +145,14 @@ class Helper {
 	}
 
 	public function get_pdf_class() {
-		return new mPDF();
+		return new TestMpdf();
+	}
+}
+
+class TestMpdf extends mPDF {
+	public $sampleContent = '';
+
+	public function WriteHTML( $content, $type = 1 ) {
+		$this->sampleContent .= $content;
 	}
 }
