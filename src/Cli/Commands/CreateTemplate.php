@@ -105,7 +105,7 @@ class CreateTemplate {
 	 * @param array $templateArray The PDF Template Name the use has entered. If they used quotes it'll be an array with one element, otherwise each space will signify a new array element.
 	 * @param array $args          The additional arguments passed to the cli. May include `enable-config`, `enable-toolkit` and `skip-headers`
 	 *
-	 * @throws \WP_CLI\ExitException
+	 * @throws \Exception
 	 */
 	public function __invoke( $templateArray, $args = [] ) {
 		$templateName   = implode( ' ', array_filter( $templateArray ) );
@@ -114,12 +114,12 @@ class CreateTemplate {
 		$fullPathToFile = $this->workingDirectory . $filename;
 
 		/* Check if template already exists */
-		if ( is_file( $fullPathToFile ) ) {
-			if ( empty( $args['enable-config'] ) ) {
-				$this->cli->error( sprintf( 'A PDF template with the name "%s" already exists. Try a different <template-name>.', $filename ) );
-			}
-		} else {
+		$this->checkFileExistsAndDelete( $fullPathToFile );
+
+		if ( ! is_file( $fullPathToFile ) ) {
 			$this->generateBaseTemplate( $templateName, $fullPathToFile, $args );
+		} else {
+			$this->cli->warning( sprintf( 'Skipping creation of PDF template file at %s', $fullPathToFile ) );
 		}
 
 		if ( ! empty( $args['enable-config'] ) ) {
@@ -148,13 +148,17 @@ class CreateTemplate {
 		/* Create our core template */
 		$baseTemplate = ( ! empty( $args['enable-toolkit'] ) ) ? 'toolkit-base' : 'base';
 
-		file_put_contents(
+		$this->saveToFileAndMessage(
 			$fullPathToFile,
-			$this->loadTemplate( $data, $baseTemplate )
-		);
+			$this->loadTemplate( $data, $baseTemplate ),
 
-		$this->cli->success( sprintf(
+			sprintf(
 				'Your template has been generated and saved to "%s".',
+				$fullPathToFile
+			),
+
+			sprintf(
+				'Could not save template file to %s',
 				$fullPathToFile
 			)
 		);
@@ -168,36 +172,52 @@ class CreateTemplate {
 	 *
 	 * @return void
 	 *
-	 * @throws RuntimeException
+	 * @throws \Exception
 	 *
 	 * @since 1.0
 	 */
 	protected function generateConfigTemplate( $className, $fileName ) {
 		$pathToConfig = $this->workingDirectory . 'config/';
 
+		/* Create config directory is not present */
 		if ( ! is_dir( $pathToConfig ) ) {
-			if ( ! mkdir( $pathToConfig ) ) {
-				throw new RuntimeException( sprintf( 'Could not create config directory at %s', $pathToConfig ) );
-			}
+			mkdir( $pathToConfig );
 		}
 
-		$pathToFile = $pathToConfig . $fileName;
+		/* Check if config file exists and ask to override if it does */
+		$fullPathToFile = $pathToConfig . $fileName;
+		if ( is_file( $fullPathToFile ) ) {
+			$this->checkFileExistsAndDelete( $fullPathToFile );
+		}
 
-		$data = [
-			'name' => $className,
-		];
+		if ( ! is_file( $fullPathToFile ) ) {
+			$this->saveToFileAndMessage(
+				$fullPathToFile,
+				$this->loadTemplate( [ 'name' => $className ], 'config-base' ),
 
-		file_put_contents(
-			$pathToFile,
-			$this->loadTemplate( $data, 'config-base' )
-		);
+				sprintf(
+					'Your template configuration file has been generated and saved to %s.',
+					$fullPathToFile
+				),
 
-		$this->cli->success( sprintf(
-				'Your template configuration file has been generated and saved to "%s".',
-				$pathToFile
-			)
-		);
+				sprintf(
+					'Could not save template configuration file to %s',
+					$fullPathToFile
+				)
+			);
+		} else {
+			$this->cli->warning( sprintf( 'Skipping creation of PDF template file at %s', $fullPathToFile ) );
+		}
+	}
 
+	protected function saveToFileAndMessage( $path, $content, $successMsg, $failureMsg ) {
+		$result = file_put_contents( $path, $content );
+
+		if ( $result === false ) {
+			$this->cli->warning( $failureMsg );
+		} else {
+			$this->cli->success( $successMsg );
+		}
 	}
 
 	/**
@@ -278,5 +298,36 @@ class CreateTemplate {
 		ob_start();
 		include __DIR__ . '/templates/' . $name . '.php';
 		return str_replace( [ '&#x3C;', '&#x3E;' ], [ '<', '>' ], ob_get_clean() );
+	}
+
+	/**
+	 * Asks if a file should be deleted and removes if needed
+	 *
+	 * @param string $fullPathToFile
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 1.0
+	 */
+	protected function checkFileExistsAndDelete( $fullPathToFile ) {
+		if ( is_file( $fullPathToFile ) ) {
+			$response = $this->cli->getResponse(
+				sprintf(
+					'A file with the name "%s" already exists. Would you like to override (y/N)?',
+					str_replace( $this->workingDirectory, '', $fullPathToFile )
+				)
+			);
+
+			if ( stripos( $response, 'y' ) !== false ) {
+				if ( ! unlink( $fullPathToFile ) ) {
+					$this->cli->error(
+						sprintf(
+							'Could not delete the file located at %s',
+							$fullPathToFile
+						)
+					);
+				}
+			}
+		}
 	}
 }

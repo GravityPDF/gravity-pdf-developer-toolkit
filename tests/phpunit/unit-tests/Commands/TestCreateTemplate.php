@@ -132,7 +132,7 @@ class TestCreateTemplate extends WP_UnitTestCase {
 
 		$content = ob_get_clean();
 
-		$this->assertRegExp( '/A PDF template with the name "my-template.php" already exists./', $content );
+		$this->assertRegExp( '/Skipping creation of PDF template file at /', $content );
 	}
 
 	/**
