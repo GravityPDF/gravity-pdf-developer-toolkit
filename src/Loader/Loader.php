@@ -7,7 +7,6 @@ use GFPDF\Helper\Helper_Interface_Actions;
 use GFPDF\Helper\Helper_Interface_Filters;
 use GFPDF\Helper\Helper_PDF;
 use GFPDF\Plugins\DeveloperToolkit\Writer\Writer;
-use GPDFAPI;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -70,7 +69,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 * @since 1.0
 	 */
 	public function add_filters() {
-		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybeSkipPdfHtmlRender' ], 10, 3 );
+		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybeSkipPdfHtmlRender' ], 10, 2 );
 	}
 
 	/**
@@ -91,18 +90,14 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 *
 	 * @param bool       $skip      Whether we should skip the HTML sandbox
 	 * @param array      $args
-	 * @param Helper_PDF $pdfHelper The current PDF Helper object handling the PDF generation
 	 *
 	 * @return bool
 	 *
 	 * @since 1.0
 	 */
-	public function maybeSkipPdfHtmlRender( $skip, $args, $pdfHelper ) {
-		/* Read template Header */
-		$template = GPDFAPI::get_templates_class();
-		$headers  = $template->get_template_info_by_path( $pdfHelper->get_template_path() );
+	public function maybeSkipPdfHtmlRender( $skip, $args ) {
 
-		if ( isset( $headers['toolkit'] ) && $headers['toolkit'] == 'true' ) {
+		if ( isset( $args['settings']['toolkit'] ) && $args['settings']['toolkit'] === true ) {
 			return true;
 		}
 

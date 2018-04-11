@@ -2,6 +2,7 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Loader;
 
+use GFPDF\Helper\Helper_Templates;
 use WP_UnitTestCase;
 
 /**
@@ -55,7 +56,23 @@ class TestHeader extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function setUp() {
-		$this->class = new Header();
+		$template = $this->getMockBuilder( Helper_Templates::class )
+		                 ->setConstructorArgs( [
+			                 \GPDFAPI::get_log_class(),
+			                 \GPDFAPI::get_data_class(),
+			                 \GPDFAPI::get_form_class(),
+		                 ] )
+		                 ->setMethods( [ 'get_template_path_by_id' ] )
+		                 ->getMock();
+
+		$template->method( 'get_template_path_by_id' )
+		         ->will( $this->onConsecutiveCalls(
+			         __DIR__ . '/../pdfs/sample1.php',
+			         __DIR__ . '/../pdfs/sample2.php'
+		         ) );
+
+
+		$this->class = new Header( $template );
 		$this->class->init();
 
 		parent::setUp();
@@ -67,6 +84,17 @@ class TestHeader extends WP_UnitTestCase {
 	public function testToolkitHeader() {
 		$results = apply_filters( 'gfpdf_template_header_details', [] );
 
+		$this->assertArrayHasKey( 'toolkit', $results );
+	}
+
+	/**
+	 * @since 1.0
+	 */
+	public function testAddToolkitSettings() {
+		$results = $this->class->addToolkitSetting( [ 'toolkit' => true ] );
+		$this->assertArrayNotHasKey( 'toolkit', $results );
+
+		$results = $this->class->addToolkitSetting( [] );
 		$this->assertArrayHasKey( 'toolkit', $results );
 	}
 }

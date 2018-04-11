@@ -80,7 +80,7 @@ class Bootstrap extends Helper_Abstract_Addon {
 		$classes = array_merge( $classes, [
 			new Loader(),
 			new LegacyLoader(),
-			new Header(),
+			new Header( GPDFAPI::get_templates_class() ),
 			new Deactivate( GPDFAPI::get_options_class() ),
 			new AdvancedTemplate( GPDFAPI::get_options_class() ),
 			new Register(),

@@ -3,6 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Loader;
 
 use GFPDF\Helper\Helper_Interface_Filters;
+use GFPDF\Helper\Helper_Templates;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -46,6 +47,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Header implements Helper_Interface_Filters {
 
 	/**
+	 * @var Helper_Templates
+	 * @since 1.0
+	 */
+	protected $template;
+
+	/**
+	 * Header constructor.
+	 *
+	 * @param Helper_Templates $template
+	 *
+	 * @since 1.0
+	 */
+	public function __construct( Helper_Templates $template ) {
+		$this->template = $template;
+	}
+
+	/**
 	 * Initialise class
 	 *
 	 * @return void
@@ -65,6 +83,8 @@ class Header implements Helper_Interface_Filters {
 	 */
 	public function add_filters() {
 		add_filter( 'gfpdf_template_header_details', [ $this, 'addToolkitHeader' ] );
+		add_filter( 'gfpdf_form_add_pdf', [ $this, 'addToolkitSetting' ] );
+		add_filter( 'gfpdf_form_update_pdf', [ $this, 'addToolkitSetting' ] );
 	}
 
 	/**
@@ -84,5 +104,26 @@ class Header implements Helper_Interface_Filters {
 		$headers['toolkit'] = 'Toolkit';
 
 		return $headers;
+	}
+
+	/**
+	 * If the current template is a Toolkit template, save that value into the settings
+	 *
+	 * @param array $pdf
+	 *
+	 * @return array
+	 *
+	 * @since 1.0
+	 */
+	public function addToolkitSetting( $pdf ) {
+		$headers = $this->template->get_template_info_by_id( $pdf['template'] );
+
+		if ( isset( $headers['toolkit'] ) && $headers['toolkit'] == 'true' ) {
+			$pdf['toolkit'] = true;
+		} elseif ( isset( $pdf['toolkit'] ) ) {
+			unset( $pdf['toolkit'] );
+		}
+
+		return $pdf;
 	}
 }

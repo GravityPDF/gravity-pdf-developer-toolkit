@@ -23,8 +23,6 @@ class GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap {
 	/** @var string plugin directory */
 	public $plugin_dir;
 
-	public $log;
-
 	/**
 	 * Setup the unit testing environment
 	 *
@@ -62,8 +60,6 @@ class GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap {
 
 		/* Setup testing logger */
 		require $this->plugin_dir . '/tmp/gravity-forms-pdf-extended/vendor/autoload.php';
-		$this->log = new \Monolog\Logger( 'test' );
-		$this->log->pushHandler( new \Monolog\Handler\NullHandler( \Monolog\Logger::INFO ) ); /* throw logs away */
 
 		/* TODO: remove once upgraded to Mpdf v7 */
 		error_reporting( E_ALL ^ E_NOTICE ^ E_WARNING );
