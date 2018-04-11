@@ -6,6 +6,7 @@ use GFPDF\Plugins\DeveloperToolkit\Cli\Register;
 use GFPDF\Plugins\DeveloperToolkit\Legacy\AdvancedTemplate;
 use GFPDF\Plugins\DeveloperToolkit\Legacy\Deactivate;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Header;
+use GFPDF\Plugins\DeveloperToolkit\Loader\Javascript;
 use GFPDF\Plugins\DeveloperToolkit\Loader\Loader;
 use GFPDF\Plugins\DeveloperToolkit\Legacy\LegacyLoader;
 
@@ -81,6 +82,7 @@ class Bootstrap extends Helper_Abstract_Addon {
 			new Loader(),
 			new LegacyLoader(),
 			new Header( GPDFAPI::get_templates_class() ),
+			new Javascript( GPDFAPI::get_misc_class(), GPDFAPI::get_templates_class() ),
 			new Deactivate( GPDFAPI::get_options_class() ),
 			new AdvancedTemplate( GPDFAPI::get_options_class() ),
 			new Register(),
