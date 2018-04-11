@@ -67,20 +67,8 @@ class TestLoader extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testMaybeSkipPdfHtmlRender() {
-
-		$helper = $this->getMockBuilder( Helper::class )
-		               ->setMethods( [ 'get_template_path' ] )
-		               ->getMock();
-
-		$helper->method( 'get_template_path' )
-		       ->will( $this->onConsecutiveCalls(
-			       __DIR__ . '/../pdfs/sample1.php',
-			       __DIR__ . '/../pdfs/sample2.php'
-		       ) );
-
-		$this->assertFalse( $this->class->maybeSkipPdfHtmlRender( false, [], $helper ) );
-
-		$this->assertTrue( $this->class->maybeSkipPdfHtmlRender( false, [], $helper ) );
+		$this->assertFalse( $this->class->maybeSkipPdfHtmlRender( false, [ 'settings' => [] ] ) );
+		$this->assertTrue( $this->class->maybeSkipPdfHtmlRender( false, [ 'settings' => [ 'toolkit' => true ] ] ) );
 	}
 
 	/**
