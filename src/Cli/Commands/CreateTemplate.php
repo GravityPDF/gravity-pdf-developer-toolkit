@@ -119,7 +119,7 @@ class CreateTemplate {
 		if ( ! is_file( $fullPathToFile ) ) {
 			$this->generateBaseTemplate( $templateName, $fullPathToFile, $args );
 		} else {
-			$this->cli->warning( sprintf( 'Skipping creation of PDF template file at %s', $fullPathToFile ) );
+			$this->cli->warning( sprintf( __( 'Skipping creation of PDF template file at %s', 'gravity-pdf-developer-toolkit' ), $fullPathToFile ) );
 		}
 
 		if ( ! empty( $args['enable-config'] ) ) {
@@ -153,12 +153,12 @@ class CreateTemplate {
 			$this->loadTemplate( $data, $baseTemplate ),
 
 			sprintf(
-				'Your template has been generated and saved to "%s".',
+				__( 'Your template has been generated and saved to "%s".', 'gravity-pdf-developer-toolkit' ),
 				$fullPathToFile
 			),
 
 			sprintf(
-				'Could not save template file to %s',
+				__( 'Could not save template file to %s', 'gravity-pdf-developer-toolkit' ),
 				$fullPathToFile
 			)
 		);
@@ -196,17 +196,17 @@ class CreateTemplate {
 				$this->loadTemplate( [ 'name' => $className ], 'config-base' ),
 
 				sprintf(
-					'Your template configuration file has been generated and saved to %s.',
+					__( 'Your template configuration file has been generated and saved to %s.', 'gravity-pdf-developer-toolkit' ),
 					$fullPathToFile
 				),
 
 				sprintf(
-					'Could not save template configuration file to %s',
+					__( 'Could not save template configuration file to %s', 'gravity-pdf-developer-toolkit' ),
 					$fullPathToFile
 				)
 			);
 		} else {
-			$this->cli->warning( sprintf( 'Skipping creation of PDF template file at %s', $fullPathToFile ) );
+			$this->cli->warning( sprintf( __( 'Skipping creation of PDF template file at %s', 'gravity-pdf-developer-toolkit' ), $fullPathToFile ) );
 		}
 	}
 
@@ -258,16 +258,16 @@ class CreateTemplate {
 		];
 
 		if ( $askForHeaders ) {
-			$this->cli->log( "We are going to ask a few questions to help setup the PDF. Leave blank to skip a question.\n" );
+			$this->cli->log( __( "We are going to ask a few questions to help setup the PDF. Leave blank to skip a question.\n", 'gravity-pdf-developer-toolkit' ) );
 
 			$questions = [
-				'desc'             => 'Describe what the PDF template will be used for: ',
-				'author'           => 'Author name: ',
-				'author_uri'       => 'Author website: ',
-				'group'            => 'Group name: ',
-				'license'          => 'License (if any): ',
-				'required_version' => 'Minimum Gravity PDF version (defaults to 4.4.0): ',
-				'tags'             => 'Tags (separate by comma): ',
+				'desc'             => __( 'Describe what the PDF template will be used for: ', 'gravity-pdf-developer-toolkit' ),
+				'author'           => __( 'Author name: ', 'gravity-pdf-developer-toolkit' ),
+				'author_uri'       => __( 'Author website: ', 'gravity-pdf-developer-toolkit' ),
+				'group'            => __( 'Group name: ', 'gravity-pdf-developer-toolkit' ),
+				'license'          => __( 'License (if any): ', 'gravity-pdf-developer-toolkit' ),
+				'required_version' => __( 'Minimum Gravity PDF version (defaults to 4.4.0): ', 'gravity-pdf-developer-toolkit' ),
+				'tags'             => __( 'Tags (separate by comma): ', 'gravity-pdf-developer-toolkit' ),
 			];
 
 			foreach ( $questions as $key => $q ) {
@@ -313,7 +313,7 @@ class CreateTemplate {
 		if ( is_file( $fullPathToFile ) ) {
 			$response = $this->cli->getResponse(
 				sprintf(
-					'A file with the name "%s" already exists. Would you like to override (y/N)?',
+					__( 'A file with the name "%s" already exists. Would you like to override (y/N)?', 'gravity-pdf-developer-toolkit' ),
 					str_replace( $this->workingDirectory, '', $fullPathToFile )
 				)
 			);
@@ -322,7 +322,7 @@ class CreateTemplate {
 				if ( ! unlink( $fullPathToFile ) ) {
 					$this->cli->error(
 						sprintf(
-							'Could not delete the file located at %s',
+							__( 'Could not delete the file located at %s', 'gravity-pdf-developer-toolkit' ),
 							$fullPathToFile
 						)
 					);
