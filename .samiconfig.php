@@ -13,7 +13,7 @@ return new Sami(
 	__DIR__ . '/src/',
 	[
 		'build_dir'           => __DIR__ . '/dev-documentation',
-		'cache_dir'           => __DIR__ . '/tmp',
+		'cache_dir'           => __DIR__ . '/tmp/sami',
 		'filter'              => new PublicFilter(),
 		'include_parent_data' => false,
 	]

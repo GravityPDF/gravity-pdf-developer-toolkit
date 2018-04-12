@@ -45,4 +45,5 @@ Thumbs.db
 *.pot
 
 # Documentation
+sami.phar
 dev-documentation/*

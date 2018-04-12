@@ -21,12 +21,6 @@ tar -zxf ${PACKAGE_DIR}/package.tar.gz --directory ${PACKAGE_DIR} && rm ${PACKAG
 # Run Composer
 composer install --quiet --no-dev  --prefer-dist --optimize-autoloader --working-dir ${PACKAGE_DIR}
 
-# Check for sami.phar in the PATH environment
-if hash "sami.phar" 2>/dev/null; then
-  sami.phar update ${PACKAGE_DIR}/.samiconfig.php > /dev/null
-  rm -R ${PACKAGE_DIR}/tmp
-fi
-
 # Cleanup Node JS
 rm -R ${PACKAGE_DIR}/node_modules
 

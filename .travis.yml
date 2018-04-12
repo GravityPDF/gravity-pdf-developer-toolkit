@@ -26,6 +26,7 @@ before_script:
   - if find . -name "*.php" -exec php -l {} \; | grep "unexpected $end"; then exit 1; fi
   - composer install --prefer-dist --optimize-autoloader --no-scripts
   - bash tests/bin/install.sh gravitypdf_test root '' localhost $WP_VERSION
+  - if [[ $TRAVIS_BRANCH = 'master' && $PHPUNIT_COVERAGE_TEST ]]; then bash ./bin/build-docs.sh; fi
 
 script:
  - if [[ $PHPUNIT_COVERAGE_TEST ]]; then ./vendor/bin/phpunit --coverage-clover=coverage/php-coverage1.xml; fi
@@ -33,3 +34,15 @@ script:
 
 after_success:
  - if [[ $PHPUNIT_COVERAGE_TEST ]]; then bash <(curl -s https://codecov.io/bash); fi
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN # Set in travis-ci.org dashboard, marked secure
+  keep-history: true
+  local-dir: dev-documentation
+  repo: GravityPDF/gravity-pdf-developer-toolkit-api
+  target-branch: master
+  on:
+    branch: master
+    condition: $PHPUNIT_COVERAGE_TEST
