@@ -85,9 +85,22 @@ interface InterfaceCli {
 	/**
 	 * Get a user response
 	 *
+	 * @value string $text
+	 *
 	 * @return string
 	 *
 	 * @since 1.0
 	 */
 	public function getResponse( $text );
+
+	/**
+	 * Output the data in a specific format
+	 *
+	 * @param string $format Either 'table', 'json', 'csv' or 'yaml'
+	 * @param array  $data   In the format [ [ 'Key' => 'Value' ], [ 'Key' => 'Value' ] ]
+	 * @param array  $keys   The Keys used in $data
+	 *
+	 * @since 1.0
+	 */
+	public function outputInFormat( $format, $data, $keys );
 }
