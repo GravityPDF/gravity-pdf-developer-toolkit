@@ -64,7 +64,7 @@ class TestCreateTemplate extends WP_UnitTestCase {
 	public function setUp() {
 		$this->path = __DIR__ . '/../../../../tmp/';
 
-		$cli = $this->getMockBuilder( Cli::class )
+		$cli = $this->getMockBuilder( CreateTemplateCli::class )
 		            ->setMethods( [ 'getResponse' ] )
 		            ->getMock();
 
@@ -266,7 +266,7 @@ class TestCreateTemplate extends WP_UnitTestCase {
 	}
 }
 
-class Cli implements InterfaceCli {
+class CreateTemplateCli implements InterfaceCli {
 	public function log( $text ) {
 		echo $text;
 	}
@@ -285,6 +285,10 @@ class Cli implements InterfaceCli {
 	}
 
 	public function getResponse( $text ) {
+
+	}
+
+	public function outputInFormat( $format, $data, $keys ) {
 
 	}
 }

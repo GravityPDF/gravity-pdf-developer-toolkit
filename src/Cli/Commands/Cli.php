@@ -104,4 +104,17 @@ class Cli implements InterfaceCli {
 		fwrite( STDOUT, $question );
 		return trim( fgets( STDIN ) );
 	}
+
+	/**
+	 * Output the data in a specific format
+	 *
+	 * @param string $format Either 'table', 'json', 'csv' or 'yaml'
+	 * @param array  $data   In the format [ [ 'Key' => 'Value' ], [ 'Key' => 'Value' ] ]
+	 * @param array  $keys   The Keys used in $data
+	 *
+	 * @since 1.0
+	 */
+	public function outputInFormat( $format, $data, $keys ) {
+		\WP_CLI\Utils\format_items( $format, $data, $keys );
+	}
 }

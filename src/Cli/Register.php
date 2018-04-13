@@ -4,6 +4,7 @@ namespace GFPDF\Plugins\DeveloperToolkit\Cli;
 
 use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\Cli;
 use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\CreateTemplate;
+use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\GetPdfStatus;
 use WP_CLI;
 
 /**
@@ -54,6 +55,7 @@ class Register {
 		global $gfpdf;
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::add_command( 'gpdf', new GetPdfStatus( $gfpdf->data, $gfpdf->options, new Cli() ) );
 			WP_CLI::add_command( 'gpdf create-template', new CreateTemplate( $gfpdf->data->template_location, new Cli() ) );
 		}
 	}
