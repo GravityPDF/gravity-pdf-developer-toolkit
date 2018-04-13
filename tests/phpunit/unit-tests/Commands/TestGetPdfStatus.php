@@ -129,4 +129,8 @@ class GetPdfStatusCli implements InterfaceCli {
 	public function outputInFormat( $format, $data, $keys ) {
 		echo json_encode( [ $format, $data, $keys ] );
 	}
+
+	public function createProgressBar( $message, $ticks ) {
+
+	}
 }

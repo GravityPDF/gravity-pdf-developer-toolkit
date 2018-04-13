@@ -85,7 +85,7 @@ class Cli implements InterfaceCli {
 	 * @param bool   $exit
 	 *
 	 * @since 1.0
-	 * @throws WP_CLI\ExitException
+	 * @throws \WP_CLI\ExitException
 	 */
 	public function error( $text, $exit = true ) {
 		WP_CLI::error( $text, $exit );
@@ -116,5 +116,17 @@ class Cli implements InterfaceCli {
 	 */
 	public function outputInFormat( $format, $data, $keys ) {
 		\WP_CLI\Utils\format_items( $format, $data, $keys );
+	}
+
+	/**
+	 * Return the Progress Bar Class
+	 *
+	 * @param string $message The message to display before a progress bar
+	 * @param int $ticks The number of ticks to include in the progress bar
+	 *
+	 * @return \cli\progress\Bar|\WP_CLI\NoOp
+	 */
+	public function createProgressBar( $message, $ticks ) {
+		return \WP_CLI\Utils\make_progress_bar( $message, $ticks );
 	}
 }

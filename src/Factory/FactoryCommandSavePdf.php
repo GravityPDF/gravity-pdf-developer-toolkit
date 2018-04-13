@@ -1,12 +1,9 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Cli;
+namespace GFPDF\Plugins\DeveloperToolkit\Factory;
 
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandBulkSavePdf;
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandCreateTemplate;
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandGetPdfStatus;
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandSavePdf;
-use WP_CLI;
+use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\Cli;
+use GFPDF\Plugins\DeveloperToolkit\Cli\Commands\SavePdf;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -40,24 +37,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+
 /**
- * Registers our WP CLI Commands
+ * @package GFPDF\Plugins\DeveloperToolkit\Factory
  *
- * @package GFPDF\Plugins\DeveloperToolkit\Cli
+ * @since   1.0
  */
-class Register {
+class FactoryCommandSavePdf {
 
 	/**
-	 * Register our WP CLI Commands
+	 * Initialise the SavePDF Command
+	 *
+	 * @return SavePdf
 	 *
 	 * @since 1.0
 	 */
-	public function init() {
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'gpdf', FactoryCommandGetPdfStatus::build() );
-			WP_CLI::add_command( 'gpdf create-template', FactoryCommandCreateTemplate::build() );
-			WP_CLI::add_command( 'gpdf save-pdf', FactoryCommandSavePdf::build() );
-			WP_CLI::add_command( 'gpdf bulk-save-pdf', FactoryCommandBulkSavePdf::build() );
-		}
+	public static function build() {
+		$cli     = new Cli();
+		$command = new SavePdf( $cli );
+
+		return $command;
 	}
 }

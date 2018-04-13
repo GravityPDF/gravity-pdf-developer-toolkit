@@ -91,7 +91,15 @@ class GetPdfStatus {
 	 * ## OPTIONS
 	 *
 	 * [--format=<format>]
-	 * : Accepted values: table, json, csv, yaml. Defaults to table.
+	 * : What format to output the system status
+	 * ---
+	 * default: table
+	 * options:
+	 *     - table
+	 *     - json
+	 *     - csv
+	 *     - yaml
+	 * ---
 	 *
 	 * ## EXAMPLES
 	 *

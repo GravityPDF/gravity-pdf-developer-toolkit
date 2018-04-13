@@ -56,12 +56,12 @@ class CreateTemplate {
 	protected $cli;
 
 	/**
-	 * @param string $workingDirectory The absolute path to the PDF Working Directory
-	 * @param object $cli              The WP_CLI class, or a suitable drop-in replacement (for testing)
+	 * @param string       $workingDirectory The absolute path to the PDF Working Directory
+	 * @param InterfaceCli $cli              The WP_CLI class, or a suitable drop-in replacement (for testing)
 	 *
 	 * @since 1.0
 	 */
-	public function __construct( $workingDirectory, $cli ) {
+	public function __construct( $workingDirectory, InterfaceCli $cli ) {
 		$this->workingDirectory = $workingDirectory;
 		$this->cli              = $cli;
 	}

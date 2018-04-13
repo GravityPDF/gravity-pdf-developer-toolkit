@@ -38,6 +38,7 @@ class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 
 		/* load Gravity PDF */
 		tests_add_filter( 'muplugins_loaded', [ $this, 'load' ] );
+		tests_add_filter( 'plugins_loaded', [ $this, 'gravitypdfReset' ], 20 );
 
 		/* load the WP testing environment */
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
@@ -62,7 +63,14 @@ class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 		require $this->plugin_dir . '/tmp/gravity-forms-pdf-extended/vendor/autoload.php';
 
 		/* TODO: remove once upgraded to Mpdf v7 */
-		error_reporting( E_ALL ^ E_NOTICE ^ E_WARNING );
+		error_reporting( E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED );
+	}
+
+	public function gravitypdfReset() {
+		global $gfpdf;
+
+		\GFPDF\Router::initialise_plugin();
+		$gfpdf->misc->rmdir( $gfpdf->data->template_location );
 	}
 }
 

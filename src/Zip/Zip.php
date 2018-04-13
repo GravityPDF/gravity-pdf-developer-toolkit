@@ -1,12 +1,10 @@
 <?php
 
-namespace GFPDF\Plugins\DeveloperToolkit\Cli;
+namespace GFPDF\Plugins\DeveloperToolkit\Zip;
 
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandBulkSavePdf;
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandCreateTemplate;
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandGetPdfStatus;
-use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryCommandSavePdf;
-use WP_CLI;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -41,23 +39,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 /**
- * Registers our WP CLI Commands
- *
- * @package GFPDF\Plugins\DeveloperToolkit\Cli
+ * @package GFPDF\Plugins\DeveloperToolkit\Zip
  */
-class Register {
+class Zip {
 
 	/**
-	 * Register our WP CLI Commands
+	 * Create a zip file and save to disk
+	 *
+	 * @param string $dirPath Path to the directory to zip
+	 * @param string $zipPath Path to save zip too
+	 *
+	 * @return bool
 	 *
 	 * @since 1.0
 	 */
-	public function init() {
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'gpdf', FactoryCommandGetPdfStatus::build() );
-			WP_CLI::add_command( 'gpdf create-template', FactoryCommandCreateTemplate::build() );
-			WP_CLI::add_command( 'gpdf save-pdf', FactoryCommandSavePdf::build() );
-			WP_CLI::add_command( 'gpdf bulk-save-pdf', FactoryCommandBulkSavePdf::build() );
+	public function create( $dirPath, $zipPath ) {
+
+		$dirPath = dirname( $dirPath ) . '/' . basename( $dirPath );
+
+		$local = new FileSystem( new Local( $dirPath ) );
+		$zip   = new Filesystem( new ZipArchiveAdapter( $zipPath ) );
+
+		/* Get a recursive list of all contents in the local directory */
+		$files = $local->listContents( '', true );
+		foreach ( $files as $info ) {
+			if ( $info['type'] === 'dir' ) {
+				continue;
+			}
+
+			$zip->write( $info['path'], $local->read( $info['path'] ) );
 		}
+
+		/* Clean-up and generate zip */
+		unset( $local );
+		return $zip->getAdapter()->getArchive()->close();
 	}
 }

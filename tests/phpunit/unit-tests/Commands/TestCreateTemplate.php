@@ -301,4 +301,8 @@ class CreateTemplateCli implements InterfaceCli {
 	public function outputInFormat( $format, $data, $keys ) {
 
 	}
+
+	public function createProgressBar( $message, $ticks ) {
+
+	}
 }

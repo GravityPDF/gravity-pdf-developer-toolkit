@@ -103,4 +103,14 @@ interface InterfaceCli {
 	 * @since 1.0
 	 */
 	public function outputInFormat( $format, $data, $keys );
+
+	/**
+	 * Return the Progress Bar Class
+	 *
+	 * @param string $message The message to display before a progress bar
+	 * @param int    $ticks   The number of ticks to include in the progress bar
+	 *
+	 * @return WP_CLI\Utils\cli\progress\Bar
+	 */
+	public function createProgressBar( $message, $ticks );
 }
