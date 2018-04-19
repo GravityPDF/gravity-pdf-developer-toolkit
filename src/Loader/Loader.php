@@ -119,7 +119,7 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	public function handleToolkitTemplate( $args, $pdfHelper ) {
 		$args = $this->prepareArguments( $args, $pdfHelper );
 		$this->setDefaultStyles( $args['w'], $args['settings'] );
-		$this->loadTemplate( $pdfHelper->get_template_path(), $args );
+		$this->loadTemplate( $pdfHelper->get_template_path(), $args, $pdfHelper );
 	}
 
 	/**
@@ -192,10 +192,12 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 *
 	 * @since 1.0
 	 */
-	protected function loadTemplate( $template, $args ) {
-		do_action( 'gfpdf_developer_toolkit_pre_load_template', $template, $args );
+	protected function loadTemplate( $template, $args, $pdfHelper ) {
+		do_action( 'gfpdf_developer_toolkit_pre_load_template', $template, $args, $pdfHelper );
 
 		extract( $args, EXTR_SKIP );
 		include $template;
+
+		do_action( 'gfpdf_developer_toolkit_post_load_template', $template, $args, $pdfHelper );
 	}
 }

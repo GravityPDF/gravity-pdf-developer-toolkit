@@ -2,6 +2,7 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Legacy;
 
+use GFPDF\Helper\Helper_Interface_Actions;
 use GFPDF\Helper\Helper_Interface_Filters;
 
 /**
@@ -44,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since   1.0
  */
-class LegacyLoader implements Helper_Interface_Filters {
+class LegacyLoader implements Helper_Interface_Filters, Helper_Interface_Actions {
 
 	/**
 	 * Initialise class
@@ -55,6 +56,7 @@ class LegacyLoader implements Helper_Interface_Filters {
 	 */
 	public function init() {
 		$this->add_filters();
+		$this->add_actions();
 	}
 
 	/**
@@ -67,6 +69,17 @@ class LegacyLoader implements Helper_Interface_Filters {
 	public function add_filters() {
 		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybeSkipPdfHtmlRender' ], 10, 2 );
 		add_filter( 'gfpdf_developer_toolkit_template_args', [ $this, 'maybeAddLegacyTemplateArgs' ], 10, 2 );
+	}
+
+	/**
+	 * Add WordPress actions
+	 *
+	 * @return void
+	 *
+	 * @since 1.0
+	 */
+	public function add_actions() {
+		add_action( 'gfpdf_developer_toolkit_post_load_template', [ $this, 'overloadMpdfClass' ], 10, 3 );
 	}
 
 	/**
@@ -116,6 +129,25 @@ class LegacyLoader implements Helper_Interface_Filters {
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Overload the current Mpdf object being processed if template creates its own object
+	 *
+	 * @param $template
+	 * @param $args
+	 * @param $pdfHelper
+	 *
+	 * @since 1.0
+	 */
+	public function overloadMpdfClass( $template, $args, $pdfHelper ) {
+		global $pdf;
+
+		if ( $this->isLegacyAdvancedTemplate( $args ) && method_exists( $pdfHelper, 'set_pdf_class' ) ) {
+			if ( get_class( $pdf ) === get_class( $args['mpdf'] ) && $pdf !== $args['mpdf'] ) {
+				$pdfHelper->set_pdf_class( $pdf );
+			}
+		}
 	}
 
 	/**
