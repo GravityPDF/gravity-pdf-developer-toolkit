@@ -33,15 +33,18 @@ if ( ! class_exists( 'GFForms' ) ) {
  * $args (contains an array of all variables - the ones being described right now - passed to the template)
  *
  * @var GFPDF\Plugins\DeveloperToolkit\Writer\Writer $w
- * @var mPDF $mpdf
+ * @var mPDF                                         $mpdf
  */
 
 /* Load PDF Styles */
 $w->beginStyles();
 ?&#x3E;
     <style>
-        body {
-            color: red;
+        /* Helper styles to see the field mapping. Remove when ready. */
+        .single,
+        .multi {
+            background: lightyellow;
+            color: #000;
         }
     </style>
 &#x3C;?php

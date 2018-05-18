@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class <?php echo $data['name'] . "\n"; ?>
  *
- * @package GFPDF\Templates\Config
+ * @package  GFPDF\Templates\Config
  *
  * @Internal See https://gravitypdf.com/documentation/v4/developer-template-configuration-and-image/ for more information about this class
  */
@@ -25,12 +25,12 @@ class <?php echo $data['name']; ?> implements Helper_Interface_Config, Helper_In
 	 * Runs when the template is initially installed via the PDF Template Manager
 	 *
 	 * @Internal Great for installing custom fonts you've shipped with your template.
-     * @Internal Recommend creating the directory structure /install/<?php echo $data['name']; ?>/ for bundled fonts
+	 * @Internal Recommend creating the directory structure /install/<?php echo $data['name']; ?>/ for bundled fonts
 	 *
-	 * @since 1.0
+	 * @since    1.0
 	 */
 	public function setUp() {
-//		$font_data =  [
+//		$font_data = [
 //			'font_name'   => 'Font Name',
 //			'regular'     => __DIR__ . '/../install/<?php echo $data['name']; ?>/font-name/regular.ttf',
 //			'italics'     => __DIR__ . '/../install/<?php echo $data['name']; ?>/font-name/italics.ttf',
@@ -46,7 +46,7 @@ class <?php echo $data['name']; ?> implements Helper_Interface_Config, Helper_In
 	 *
 	 * @Internal Great for cleaning up any additional directories
 	 *
-	 * @since 1.0
+	 * @since    1.0
 	 */
 	public function tearDown() {
 //		$misc = GPDFAPI::get_misc_class();
@@ -63,7 +63,7 @@ class <?php echo $data['name']; ?> implements Helper_Interface_Config, Helper_In
 	public function configuration() {
 //		return [
 //			/* Enable core fields */
-//			'core' => [
+//			'core'   => [
 //				'show_form_title'      => true,
 //				'show_page_names'      => true,
 //				'show_html'            => true,
