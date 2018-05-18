@@ -13,13 +13,15 @@
   var currentTemplate
 
   $(function () {
-    var isToolkit = gfpdf_current_pdf.toolkit || false
-    showOrHideAppearanceSettings(isToolkit)
+    if (typeof gfpdf_current_pdf === 'object') {
+      var isToolkit = gfpdf_current_pdf.toolkit || false
+      showOrHideAppearanceSettings(isToolkit)
 
-    /* Gravity PDF JS unbinds change events on actual selector. As events bubble, we'll lisen on the parent element */
-    var $select = $('#gfpdf_settings\\[template\\]')
-    currentTemplate = $select.val()
-    $select.parent().change(queryTemplateHeader)
+      /* Gravity PDF JS unbinds change events on actual selector. As events bubble, we'll lisen on the parent element */
+      var $select = $('#gfpdf_settings\\[template\\]')
+      currentTemplate = $select.val()
+      $select.parent().change(queryTemplateHeader)
+    }
   })
 
   /**
