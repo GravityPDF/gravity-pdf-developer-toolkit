@@ -165,7 +165,7 @@ class TestCreateTemplate extends WP_UnitTestCase {
 		$this->assertRegExp( '/\* \$w \(A helper class that does the heavy lifting and PDF manipulation\)/', $fileContents );
 		$this->assertRegExp( '/\* \$mpdf \(The raw Mpdf object\)/', $fileContents );
 		$this->assertRegExp( '/\* \@var GFPDF\\\Plugins\\\DeveloperToolkit\\\Writer\\\Writer \$w/', $fileContents );
-		$this->assertRegExp( '/\* \@var mPDF \$mpdf/', $fileContents );
+		$this->assertRegExp( '/\* \@var mPDF                                         \$mpdf/', $fileContents );
 
 		$this->assertRegExp( '/\$w->beginStyles\(\);/', $fileContents );
 		$this->assertRegExp( '/\$w->endStyles\(\);/', $fileContents );
