@@ -45,13 +45,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Multi extends AbstractWriter {
 
 	/**
-	 * @var int The default font size in points
+	 * @var int The default font size in points. This is overridden by the UI Font Size.
+	 * @see \GFPDF\Plugins\DeveloperToolkit\Loader\Loader::setDefaultStyles()
 	 * @since 1.0
 	 */
 	protected $fontSize = 10;
 
 	/**
-	 * @var int The default line height in points
+	 * @var int The default line height in points. This is overridden by the (UI Font Size * 1.4).
+	 * @see \GFPDF\Plugins\DeveloperToolkit\Loader\Loader::setDefaultStyles()
 	 * @since 1.0
 	 */
 	protected $lineHeight = 14;
@@ -72,8 +74,8 @@ class Multi extends AbstractWriter {
 	 *
 	 * The default configuration is as follows, but can be overriden for each call:
 	 *
-	 * - font-size: `10pt` - Controls the font size used
-	 * - line-height: `14pt` - Controls the line height used
+	 * - font-size: `UI Font Size|10pt` - Controls the font size used
+	 * - line-height: `(UI Font Size * 1.4)|14pt` - Controls the line height used
 	 * - strip-br: `false` - Whether to strip BR tags and replace them with 3 hard spaces.
 	 *
 	 * By default, if the text extends outside the container it will be shrunk to fit (this can be overriden). All content
