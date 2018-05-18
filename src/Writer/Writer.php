@@ -86,22 +86,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package GFPDF\Plugins\DeveloperToolkit\Writer
  *
- * @method void addPdf( string $path ) Load a PDF with verison 1.4 or 1.5 of the Adobe Spec for use with Mpdf. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
- * @method void addPage( int $id, array $args = [] )  Display a page, or range of pages, from the loaded PDF in the PDF being rendered. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
- * @method void addBlankPage( array $args = [] )  Add a blank page to the PDF being rendered. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
- * @method array getPdfPageSize()  Returns the current loaded PDF page sizes. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
- * @method array getPdfPageIds()  Returns the current loaded PDF page IDs. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import for full details.
- * @method void add( string $html, array $position = [], string $overflow = 'auto' )  Add content to the PDF that has a fixed positioned and is better suited for a single line of text. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Single for full details.
- * @method void configMulti( array $config )  Sets the new default configuration to apply to all new multi elements. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Multi for full details.
- * @method void getMultiConfig()  Get the current Multi configuration. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Multi for full details.
- * @method void addMulti( string $html, array $position = [], string $overflow = 'auto', array $config = [] )  Add content to the PDF that has a fixed positioned and is better configured for multiline output. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Multi for full details.
- * @method void configTick( array $config )  Sets the new default configuration to apply to all new tick elements. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Tick for full details.
- * @method void getTickConfig()  Get the current Tick configuration. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Tick for full details.
- * @method void tick( array $position, array $config = [] )  Adds a tick character to the PDF at the requested coordinates. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Tick for full details.
- * @method void ellipse( array $position )  Adds an Ellipse to the PDF being rendered. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Ellipse for full details.
- * @method void addHtml( string $html )  Add HTML directly to Mpdf using the current Y pointer position. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Html for full details.
- * @method void beginStyles()  Captures any output and stores it in our buffer. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Styles for full details.
- * @method void endStyles()  Takes the captured buffer, strips the `style` HTML tags and adds it to Mpdf. See GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Styles for full details.
+ * @mixin \GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Import
+ * @mixin \GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Single
+ * @mixin \GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Multi
+ * @mixin \GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Ellipse
+ * @mixin \GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Tick
+ * @mixin \GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Html
+ * @mixin \GFPDF\Plugins\DeveloperToolkit\Writer\Processes\Styles
  *
  * @since   1.0
  */
