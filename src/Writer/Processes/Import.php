@@ -196,14 +196,13 @@ class Import extends AbstractWriter {
 	/**
 	 * Load up the PDF pages for Mpdf to use
 	 *
-	 * @param mPDF   $mpdf     The current Mpdf object we're loading the pages into
-	 * @param string $path     The path to the PDF being loaded
-	 * @param bool   $getSizes Whether to load the PDF pages and get the sizes, or just import the pages
+	 * @param \mPDF|\Mpdf\Mpdf $mpdf     The current Mpdf object we're loading the pages into
+	 * @param string           $path     The path to the PDF being loaded
+	 * @param bool             $getSizes Whether to load the PDF pages and get the sizes, or just import the pages
 	 *
 	 * @since 1.0
-	 *
 	 */
-	protected function loadPdfPages( mPDF $mpdf, $path, $getSizes = false ) {
+	protected function loadPdfPages( $mpdf, $path, $getSizes = false ) {
 		$mpdf->SetImportUse();
 
 		$page_total = $mpdf->SetSourceFile( $path );

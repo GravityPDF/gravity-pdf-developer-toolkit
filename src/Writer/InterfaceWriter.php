@@ -2,8 +2,6 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Writer;
 
-use mPDF;
-
 /**
  * @package     Gravity PDF Developer Toolkit
  * @copyright   Copyright (c) 2018, Blue Liquid Designs
@@ -48,13 +46,13 @@ interface InterfaceWriter {
 	/**
 	 * Setter for our Mpdf class
 	 *
-	 * @param mPDF $mpdf
+	 * @param \mPDF|\Mpdf\Mpdf $mpdf
 	 *
 	 * @return void
 	 *
 	 * @since 1.0
 	 */
-	public function setMpdf( mPDF $mpdf );
+	public function setMpdf( $mpdf );
 
 	/**
 	 * Check if our Mpdf Setter has been run

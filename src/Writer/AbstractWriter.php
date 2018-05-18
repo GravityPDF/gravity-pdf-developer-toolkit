@@ -2,8 +2,6 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Writer;
 
-use mPDF;
-
 /**
  * @package     Gravity PDF Developer Toolkit
  * @copyright   Copyright (c) 2018, Blue Liquid Designs
@@ -44,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class AbstractWriter implements InterfaceWriter {
 
 	/**
-	 * @var mPDF
+	 * @var \mPDF|\Mpdf\Mpdf
 	 * @since 1.0
 	 */
 	protected $mpdf;
@@ -52,18 +50,18 @@ abstract class AbstractWriter implements InterfaceWriter {
 	/**
 	 * Our Mpdf Setter
 	 *
-	 * @param mPDF $mpdf
+	 * @param \mPDF|\Mpdf\Mpdf $mpdf
 	 *
 	 * @since 1.0
 	 */
-	public function setMpdf( mPDF $mpdf ) {
+	public function setMpdf( $mpdf ) {
 		$this->mpdf = $mpdf;
 	}
 
 	/**
 	 * Get the current Mpdf object
 	 *
-	 * @return mPDF
+	 * @return \mPDF|\Mpdf\Mpdf
 	 *
 	 * @since 1.0
 	 */
