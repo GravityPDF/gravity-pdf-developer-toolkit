@@ -91,7 +91,7 @@ class TestSingle extends WP_UnitTestCase {
 
 		}
 
-		$this->assertEquals( '$overflow can only be "auto", "visible" or "hidden".', $e->getMessage() );
+		$this->assertEquals( '$overflow can only be "auto" or "visible".', $e->getMessage() );
 	}
 
 	/**
@@ -107,5 +107,35 @@ class TestSingle extends WP_UnitTestCase {
 		$this->class->add( '', [ 10, 10, 10, 10 ] );
 		$this->class->add( '', [ 10, 10, 10, 10 ] );
 		$this->class->add( '', [ 10, 10, 10, 10 ] );
+	}
+
+	/**
+	 * @since 1.0.0-beta2
+	 */
+	public function testaddCenter() {
+		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
+		$mpdf->expects( $this->exactly( 3 ) )
+		     ->method( 'WriteFixedPosHTML' );
+
+		$this->class->setMpdf( $mpdf );
+
+		$this->class->addCenter( '', [ 10, 10, 10, 10 ] );
+		$this->class->addCenter( '', [ 10, 10, 10, 10 ] );
+		$this->class->addCenter( '', [ 10, 10, 10, 10 ] );
+	}
+
+	/**
+	 * @since 1.0.0-beta2
+	 */
+	public function testaddRight() {
+		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
+		$mpdf->expects( $this->exactly( 3 ) )
+		     ->method( 'WriteFixedPosHTML' );
+
+		$this->class->setMpdf( $mpdf );
+
+		$this->class->addRight( '', [ 10, 10, 10, 10 ] );
+		$this->class->addRight( '', [ 10, 10, 10, 10 ] );
+		$this->class->addRight( '', [ 10, 10, 10, 10 ] );
 	}
 }
