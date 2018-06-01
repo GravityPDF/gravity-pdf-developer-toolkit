@@ -66,7 +66,7 @@ class Single extends AbstractWriter {
 	 *
 	 * @param string $html     The content to add to the PDF being rendered
 	 * @param array  $position The X, Y, Width and Height of the element
-	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto" or "visible"
+	 * @param string $overflow Whether to show or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto" or "visible"
 	 *
 	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), if `$overflow` doesn't include an accepted argument, or $html is not a string
 	 *
@@ -92,5 +92,47 @@ class Single extends AbstractWriter {
 		);
 
 		$this->mpdf->WriteFixedPosHTML( $output, $position[0], $position[1], $position[2], $position[3], $overflow );
+	}
+
+	/**
+	 * Add Single Line content to PDF with center alignment
+	 *
+	 * @see   Single::add() for full documentation
+	 *
+	 * ## Example
+	 *
+	 *      // Add content to the current page positioned 20mm from the left, 50mm from the top, with a width of 30mm, a height of 5mm and aligned right
+	 *      $w->addCenter( 'My content', [ 20, 50, 30, 5 ] );
+	 *
+	 * @param string $html     The content to add to the PDF being rendered
+	 * @param array  $position The X, Y, Width and Height of the element
+	 * @param string $overflow Whether to show or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto" or "visible"
+	 *
+	 * @since 1.0.0-beta2
+	 */
+	public function addCenter( $html, $position = [], $overflow = 'auto' ) {
+		$html = '<div style="text-align: center">' . $html . '</div>';
+		$this->add( $html, $position, $overflow );
+	}
+
+	/**
+	 * Add Single Line content to PDF with right alignment
+	 *
+	 * @see   Single::add() for full documentation
+	 *
+	 * ## Example
+	 *
+	 *      // Add content to the current page positioned 20mm from the left, 50mm from the top, with a width of 30mm, a height of 5mm and aligned right
+	 *      $w->addRight( 'My content', [ 20, 50, 30, 5 ] );
+	 *
+	 * @param string $html     The content to add to the PDF being rendered
+	 * @param array  $position The X, Y, Width and Height of the element
+	 * @param string $overflow Whether to show or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto" or "visible"
+	 *
+	 * @since 1.0.0-beta2
+	 */
+	public function addRight( $html, $position = [], $overflow = 'auto' ) {
+		$html = '<div style="text-align: right">' . $html . '</div>';
+		$this->add( $html, $position, $overflow );
 	}
 }

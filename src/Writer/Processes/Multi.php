@@ -46,14 +46,14 @@ class Multi extends AbstractWriter {
 
 	/**
 	 * @var int The default font size in points. This is overridden by the UI Font Size.
-	 * @see \GFPDF\Plugins\DeveloperToolkit\Loader\Loader::setDefaultStyles()
+	 * @see   \GFPDF\Plugins\DeveloperToolkit\Loader\Loader::setDefaultStyles()
 	 * @since 1.0
 	 */
 	protected $fontSize = 10;
 
 	/**
 	 * @var int The default line height in points. This is overridden by the (UI Font Size * 1.4).
-	 * @see \GFPDF\Plugins\DeveloperToolkit\Loader\Loader::setDefaultStyles()
+	 * @see   \GFPDF\Plugins\DeveloperToolkit\Loader\Loader::setDefaultStyles()
 	 * @since 1.0
 	 */
 	protected $lineHeight = 14;
@@ -98,7 +98,7 @@ class Multi extends AbstractWriter {
 	 *
 	 * @param string $html     The content to add to the PDF being rendered
 	 * @param array  $position The X, Y, Width and Height of the element
-	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted arguments include "auto" or "visible"
+	 * @param string $overflow Whether to show or resize the $html if the content doesn't fit inside the width/height. Accepted arguments include "auto" or "visible"
 	 * @param array  $config   Override the default configuration on a per-element basis. Accepted array keys include 'font-size', 'line-height', 'strip-br'
 	 *
 	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), if `$overflow` doesn't include an accepted argument, or $html is not a string
@@ -143,6 +143,50 @@ class Multi extends AbstractWriter {
 		);
 
 		$this->mpdf->WriteFixedPosHTML( $output, $position[0], $position[1], $position[2], $position[3], $overflow );
+	}
+
+	/**
+	 * Add Multi-line content to the PDF
+	 *
+	 * @see   Multi::addMulti() for full documentation
+	 *
+	 * ## Example
+	 *
+	 *      // Add multi-line content to the current page positioned 20mm from the left, 50mm from the top, with a width of 30mm, a height of 5mm and aligned right
+	 *      $w->addMultiCenter( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ] );
+	 *
+	 * @param string $html     The content to add to the PDF being rendered
+	 * @param array  $position The X, Y, Width and Height of the element
+	 * @param string $overflow Whether to show or resize the $html if the content doesn't fit inside the width/height. Accepted arguments include "auto" or "visible"
+	 * @param array  $config   Override the default configuration on a per-element basis. Accepted array keys include 'font-size', 'line-height', 'strip-br'
+	 *
+	 * @since 1.0.0-beta2
+	 */
+	public function addMultiCenter( $html, $position = [], $overflow = 'auto', $config = [] ) {
+		$html = '<div style="text-align: center">' . $html . '</div>';
+		$this->addMulti( $html, $position, $overflow, $config );
+	}
+
+	/**
+	 * Add Multi-line content to the PDF
+	 *
+	 * @see   Multi::addMulti() for full documentation
+	 *
+	 * ## Example
+	 *
+	 *      // Add content to the current page positioned 20mm from the left, 50mm from the top, with a width of 30mm, a height of 5mm and aligned right
+	 *      $w->addMultiRight( 'Line 1<br>Line2<br>Line3', [ 20, 50, 30, 5 ] );
+	 *
+	 * @param string $html     The content to add to the PDF being rendered
+	 * @param array  $position The X, Y, Width and Height of the element
+	 * @param string $overflow Whether to show or resize the $html if the content doesn't fit inside the width/height. Accepted arguments include "auto" or "visible"
+	 * @param array  $config   Override the default configuration on a per-element basis. Accepted array keys include 'font-size', 'line-height', 'strip-br'
+	 *
+	 * @since 1.0.0-beta2
+	 */
+	public function addMultiRight( $html, $position = [], $overflow = 'auto', $config = [] ) {
+		$html = '<div style="text-align: right">' . $html . '</div>';
+		$this->addMulti( $html, $position, $overflow, $config );
 	}
 
 	/**
