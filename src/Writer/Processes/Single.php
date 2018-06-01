@@ -64,12 +64,9 @@ class Single extends AbstractWriter {
 	 *      // Instead of shrinking the content to fit the container, the 'visible' property will allow it to overflow the container
 	 *      $w->add( 'My content', [ 20, 50, 30, 5 ], 'visible' );
 	 *
-	 *      // The 'hidden' property will crop any content that extends outside the container
-	 *      $w->add( 'My content', [ 20, 50, 30, 5 ], 'hidden' );
-	 *
 	 * @param string $html     The content to add to the PDF being rendered
 	 * @param array  $position The X, Y, Width and Height of the element
-	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto", "visible" or "hidden"
+	 * @param string $overflow Whether to show, hide or resize the $html if the content doesn't fit inside the width/height. Accepted parameters include "auto" or "visible"
 	 *
 	 * @throws BadMethodCallException Will be thrown if `$position` doesn't include four array items (x, y, width, height), if `$overflow` doesn't include an accepted argument, or $html is not a string
 	 *
@@ -85,8 +82,8 @@ class Single extends AbstractWriter {
 			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}
 
-		if ( ! in_array( $overflow, [ 'auto', 'visible', 'hidden' ] ) ) {
-			throw new BadMethodCallException( '$overflow can only be "auto", "visible" or "hidden".' );
+		if ( ! in_array( $overflow, [ 'auto', 'visible' ] ) ) {
+			throw new BadMethodCallException( '$overflow can only be "auto" or "visible".' );
 		}
 
 		$output = sprintf(
