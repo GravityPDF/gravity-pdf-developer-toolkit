@@ -129,7 +129,13 @@ class Multi extends AbstractWriter {
 		$stripBr    = ( isset( $config['strip-br'] ) ) ? (int) $config['strip-br'] : $this->stripBr;
 
 		if ( $stripBr ) {
-			$html = str_replace( [ '<br>', '<br/>', '<br />' ], ' &nbsp; ', $html );
+			$html = str_replace( [ "\r", "\n" ], '', $html ); /* Strip new line characters */
+			$html = str_replace( [ '<br>', '<br/>', '<br />' ], ' &nbsp; ', $html ); /* Convert BR tags to non-breaking spaces */
+
+			/* Strip duplicate non-breaking spaces
+			 * See https://stackoverflow.com/a/6723412/1614565
+			 */
+			$html = preg_replace( "/( \&nbsp\; )\\1+/", "$1", $html );
 		}
 
 		$output = sprintf(
