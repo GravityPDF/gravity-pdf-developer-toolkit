@@ -108,8 +108,8 @@ class CreateTemplate {
 	 * @throws \Exception
 	 */
 	public function __invoke( $templateArray, $args = [] ) {
-		$templateName   = implode( ' ', array_filter( $templateArray ) );
-		$shortname      = mb_strtolower( str_replace( ' ', '-', $templateName ) );
+		$templateName = implode( ' ', array_filter( $templateArray ) );
+		$shortname    = $this->getTemplateFilename( $templateName );
 		$filename       = $shortname . '.php';
 		$fullPathToFile = $this->workingDirectory . $filename;
 
@@ -218,6 +218,24 @@ class CreateTemplate {
 		} else {
 			$this->cli->success( $successMsg );
 		}
+	}
+
+	/**
+	 * Strip non-ASCII and special characters from filename
+	 *
+	 * @param string $templateName
+	 *
+	 * @return string
+	 *
+	 * @since 1.0
+	 */
+	protected function getTemplateFilename( $templateName ) {
+		$characters = [ '/', '\\', '"', '*', '?', '|', ':', '<', '>', "'" ];
+
+		$filename = str_replace( $characters, '', $templateName );
+		$filename = preg_replace( '/[\x00-\x1F\x80-\xFF]/', '', $filename );
+
+		return $filename;
 	}
 
 	/**
