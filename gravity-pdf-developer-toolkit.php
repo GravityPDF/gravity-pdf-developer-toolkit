@@ -24,23 +24,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
-    This file is part of Gravity PDF Developer Toolkit.
+	This file is part of Gravity PDF Developer Toolkit.
 
-    Copyright (c) 2018, Blue Liquid Designs
+	Copyright (c) 2018, Blue Liquid Designs
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 define( 'GFPDF_DEVELOPER_TOOLKIT_FILE', __FILE__ );
@@ -82,15 +82,17 @@ class GpdfDeveloperToolkitChecks {
 		$this->checkGravitypdfVersion();
 
 		/* Check if any errors were thrown, enqueue them and exit early */
-		if ( sizeof( $this->notices ) > 0 ) {
+		if ( count( $this->notices ) > 0 ) {
 			add_action( 'admin_notices', [ $this, 'displayNotices' ] );
 
 			return null;
 		}
 
-		add_action( 'gfpdf_fully_loaded', function() {
-			require_once __DIR__ . '/src/bootstrap.php';
-		} );
+		add_action(
+			'gfpdf_fully_loaded', function() {
+				require_once __DIR__ . '/src/bootstrap.php';
+			}
+		);
 	}
 
 	/**
@@ -103,8 +105,9 @@ class GpdfDeveloperToolkitChecks {
 	public function checkGravitypdfVersion() {
 
 		/* Check if the Gravity PDF Minimum version requirements are met */
-		if ( defined( 'PDF_EXTENDED_VERSION' ) &&
-		     version_compare( PDF_EXTENDED_VERSION, $this->requiredGravitypdfVersion, '>=' )
+		if (
+			defined( 'PDF_EXTENDED_VERSION' ) &&
+			version_compare( PDF_EXTENDED_VERSION, $this->requiredGravitypdfVersion, '>=' )
 		) {
 			return true;
 		}
@@ -122,24 +125,26 @@ class GpdfDeveloperToolkitChecks {
 	 */
 	public function displayNotices() {
 		?>
-        <div class="error">
-            <p>
-                <strong><?php esc_html_e( 'Gravity PDF Developer Toolkit Installation Problem', 'gravity-pdf-developer-toolkit' ); ?></strong>
-            </p>
+		<div class="error">
+			<p>
+				<strong><?php esc_html_e( 'Gravity PDF Developer Toolkit Installation Problem', 'gravity-pdf-developer-toolkit' ); ?></strong>
+			</p>
 
-            <p><?php esc_html_e( 'The minimum requirements for the Gravity PDF Developer Toolkit plugin have not been met. Please fix the issue(s) below to continue:', 'gravity-pdf-developer-toolkit' ); ?></p>
-            <ul style="padding-bottom: 0.5em">
-				<?php foreach ( $this->notices as $notice ) : ?>
-                    <li style="padding-left: 20px;list-style: inside"><?php echo $notice; ?></li>
+			<p><?php esc_html_e( 'The minimum requirements for the Gravity PDF Developer Toolkit plugin have not been met. Please fix the issue(s) below to continue:', 'gravity-pdf-developer-toolkit' ); ?></p>
+			<ul style="padding-bottom: 0.5em">
+				<?php foreach ( $this->notices as $notice ): ?>
+					<li style="padding-left: 20px;list-style: inside"><?php echo $notice; ?></li>
 				<?php endforeach; ?>
-            </ul>
-        </div>
+			</ul>
+		</div>
 		<?php
 	}
 }
 
 /* Initialise the software */
-add_action( 'plugins_loaded', function() {
-	$gravitypdfDeveloperToolkit = new GpdfDeveloperToolkitChecks();
-	$gravitypdfDeveloperToolkit->init();
-} );
+add_action(
+	'plugins_loaded', function() {
+		$gravitypdfDeveloperToolkit = new GpdfDeveloperToolkitChecks();
+		$gravitypdfDeveloperToolkit->init();
+	}
+);

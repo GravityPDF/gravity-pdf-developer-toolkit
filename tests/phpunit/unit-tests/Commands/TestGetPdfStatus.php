@@ -65,8 +65,8 @@ class TestGetPdfStatus extends WP_UnitTestCase {
 		$this->path = __DIR__ . '/../../../../tmp/';
 
 		$cli = $this->getMockBuilder( GetPdfStatusCli::class )
-		            ->setMethods( [ 'getResponse' ] )
-		            ->getMock();
+					->setMethods( [ 'getResponse' ] )
+					->getMock();
 
 		$this->class = new GetPdfStatus( \GPDFAPI::get_data_class(), \GPDFAPI::get_options_class(), $cli );
 

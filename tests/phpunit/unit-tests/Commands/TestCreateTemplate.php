@@ -65,19 +65,21 @@ class TestCreateTemplate extends WP_UnitTestCase {
 		$this->path = __DIR__ . '/../../../../tmp/';
 
 		$cli = $this->getMockBuilder( CreateTemplateCli::class )
-		            ->setMethods( [ 'getResponse' ] )
-		            ->getMock();
+					->setMethods( [ 'getResponse' ] )
+					->getMock();
 
 		$cli->method( 'getResponse' )
-		    ->will( $this->onConsecutiveCalls(
-			    'This is the template description',
-			    'Gravity PDF',
-			    'https://gravitypdf',
-			    'Universal',
-			    'GPLv2',
-			    '4.4',
-			    'funny, sad, happy'
-		    ) );
+			->will(
+				$this->onConsecutiveCalls(
+					'This is the template description',
+					'Gravity PDF',
+					'https://gravitypdf',
+					'Universal',
+					'GPLv2',
+					'4.4',
+					'funny, sad, happy'
+				)
+			);
 
 		$this->class = new CreateTemplate( $this->path, $cli );
 
@@ -202,7 +204,12 @@ class TestCreateTemplate extends WP_UnitTestCase {
 	public function testCreateToolkitTemplateNoHeaders() {
 		ob_start();
 		$class = $this->class;
-		$class( [ 'My Template' ], [ 'skip-headers' => true, 'enable-toolkit' => true ] );
+		$class(
+			[ 'My Template' ], [
+				'skip-headers'   => true,
+				'enable-toolkit' => true,
+			]
+		);
 		$content = ob_get_clean();
 
 		$this->assertRegExp( '/Your template has been generated and saved to/', $content );
@@ -227,7 +234,12 @@ class TestCreateTemplate extends WP_UnitTestCase {
 	public function testCreateTemplateConfig() {
 		ob_start();
 		$class = $this->class;
-		$class( [ 'My Template' ], [ 'skip-headers' => true, 'enable-config' => true ] );
+		$class(
+			[ 'My Template' ], [
+				'skip-headers'  => true,
+				'enable-config' => true,
+			]
+		);
 		$content = ob_get_clean();
 
 		$this->assertRegExp( '/Your template has been generated and saved to/', $content );
