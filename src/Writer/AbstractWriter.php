@@ -2,6 +2,8 @@
 
 namespace GFPDF\Plugins\DeveloperToolkit\Writer;
 
+use BadMethodCallException;
+
 /**
  * @package     Gravity PDF Developer Toolkit
  * @copyright   Copyright (c) 2018, Blue Liquid Designs
@@ -55,6 +57,11 @@ abstract class AbstractWriter implements InterfaceWriter {
 	 * @since 1.0
 	 */
 	public function setMpdf( $mpdf ) {
+		/* Ensure $mpdf object is one we expect */
+		if ( ! in_array( get_class( $mpdf ), [ 'mPDF', 'Mpdf\Mpdf' ] ) ) {
+			throw new BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf' );
+		}
+
 		$this->mpdf = $mpdf;
 	}
 

@@ -3,9 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use GFPDF\Plugins\DeveloperToolkit\Writer\AbstractWriter;
-use mPDF;
 use BadMethodCallException;
-use Mpdf\MpdfException;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -188,8 +186,6 @@ class Import extends AbstractWriter {
 	 * @param string $path The path to the PDF being loaded
 	 *
 	 * @since 1.0
-	 *
-	 * @throws MpdfException
 	 */
 	protected function setPdfPageSizes( $path ) {
 		$class = get_class( $this->mpdf );
@@ -205,13 +201,18 @@ class Import extends AbstractWriter {
 	 *
 	 * @since 1.0
 	 *
-	 * @throws MpdfException
+	 * @throws BadMethodCallException Thrown when $mpdf not \mPDF|\Mpdf\Mpdf
 	 */
 	protected function loadPdfPages( $mpdf, $path, $getSizes = false ) {
+
+		/* Ensure $mpdf object is one we expect */
+		if ( ! in_array( get_class( $mpdf ), [ 'mPDF', 'Mpdf\Mpdf' ] ) ) {
+			throw new BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf' );
+		}
+
 		$mpdf->SetImportUse();
 
 		$page_total = $mpdf->SetSourceFile( $path );
-
 		for ( $i = 1; $i <= $page_total; $i++ ) {
 			$this->pageId[ $i ] = $mpdf->ImportPage( $i );
 
@@ -228,7 +229,6 @@ class Import extends AbstractWriter {
 	 * @param array $args
 	 *
 	 * @throws BadMethodCallException
-	 * @throws MpdfException
 	 *
 	 * @since 1.0
 	 */
