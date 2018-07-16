@@ -31,23 +31,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
-    This file is part of Gravity PDF Developer Toolkit.
+	This file is part of Gravity PDF Developer Toolkit.
 
-    Copyright (c) 2018, Blue Liquid Designs
+	Copyright (c) 2018, Blue Liquid Designs
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 /* Load Composer */
@@ -78,15 +78,17 @@ class Bootstrap extends Helper_Abstract_Addon {
 	public function init( $classes = [] ) {
 
 		/* Register our classes and pass back up to the parent initialiser */
-		$classes = array_merge( $classes, [
-			new Loader(),
-			new LegacyLoader(),
-			new Header( GPDFAPI::get_templates_class() ),
-			new Javascript( GPDFAPI::get_misc_class(), GPDFAPI::get_templates_class() ),
-			new Deactivate( GPDFAPI::get_options_class() ),
-			new AdvancedTemplate( GPDFAPI::get_options_class() ),
-			new Register(),
-		] );
+		$classes = array_merge(
+			$classes, [
+				new Loader(),
+				new LegacyLoader(),
+				new Header( GPDFAPI::get_templates_class() ),
+				new Javascript( GPDFAPI::get_misc_class(), GPDFAPI::get_templates_class() ),
+				new Deactivate( GPDFAPI::get_options_class() ),
+				new AdvancedTemplate( GPDFAPI::get_options_class() ),
+				new Register(),
+			]
+		);
 
 		/* Run the setup */
 		parent::init( $classes );
@@ -113,8 +115,6 @@ class Bootstrap extends Helper_Abstract_Addon {
 				'beta'      => false,
 			]
 		);
-
-		$this->log->notice( sprintf( '%s plugin updater initialised', $this->get_name() ) );
 	}
 }
 
@@ -122,18 +122,20 @@ class Bootstrap extends Helper_Abstract_Addon {
 $name = 'Gravity PDF Developer Toolkit';
 $slug = 'gravity-pdf-developer-toolkit';
 
-$plugin = apply_filters( 'gfpdf_developer_toolkit_initialise', new Bootstrap(
-	$slug,
-	$name,
-	'Gravity PDF',
-	GFPDF_DEVELOPER_TOOLKIT_VERSION,
-	GFPDF_DEVELOPER_TOOLKIT_FILE,
-	GPDFAPI::get_data_class(),
-	GPDFAPI::get_options_class(),
-	new Helper_Singleton(),
-	new Helper_Logger( $slug, $name ),
-	new Helper_Notices()
-) );
+$plugin = apply_filters(
+	'gfpdf_developer_toolkit_initialise', new Bootstrap(
+		$slug,
+		$name,
+		'Gravity PDF',
+		GFPDF_DEVELOPER_TOOLKIT_VERSION,
+		GFPDF_DEVELOPER_TOOLKIT_FILE,
+		GPDFAPI::get_data_class(),
+		GPDFAPI::get_options_class(),
+		new Helper_Singleton(),
+		new Helper_Logger( $slug, $name ),
+		new Helper_Notices()
+	)
+);
 
 $plugin->set_edd_download_id( 20716 );
 $plugin->set_addon_documentation_slug( 'shop-plugin-developer-toolkit' );

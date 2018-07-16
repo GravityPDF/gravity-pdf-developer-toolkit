@@ -21,23 +21,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
-    This file is part of Gravity PDF Developer Toolkit.
+	This file is part of Gravity PDF Developer Toolkit.
 
-    Copyright (c) 2018, Blue Liquid Designs
+	Copyright (c) 2018, Blue Liquid Designs
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 /**
@@ -88,8 +88,8 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 *
 	 * Triggered via the `gfpdf_skip_pdf_html_render` filter.
 	 *
-	 * @param bool       $skip      Whether we should skip the HTML sandbox
-	 * @param array      $args
+	 * @param bool  $skip Whether we should skip the HTML sandbox
+	 * @param array $args
 	 *
 	 * @return bool
 	 *
@@ -134,22 +134,25 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 */
 	protected function prepareArguments( $args, $pdfHelper ) {
 		/* Create a new Writer object and inject the current Mpdf object */
-		$mpdf   = $pdfHelper->get_pdf_class();
+		$mpdf = $pdfHelper->get_pdf_class();
 
 		$writer = FactoryWriter::build();
 		$writer->setMpdf( $mpdf );
 
-		$new_args = apply_filters( 'gfpdf_developer_toolkit_template_args', [
-			'w'         => $writer,
-			'mpdf'      => $mpdf,
-			'form'      => $args['form'],
-			'entry'     => $args['entry'],
-			'form_data' => $args['form_data'],
-			'fields'    => $args['fields'],
-			'config'    => $args['config'],
-			'settings'  => $args['settings'],
-			'gfpdf'     => $args['gfpdf'],
-		], $args, $pdfHelper );
+		$new_args = apply_filters( 'gfpdf_developer_toolkit_template_args',
+			[
+				'w'         => $writer,
+				'mpdf'      => $mpdf,
+				'form'      => $args['form'],
+				'entry'     => $args['entry'],
+				'form_data' => $args['form_data'],
+				'fields'    => $args['fields'],
+				'config'    => $args['config'],
+				'settings'  => $args['settings'],
+				'gfpdf'     => $args['gfpdf'],
+			],
+			$args, $pdfHelper
+		);
 
 		return $new_args;
 	}
@@ -167,14 +170,14 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 
 		$w->beginStyles();
 		?>
-        <style>
-            body, th, td, li, a {
-                font-family: "<?php echo $font; ?>", sans-serif;
-                font-size: <?php echo $fontSize; ?>pt;
-                line-height: <?php echo $fontSize; ?>pt;
-                color: <?php echo $fontColour; ?>;
-            }
-        </style>
+		<style>
+			body, th, td, li, a {
+				font-family: "<?php echo $font; ?>", sans-serif;
+				font-size: <?php echo $fontSize; ?>pt;
+				line-height: <?php echo $fontSize; ?>pt;
+				color: <?php echo $fontColour; ?>;
+			}
+		</style>s
 		<?php
 		$w->endStyles();
 

@@ -7,9 +7,9 @@
  * Author: <?php echo $data['author'] . "\n"; ?>
  * Author URI: <?php echo $data['author_uri'] . "\n"; ?>
  * Group: <?php echo $data['group'] . "\n"; ?>
-<?php echo ( !empty( $data['license'] ) ) ? ' * License: ' . $data['license'] . "\n" : ''; ?>
+<?php echo ( ! empty( $data['license'] ) ) ? ' * License: ' . $data['license'] . "\n" : ''; ?>
  * Required PDF Version: <?php echo $data['required_version'] . "\n"; ?>
-<?php echo ( !empty( $data['tags'] ) ) ? ' * Tags: ' . $data['tags'] . "\n" : ''; ?>
+<?php echo ( ! empty( $data['tags'] ) ) ? ' * Tags: ' . $data['tags'] . "\n" : ''; ?>
  */
 
 /* Prevent direct access to the template */
