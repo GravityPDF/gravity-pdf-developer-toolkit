@@ -203,16 +203,8 @@ class Import extends AbstractWriter {
 	 * @param bool             $getSizes Whether to load the PDF pages and get the sizes, or just import the pages
 	 *
 	 * @since 1.0
-	 *
-	 * @throws BadMethodCallException Thrown when $mpdf not \mPDF|\Mpdf\Mpdf
 	 */
 	protected function loadPdfPages( $mpdf, $path, $getSizes = false ) {
-
-		/* Ensure $mpdf object is one we expect */
-		if ( ! in_array( get_class( $mpdf ), [ 'mPDF', 'Mpdf\Mpdf' ] ) ) {
-			throw new BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf' );
-		}
-
 		$mpdf->SetImportUse();
 
 		$page_total = $mpdf->SetSourceFile( $path );

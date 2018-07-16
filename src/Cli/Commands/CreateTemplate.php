@@ -219,19 +219,20 @@ class CreateTemplate {
 	/**
 	 * Strip non-ASCII and special characters from filename
 	 *
-	 * @param string $templateName
+	 * @param string $filename
 	 *
 	 * @return string
 	 *
 	 * @since 1.0
 	 */
-	protected function getTemplateFilename( $templateName ) {
+	protected function getTemplateFilename( $filename ) {
 		$characters = [ '/', '\\', '"', '*', '?', '|', ':', '<', '>', "'" ];
 
-		$filename = str_replace( $characters, '', $templateName );
+		$filename = str_replace( $characters, '', $filename );
 		$filename = preg_replace( '/[\x00-\x1F\x80-\xFF]/', '', $filename );
+		$filename = str_replace( ' ', '-', $filename );
 
-		return $filename;
+		return mb_strtolower( $filename );
 	}
 
 	/**
