@@ -68,6 +68,7 @@ class LegacyLoader implements Helper_Interface_Filters, Helper_Interface_Actions
 	 */
 	public function add_filters() {
 		add_filter( 'gfpdf_skip_pdf_html_render', [ $this, 'maybeSkipPdfHtmlRender' ], 10, 2 );
+		add_filter( 'gfpdf_developer_toolkit_disable_default_styles', [ $this, 'maybeSkipPdfHtmlRender' ], 10, 2 );
 		add_filter( 'gfpdf_developer_toolkit_template_args', [ $this, 'maybeAddLegacyTemplateArgs' ], 10, 2 );
 	}
 

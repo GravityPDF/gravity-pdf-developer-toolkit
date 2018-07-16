@@ -118,7 +118,11 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 */
 	public function handleToolkitTemplate( $args, $pdfHelper ) {
 		$args = $this->prepareArguments( $args, $pdfHelper );
-		$this->setDefaultStyles( $args['w'], $args['settings'] );
+
+		if ( ! apply_filters( 'gfpdf_developer_toolkit_disable_default_styles', false, $args, $pdfHelper ) ) {
+			$this->setDefaultStyles( $args['w'], $args['settings'] );
+		}
+
 		$this->loadTemplate( $pdfHelper->get_template_path(), $args, $pdfHelper );
 	}
 
