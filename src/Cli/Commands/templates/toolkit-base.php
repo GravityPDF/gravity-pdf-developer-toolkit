@@ -21,32 +21,32 @@ if ( ! class_exists( 'GFForms' ) ) {
 /**
  * Gravity PDF Toolkit templates have access to the following variables
  *
- * $w (A helper class that does the heavy lifting and PDF manipulation)
- * $mpdf (The raw Mpdf object)
- * $form (The current Gravity Form array)
- * $entry (The raw entry data)
- * $form_data (The processed entry data stored in an array)
- * $settings (the current PDF configuration)
- * $fields (an array of Gravity Form fields which can be accessed with their ID number)
- * $config (The initialised template config class – eg. /config/zadani.php)
- * $gfpdf (the main Gravity PDF object containing all our helper classes)
- * $args (contains an array of all variables - the ones being described right now - passed to the template)
- *
- * @var GFPDF\Plugins\DeveloperToolkit\Writer\Writer $w
- * @var mPDF                                         $mpdf
+ * @var array  $form      The current Gravity Form array
+ * @var array  $entry     The raw entry data
+ * @var array  $form_data The processed entry data stored in an array
+ * @var array  $settings  The current PDF configuration
+ * @var array  $fields    An array of Gravity Form fields which can be accessed with their ID number
+ * @var array  $config    The initialised template config class – eg. /config/zadani.php
+ * @var object $gfpdf     The main Gravity PDF object containing all our helper classes
+ * @var array  $args      Contains an array of all variables - the ones being described right now - passed to the template
+ */
+
+/**
+ * @var GFPDF\Plugins\DeveloperToolkit\Writer\Writer $w    A helper class that does the heavy lifting and PDF manipulation
+ * @var \mPDF|\Mpdf\Mpdf                             $mpdf The raw Mpdf object
  */
 
 /* Load PDF Styles */
 $w->beginStyles();
 ?&#x3E;
-    <style>
-        /* Helper styles to see the field mapping. Remove when ready. */
-        .single,
-        .multi {
-            background: lightyellow;
-            color: #000;
-        }
-    </style>
+	<style>
+		/* Helper styles to see the field mapping. Remove when ready. */
+		.single,
+		.multi {
+			background: lightyellow;
+			color: #000;
+		}
+	</style>
 &#x3C;?php
 $w->endStyles();
 
