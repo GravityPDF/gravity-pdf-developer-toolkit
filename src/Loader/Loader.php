@@ -143,7 +143,8 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 		$writer = FactoryWriter::build();
 		$writer->setMpdf( $mpdf );
 
-		$new_args = apply_filters( 'gfpdf_developer_toolkit_template_args',
+		$new_args = apply_filters(
+			'gfpdf_developer_toolkit_template_args',
 			[
 				'w'         => $writer,
 				'mpdf'      => $mpdf,
@@ -185,10 +186,12 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 		<?php
 		$w->endStyles();
 
-		$w->configMulti( [
-			'font-size'   => $fontSize,
-			'line-height' => round( $fontSize * 1.4, 2 ),
-		] );
+		$w->configMulti(
+			[
+				'font-size'   => $fontSize,
+				'line-height' => round( $fontSize * 1.4, 2 ),
+			]
+		);
 	}
 
 	/**

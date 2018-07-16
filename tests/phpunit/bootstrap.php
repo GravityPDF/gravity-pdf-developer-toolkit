@@ -12,7 +12,7 @@ if ( function_exists( 'xdebug_disable' ) ) {
  *
  * @since 4.0
  */
-class GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap {
+class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 
 	/** @var string directory where wordpress-tests-lib is installed */
 	public $wp_tests_dir;
@@ -66,4 +66,4 @@ class GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap {
 	}
 }
 
-$GLOBALS['GFPDF_Test'] = new GravityPDF_Developer_Toolkit_Unit_Tests_Bootstrap();
+$GLOBALS['GFPDF_Test'] = new GravityPdfDeveloperToolkitUnitTestsBootstrap();
