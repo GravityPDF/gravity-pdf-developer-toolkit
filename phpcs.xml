@@ -20,7 +20,7 @@
         <exclude name="WordPress.PHP.YodaConditions"/>
         <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis"/>
         <exclude name="WordPress.NamingConventions"/>
-        <exclude name="WordPress.Functions.DontExtract"/>
+        <exclude name="WordPress.PHP.DontExtract"/>
     </rule>
 
     <!-- Include the best parts of PSR-1 -->
