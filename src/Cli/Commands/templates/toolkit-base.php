@@ -57,4 +57,5 @@ $w->endStyles();
  */
 $w->addPdf( __DIR__ . '/pdfs/my-pdf-document.pdf' ); /* CHANGE THIS TO POINT TO YOUR PDF */
 $w->addPage( 1 );
+
 $w->add( 'My content', [ 50, 50, 10, 10 ] ); /* html, [x, y, w, h] */
