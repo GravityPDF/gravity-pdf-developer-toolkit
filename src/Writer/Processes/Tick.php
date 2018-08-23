@@ -79,8 +79,8 @@ class Tick extends AbstractWriter {
 	 *
 	 * - markup: `&#10004;` - The symbol to output
 	 * - font: `Dejavusanscondensed` - The registered font name (use the Font Manager to install additional fonts)
-	 * - font-size: `10pt` - Controls the font size used
-	 * - line-height: `14pt` - Controls the line height used
+	 * - font-size: `16pt` - Controls the font size used
+	 * - line-height: `16pt` - Controls the line height used
 	 *
 	 * This element will not be resized to fit within a container. The symbol will be wrapped in a DIV with the class
 	 * `tick` for more convenient styling (don't try style the `font`, `font-size` or `line-height` as this method handles those
@@ -150,8 +150,8 @@ class Tick extends AbstractWriter {
 	 *
 	 * - markup: `&#10004;` - The symbol to output
 	 * - font: `Dejavusanscondensed` - The registered font name (use the Font Manager to install additional fonts)
-	 * - font-size: `10pt` - Controls the font size used
-	 * - line-height: `14pt` - Controls the line height used
+	 * - font-size: `16pt` - Controls the font size used
+	 * - line-height: `16pt` - Controls the line height used
 	 *
 	 * ## Example
 	 *
