@@ -47,11 +47,18 @@ if ( ! class_exists( 'gfpdfe_business_plus' ) ) {
 			/** @var GFPDF\Plugins\DeveloperToolkit\Writer\Writer $writer */
 			global $writer;
 
-			$writer->addPdf( $path );
+			if ( $writer instanceof \GFPDF\Plugins\DeveloperToolkit\Writer\Writer ) {
+				$writer->addPdf( $path );
+
+				return [
+					'load' => $writer->getPdfPageIds(),
+					'size' => $writer->getPdfPageSize(),
+				];
+			}
 
 			return [
-				'load' => $writer->getPdfPageIds(),
-				'size' => $writer->getPdfPageSize(),
+				'load' => [],
+				'size' => [],
 			];
 		}
 
