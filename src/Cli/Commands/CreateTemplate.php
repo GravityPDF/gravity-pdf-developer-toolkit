@@ -231,6 +231,7 @@ class CreateTemplate {
 		$filename = str_replace( $characters, '', $filename );
 		$filename = preg_replace( '/[\x00-\x1F\x80-\xFF]/', '', $filename );
 		$filename = str_replace( ' ', '-', $filename );
+		$filename = str_replace( '---', '-', $filename );
 
 		return mb_strtolower( $filename );
 	}

@@ -196,6 +196,15 @@ class TestCreateTemplate extends WP_UnitTestCase {
 		$this->assertRegExp( '/\* Required PDF Version: 4.4.0/', $fileContents );
 	}
 
+	public function testCreateTemplateNoHeadersWithHyphens() {
+		ob_start();
+		$class = $this->class;
+		$class( [ 'My - Template' ], [ 'skip-headers' => true ] );
+		$content = ob_get_clean();
+
+		$this->assertRegExp( '/my-template.php/', $content );
+	}
+
 	/**
 	 * @since 1.0
 	 */
