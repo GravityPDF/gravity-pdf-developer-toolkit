@@ -52,9 +52,15 @@ abstract class AbstractWriter implements InterfaceWriter {
 	 *
 	 * @param \mPDF|\Mpdf\Mpdf $mpdf
 	 *
+	 * @throws \BadMethodCallException Throws when $mpdf isn't valid
+	 *
 	 * @since 1.0
 	 */
 	public function setMpdf( $mpdf ) {
+		if ( ! $mpdf instanceof \mPDF && ! $mpdf instanceof \Mpdf\Mpdf ) {
+			throw new \BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf' );
+		}
+
 		$this->mpdf = $mpdf;
 	}
 
