@@ -27,7 +27,7 @@ Gravity PDF Developer Toolkit can be built for production use using the bash scr
 
 ### Generating API Documentation
 
-We use [Sami](https://github.com/FriendsOfPHP/Sami/) to automatically generate our developer documentation. Once installed, to build run `sami.phar update .samiconfig.php`.
+We use [Sami](https://github.com/FriendsOfPHP/Sami/) to automatically generate our developer documentation. To generate the documentation run `./bin/build-docs.sh`. You'll find the contents inside `dev-documentation`.
 
 ### Run Unit Tests
 
