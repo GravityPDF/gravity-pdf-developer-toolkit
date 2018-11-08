@@ -128,7 +128,7 @@ class Tick extends AbstractWriter {
 		$markup     = ( isset( $config['markup'] ) ) ? (string) $config['markup'] : $this->markup;
 
 		$output = sprintf(
-			'<div class="tick" style="font: %s; font-size: %s; line-height: %s">%s</div> &nbsp;',
+			'<div class="tick" style="font-family: %s; font-size: %s; line-height: %s">%s</div> &nbsp;',
 			$font,
 			$fontSize . 'pt',
 			$lineHeight . 'pt',
