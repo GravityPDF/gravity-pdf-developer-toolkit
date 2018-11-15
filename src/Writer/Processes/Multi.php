@@ -109,10 +109,6 @@ class Multi extends AbstractWriter {
 	 */
 	public function addMulti( $html, $position = [], $overflow = 'auto', $config = [] ) {
 
-		if ( ! is_string( $html ) ) {
-			throw new BadMethodCallException( sprintf( '$html needs to be a string. You provided a %s', gettype( $html ) ) );
-		}
-
 		if ( ! is_array( $position ) || count( $position ) !== 4 ) {
 			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}
@@ -139,7 +135,7 @@ class Multi extends AbstractWriter {
 			'<div class="multi" style="font_size: %s; line-height: %s">%s</div>',
 			$fontSize . 'pt',
 			$lineHeight . 'pt',
-			$html
+			(string) $html
 		);
 
 		$this->mpdf->WriteFixedPosHTML( $output, $position[0], $position[1], $position[2], $position[3], $overflow );

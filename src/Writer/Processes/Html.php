@@ -64,11 +64,6 @@ class Html extends AbstractWriter {
 	 * @since 1.0
 	 */
 	public function addHtml( $html ) {
-
-		if ( ! is_string( $html ) ) {
-			throw new BadMethodCallException( sprintf( '$html needs to be a string. You provided a %s', gettype( $html ) ) );
-		}
-
-		$this->mpdf->WriteHTML( $html );
+		$this->mpdf->WriteHTML( (string) $html );
 	}
 }
