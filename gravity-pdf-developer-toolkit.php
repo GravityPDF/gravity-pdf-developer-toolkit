@@ -8,7 +8,7 @@
  * Author URI:      https://gravitypdf.com
  * Text Domain:     gravity-pdf-developer-toolkit
  * Domain Path:     /languages
- * Version:         1.0.0-beta4
+ * Version:         1.0.0-beta5
  */
 
 /**
@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 define( 'GFPDF_DEVELOPER_TOOLKIT_FILE', __FILE__ );
-define( 'GFPDF_DEVELOPER_TOOLKIT_VERSION', '1.0.0-beta4' );
+define( 'GFPDF_DEVELOPER_TOOLKIT_VERSION', '1.0.0-beta5' );
 
 /**
  * Class GPDF_Core_Booster_Checks
