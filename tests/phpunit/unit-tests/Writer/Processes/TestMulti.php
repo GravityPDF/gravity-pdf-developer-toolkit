@@ -85,15 +85,6 @@ class TestMulti extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testAddMultiExceptions() {
-		/* Test invalid string */
-		try {
-			$this->class->addMulti( false );
-		} catch ( \BadMethodCallException $e ) {
-
-		}
-
-		$this->assertEquals( '$html needs to be a string. You provided a boolean', $e->getMessage() );
-
 		/* Test invalid position */
 		try {
 			$this->class->addMulti( '', '' );

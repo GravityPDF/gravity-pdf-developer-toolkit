@@ -75,17 +75,4 @@ class TestHtml extends WP_UnitTestCase {
 
 		$this->class->addHtml( '' );
 	}
-
-	/**
-	 * @since 1.0
-	 */
-	public function testHtmlException() {
-		try {
-			$this->class->addHtml( false );
-		} catch ( \BadMethodCallException $e ) {
-
-		}
-
-		$this->assertEquals( '$html needs to be a string. You provided a boolean', $e->getMessage() );
-	}
 }
