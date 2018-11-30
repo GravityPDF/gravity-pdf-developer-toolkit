@@ -4,7 +4,7 @@ namespace GFPDF\Plugins\DeveloperToolkit\Writer;
 
 use GFPDF\Plugins\DeveloperToolkit\Factory\FactoryWriter;
 
-use mPDF;
+use Mpdf;
 use WP_UnitTestCase;
 
 /**
@@ -68,6 +68,8 @@ class TestWriter extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function test_call() {
+		$e = null;
+
 		try {
 			$this->class->ellipse( [ 1, 1, 1, 1 ] );
 			$this->class->addHtml( 'Markup' );
@@ -115,7 +117,7 @@ class TestWriter extends WP_UnitTestCase {
 
 		$class->setMpdf( new mPDF() );
 		$this->assertTrue( $class->isMpdfSet() );
-		$this->assertInstanceOf( mPDF::class, $class->getMpdf() );
+		$this->assertInstanceOf( Mpdf::class, $class->getMpdf() );
 	}
 }
 

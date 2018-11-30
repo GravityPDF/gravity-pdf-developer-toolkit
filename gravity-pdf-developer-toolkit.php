@@ -89,7 +89,8 @@ class GpdfDeveloperToolkitChecks {
 		}
 
 		add_action(
-			'gfpdf_fully_loaded', function() {
+			'gfpdf_fully_loaded',
+			function() {
 				require_once __DIR__ . '/src/bootstrap.php';
 			}
 		);
@@ -143,7 +144,8 @@ class GpdfDeveloperToolkitChecks {
 
 /* Initialise the software */
 add_action(
-	'plugins_loaded', function() {
+	'plugins_loaded',
+	function() {
 		$gravitypdfDeveloperToolkit = new GpdfDeveloperToolkitChecks();
 		$gravitypdfDeveloperToolkit->init();
 	}

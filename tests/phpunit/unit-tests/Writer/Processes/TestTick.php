@@ -3,7 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use WP_UnitTestCase;
-use mPDF;
+use \Mpdf\Mpdf;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -57,7 +57,7 @@ class TestTick extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		$this->class = new Tick();
-		$this->class->setMpdf( new mPDF() );
+		$this->class->setMpdf( new Mpdf( [ 'mode' => 'c' ] ) );
 
 		parent::setUp();
 	}
@@ -112,7 +112,7 @@ class TestTick extends WP_UnitTestCase {
 	public function testTick() {
 		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->exactly( 3 ) )
-			 ->method( 'WriteFixedPosHTML' );
+		     ->method( 'WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
