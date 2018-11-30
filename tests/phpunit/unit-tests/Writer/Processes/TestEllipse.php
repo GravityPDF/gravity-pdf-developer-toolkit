@@ -3,7 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use WP_UnitTestCase;
-use mPDF;
+use \Mpdf\Mpdf;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -90,7 +90,7 @@ class TestEllipse extends WP_UnitTestCase {
 	public function testEllipse() {
 		$e = null;
 
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
+		$mpdf = $this->getMockBuilder( Mpdf::class )->getMock();
 		$mpdf->expects( $this->exactly( 2 ) )
 			 ->method( 'Ellipse' );
 

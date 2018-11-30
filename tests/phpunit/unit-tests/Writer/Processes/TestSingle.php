@@ -3,7 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use WP_UnitTestCase;
-use mPDF;
+use \Mpdf\Mpdf;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -57,7 +57,7 @@ class TestSingle extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		$this->class = new Single();
-		$this->class->setMpdf( new mPDF() );
+		$this->class->setMpdf( new Mpdf( [ 'mode' => 'c' ] ) );
 
 		parent::setUp();
 	}
@@ -92,7 +92,7 @@ class TestSingle extends WP_UnitTestCase {
 	public function testadd() {
 		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->exactly( 3 ) )
-			 ->method( 'WriteFixedPosHTML' );
+		     ->method( 'WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
@@ -107,7 +107,7 @@ class TestSingle extends WP_UnitTestCase {
 	public function testaddCenter() {
 		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->exactly( 3 ) )
-			 ->method( 'WriteFixedPosHTML' );
+		     ->method( 'WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
@@ -122,7 +122,7 @@ class TestSingle extends WP_UnitTestCase {
 	public function testaddRight() {
 		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
 		$mpdf->expects( $this->exactly( 3 ) )
-			 ->method( 'WriteFixedPosHTML' );
+		     ->method( 'WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 

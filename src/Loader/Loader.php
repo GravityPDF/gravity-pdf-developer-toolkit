@@ -156,7 +156,8 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 				'settings'  => $args['settings'],
 				'gfpdf'     => $args['gfpdf'],
 			],
-			$args, $pdfHelper
+			$args,
+			$pdfHelper
 		);
 
 		return $new_args;

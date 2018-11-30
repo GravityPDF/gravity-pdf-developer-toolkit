@@ -173,13 +173,13 @@ class GetPdfStatus {
 		];
 
 		$data[] = [
-			$settingKey => __( 'Font Data Directory Path', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $this->data->template_fontdata_location,
+			$settingKey => __( 'Temporary Directory Path', 'gravity-pdf-developer-toolkit' ),
+			$valueKey   => $this->data->template_tmp_location,
 		];
 
 		$data[] = [
-			$settingKey => __( 'Temporary Directory Path', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $this->data->template_tmp_location,
+			$settingKey => __( 'Mpdf Temporary Directory Path', 'gravity-pdf-developer-toolkit' ),
+			$valueKey   => $this->data->mpdf_tmp_location,
 		];
 
 		$data[] = [
@@ -201,50 +201,54 @@ class GetPdfStatus {
 
 		$data[] = [
 			$settingKey => __( 'Default Template', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $settings['default_template'],
+			$valueKey   => isset( $settings['default_template'] ) ? $settings['default_template'] : 'zadani',
 		];
 
 		$data[] = [
 			$settingKey => __( 'Default Font', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $settings['default_font'],
+			$valueKey   => isset( $settings['default_font'] ) ? $settings['default_font'] : 'dejavusanscondensed',
 		];
 
 		$data[] = [
 			$settingKey => __( 'Default Font Size', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $settings['default_font_size'],
+			$valueKey   => isset( $settings['default_font_size'] ) ? $settings['default_font_size'] : '10',
 		];
 
 		$data[] = [
 			$settingKey => __( 'Default RTL', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $settings['default_rtl'],
+			$valueKey   => isset( $settings['default_rtl'] ) ? $settings['default_rtl'] : __( 'No', 'gravity-forms-pdf-extended' ),
 		];
 
 		$data[] = [
 			$settingKey => __( 'Default PDF Action', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $settings['default_action'],
+			$valueKey   => isset( $settings['default_action'] ) ? $settings['default_action'] : 'view',
 		];
 
 		$data[] = [
-			$settingKey => __( 'Shortcode Debugging', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => ( $settings['shortcode_debug_messages'] === 'Yes' ) ? 'Enabled' : 'Disabled',
+			$settingKey => __( 'Debug Mode', 'gravity-pdf-developer-toolkit' ),
+			$valueKey   => isset( $settings['debug_mode'] ) ? $settings['debug_mode'] : __( 'No', 'gravity-forms-pdf-extended' ),
 		];
 
 		$data[] = [
 			$settingKey => __( 'PDF Admin Capabilities', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => implode( ', ', $settings['admin_capabilities'] ),
+			$valueKey   => implode( ', ', isset( $settings['admin_capabilities'] ) ? $settings['admin_capabilities'] : [] ),
 		];
 
 		$data[] = [
 			$settingKey => __( 'Default Restrict Current Owner', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $settings['default_restrict_owner'],
+			$valueKey   => isset( $settings['default_restrict_owner'] ) ? $settings['default_restrict_owner'] : __( 'No', 'gravity-forms-pdf-extended' ),
 		];
 
 		$data[] = [
 			$settingKey => __( 'Logged Out Timeout', 'gravity-pdf-developer-toolkit' ),
-			$valueKey   => $settings['logged_out_timeout'],
+			$valueKey   => isset( $settings['logged_out_timeout'] ) ? $settings['logged_out_timeout'] : '20',
 		];
 
-		if ( is_array( $settings['custom_fonts'] ) && count( $settings['custom_fonts'] ) > 0 ) {
+		if (
+			isset( $settings['custom_fonts'] ) &&
+			is_array( $settings['custom_fonts'] ) &&
+			count( $settings['custom_fonts'] ) > 0
+		) {
 			$fonts = [];
 			foreach ( $settings['custom_fonts'] as $font ) {
 				$fonts[] = $font['font_name'];

@@ -3,7 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use WP_UnitTestCase;
-use mPDF;
+use \Mpdf\Mpdf;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -57,7 +57,7 @@ class TestImport extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		$this->class = new Import();
-		$this->class->setMpdf( new mPDF() );
+		$this->class->setMpdf( new Mpdf( [ 'mode' => 'c' ] ) );
 
 		parent::setUp();
 	}

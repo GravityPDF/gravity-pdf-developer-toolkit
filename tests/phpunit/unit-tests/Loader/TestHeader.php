@@ -94,10 +94,10 @@ class TestHeader extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testAddToolkitSettings() {
-		$results = $this->class->addToolkitSetting( [ 'toolkit' => true ] );
+		$results = $this->class->addToolkitSetting( [ 'template' => 'zadani', 'toolkit' => true ] );
 		$this->assertArrayNotHasKey( 'toolkit', $results );
 
-		$results = $this->class->addToolkitSetting( [] );
+		$results = $this->class->addToolkitSetting( [ 'template' => 'zadani' ] );
 		$this->assertArrayHasKey( 'toolkit', $results );
 	}
 }

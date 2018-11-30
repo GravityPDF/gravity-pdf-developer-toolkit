@@ -135,6 +135,7 @@ class TestLoader extends WP_UnitTestCase {
 
 class Helper {
 	public function get_template_path() {
+		return __DIR__ . '/../../dummy-template.php';
 	}
 
 	public function get_pdf_class() {

@@ -10,7 +10,7 @@ if ( function_exists( 'xdebug_disable' ) ) {
 /**
  * Gravity PDF Unit Tests Bootstrap
  *
- * @since 4.0
+ * @since 1.0
  */
 class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 
@@ -26,7 +26,7 @@ class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 	/**
 	 * Setup the unit testing environment
 	 *
-	 * @since 4.0
+	 * @since 1.0
 	 */
 	public function __construct() {
 		$this->tests_dir    = dirname( __FILE__ );
@@ -38,6 +38,7 @@ class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 
 		/* load Gravity PDF */
 		tests_add_filter( 'muplugins_loaded', [ $this, 'load' ] );
+		tests_add_filter( 'after_setup_theme', [ $this, 'add_fonts' ], 20 );
 
 		/* load the WP testing environment */
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
@@ -46,7 +47,7 @@ class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 	/**
 	 * Load Gravity Forms and Gravity PDF
 	 *
-	 * @since 4.0
+	 * @since 1.0
 	 */
 	public function load() {
 		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
@@ -60,9 +61,24 @@ class GravityPdfDeveloperToolkitUnitTestsBootstrap {
 
 		/* Setup testing logger */
 		require $this->plugin_dir . '/tmp/gravity-forms-pdf-extended/vendor/autoload.php';
+	}
 
-		/* TODO: remove once upgraded to Mpdf v7 */
-		error_reporting( E_ALL ^ E_NOTICE ^ E_WARNING );
+	/**
+	 * @since 1.0.0-beta5
+	 */
+	public function add_fonts() {
+		global $gfpdf;
+
+		$fonts = glob( dirname( __FILE__ ) . '/fonts/' . '*.[tT][tT][fF]' );
+
+		$fonts = ( is_array( $fonts ) ) ? $fonts : [];
+
+		foreach ( $fonts as $font ) {
+			$font_name = basename( $font );
+			if ( ! is_file( $gfpdf->data->template_font_location . $font_name ) ) {
+				copy( $font, $gfpdf->data->template_font_location . $font_name );
+			}
+		}
 	}
 }
 

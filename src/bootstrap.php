@@ -79,7 +79,8 @@ class Bootstrap extends Helper_Abstract_Addon {
 
 		/* Register our classes and pass back up to the parent initialiser */
 		$classes = array_merge(
-			$classes, [
+			$classes,
+			[
 				new Loader(),
 				new LegacyLoader(),
 				new Header( GPDFAPI::get_templates_class() ),
@@ -123,7 +124,8 @@ $name = 'Gravity PDF Developer Toolkit';
 $slug = 'gravity-pdf-developer-toolkit';
 
 $plugin = apply_filters(
-	'gfpdf_developer_toolkit_initialise', new Bootstrap(
+	'gfpdf_developer_toolkit_initialise',
+	new Bootstrap(
 		$slug,
 		$name,
 		'Gravity PDF',
