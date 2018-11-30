@@ -8,9 +8,9 @@ User's with a valid, active license key can receive support for this plugin by f
 
 == Changelog ==
 
-= 1.0.0-beta5, 29 November 2019 =
+= 1.0.0-beta5, 29 November 2018 =
 * Set the font-family when displaying tick icons in PDF
-* Cast HTML to a string instead of throwing an exception an preventing the PDF generation
+* Cast HTML to a string instead of throwing an exception and preventing the PDF generation
 
 = 1.0.0-beta4, 5 September 2018 =
 * Ensure the generated template filename won't contain a triple hyphen `---`
