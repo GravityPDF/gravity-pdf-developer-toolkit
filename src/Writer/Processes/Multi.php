@@ -132,7 +132,7 @@ class Multi extends AbstractWriter {
 		}
 
 		$output = sprintf(
-			'<div class="multi" style="font_size: %s; line-height: %s">%s</div>',
+			'<div class="multi" style="font-size: %s; line-height: %s">%s</div>',
 			$fontSize . 'pt',
 			$lineHeight . 'pt',
 			(string) $html
