@@ -118,7 +118,7 @@ class Header implements Helper_Interface_Filters {
 	public function addToolkitSetting( $pdf ) {
 		$headers = $this->template->get_template_info_by_id( $pdf['template'] );
 
-		if ( isset( $headers['toolkit'] ) && $headers['toolkit'] == 'true' ) {
+		if ( isset( $headers['toolkit'] ) && $headers['toolkit'] === 'true' ) {
 			$pdf['toolkit'] = true;
 		} elseif ( isset( $pdf['toolkit'] ) ) {
 			unset( $pdf['toolkit'] );

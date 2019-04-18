@@ -113,7 +113,7 @@ class Multi extends AbstractWriter {
 			throw new BadMethodCallException( '$position needs to include an array with four elements: $x, $y, $width, $height' );
 		}
 
-		if ( ! in_array( $overflow, [ 'auto', 'visible' ] ) ) {
+		if ( ! in_array( $overflow, [ 'auto', 'visible' ], true ) ) {
 			throw new BadMethodCallException( '$overflow can only be "auto" or "visible".' );
 		}
 

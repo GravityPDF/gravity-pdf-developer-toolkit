@@ -115,7 +115,7 @@ class GetPdfStatus {
 	public function status( $args, $assocArgs ) {
 		/* Get the desired format */
 		$format = 'table';
-		if ( isset( $assocArgs['format'] ) && in_array( $assocArgs['format'], [ 'csv', 'json', 'yaml' ] ) ) {
+		if ( isset( $assocArgs['format'] ) && in_array( $assocArgs['format'], [ 'csv', 'json', 'yaml' ], true ) ) {
 			$format = $assocArgs['format'];
 		}
 
