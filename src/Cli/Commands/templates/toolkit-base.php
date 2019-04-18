@@ -43,7 +43,7 @@ $w->beginStyles();
 		/* Helper styles to see the field mapping. Remove when ready. */
 		.single,
 		.multi {
-			background: lightyellow;
+			background: rgba(244, 247, 118, 0.5)
 			color: #000;
 		}
 	</style>
@@ -53,9 +53,9 @@ $w->endStyles();
 /*
  * Begin PDF Generation
  *
- * For full documentation, refer to https://gravitypdf.com/documentation/v4/shop-plugin-developer-toolkit/
+ * The API documentation can be found at https://gravitypdf.com/developer-toolkit-api-documentation/
  */
 $w->addPdf( __DIR__ . '/pdfs/my-pdf-document.pdf' ); /* CHANGE THIS TO POINT TO YOUR PDF */
 $w->addPage( 1 );
 
-$w->add( 'My content', [ 50, 50, 10, 10 ] ); /* html, [x, y, w, h] */
+$w->add( 'My content', [ 50, 50, 100, 7 ] ); /* html, [x, y, w, h] */
