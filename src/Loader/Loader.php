@@ -170,6 +170,13 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	 * @param array  $settings
 	 */
 	protected function setDefaultStyles( $w, $settings ) {
+		/*
+		 * Ensure the text direction defaults to LTR
+		 * @see https://github.com/GravityPDF/gravity-pdf/issues/924
+		 */
+		$mpdf = $w->getMpdf();
+		$mpdf->SetDirectionality( 'ltr' );
+
 		$font       = ( ! empty( $settings['font'] ) ) ? $settings['font'] : 'DejavuSansCondensed';
 		$fontColour = ( ! empty( $settings['font_colour'] ) ) ? $settings['font_colour'] : '#333';
 		$fontSize   = ( ! empty( $settings['font_size'] ) ) ? (int) $settings['font_size'] : 10;
