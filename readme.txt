@@ -8,6 +8,12 @@ User's with a valid, active license key can receive support for this plugin by f
 
 == Changelog ==
 
+= 1.0.0-beta6, 3 October 2019 =
+* Fix permissions error PHP notice when importing PDFs
+* Fix issue when RTL is enabled in the global PDF settings
+* Update base template
+* Fix multi-line font size issue
+
 = 1.0.0-beta5, 29 November 2018 =
 * Set the font-family when displaying tick icons in PDF
 * Cast HTML to a string instead of throwing an exception and preventing the PDF generation
