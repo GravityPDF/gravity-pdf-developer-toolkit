@@ -195,6 +195,11 @@ class Import extends AbstractWriter {
 
 		$mpdf->SetImportUse();
 
+		if ( $getSizes ) {
+			$this->pageId    = [];
+			$this->pageSizes = [];
+		}
+
 		$page_total = $mpdf->SetSourceFile( $path );
 		for ( $i = 1; $i <= $page_total; $i++ ) {
 			$this->pageId[ $i ] = $mpdf->ImportPage( $i );
