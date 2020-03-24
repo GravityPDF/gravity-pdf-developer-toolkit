@@ -27,4 +27,4 @@ gulp.task('watch', function () {
   watch('src/assets/js/*.js', function () { gulp.start('compress') })
 })
 
-gulp.task('default', ['language', 'compress'])
+gulp.task('default', gulp.series(['language', 'compress']))
