@@ -8,6 +8,9 @@ User's with a valid, active license key can receive support for this plugin by f
 
 == Changelog ==
 
+= 1.0.0-beta7, 24 March 2020 =
+* Reset the page references when multiple PDFs are imported into a single template
+
 = 1.0.0-beta6, 3 October 2019 =
 * Fix permissions error PHP notice when importing PDFs
 * Fix issue when RTL is enabled in the global PDF settings
