@@ -45,14 +45,16 @@ class TestHtml extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testHtml() {
-		$mpdf = $this->getMockBuilder( Mpdf::class )->getMock();
-		$mpdf->expects( $this->once() )
-			 ->method( 'WriteHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->assertTrue( method_exists( $this->class, 'addHtml' ) );
 
 		$this->class->addHtml( '' );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->once();
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 }

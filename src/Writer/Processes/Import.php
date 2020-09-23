@@ -192,8 +192,8 @@ class Import extends AbstractWriter {
 	 */
 	protected function loadPdfPages( $mpdf, $path, $getSizes = false ) {
 
-		if ( ! $mpdf instanceof \mPDF && ! $mpdf instanceof \Mpdf\Mpdf ) {
-			throw new \BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf' );
+		if ( ! $mpdf instanceof \mPDF && ! $mpdf instanceof \Mpdf\Mpdf && ! $mpdf instanceof \GFPDF_Vendor\Mpdf\Mpdf ) {
+			throw new \BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf or \GFPDF_Vendor\Mpdf\Mpdf' );
 		}
 
 		$mpdf->SetImportUse();

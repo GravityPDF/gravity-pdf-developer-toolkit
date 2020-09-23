@@ -88,44 +88,50 @@ class TestMulti extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testAddMulti() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->exactly( 3 ) )
-		     ->method( 'WriteFixedPosHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->class->addMulti( '', [ 10, 10, 10, 10 ] );
 		$this->class->addMulti( '', [ 10, 10, 10, 10 ] );
 		$this->class->addMulti( '', [ 10, 10, 10, 10 ] );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->times(3 );
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 
 	/**
 	 * @since 1.0
 	 */
 	public function testAddMultiCenter() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->exactly( 3 ) )
-		     ->method( 'WriteFixedPosHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->class->addMultiCenter( '', [ 10, 10, 10, 10 ] );
 		$this->class->addMultiCenter( '', [ 10, 10, 10, 10 ] );
 		$this->class->addMultiCenter( '', [ 10, 10, 10, 10 ] );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->times(3 );
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 
 	/**
 	 * @since 1.0
 	 */
 	public function testAddMultiRight() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->exactly( 3 ) )
-		     ->method( 'WriteFixedPosHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->class->addMultiRight( '', [ 10, 10, 10, 10 ] );
 		$this->class->addMultiRight( '', [ 10, 10, 10, 10 ] );
 		$this->class->addMultiRight( '', [ 10, 10, 10, 10 ] );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->times(3 );
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 }

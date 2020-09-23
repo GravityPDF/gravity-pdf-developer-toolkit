@@ -90,14 +90,16 @@ class TestTick extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testTick() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->exactly( 3 ) )
-		     ->method( 'WriteFixedPosHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->class->tick( [ 10, 10 ] );
 		$this->class->tick( [ 10, 10 ], [ 'font' => '' ] );
 		$this->class->tick( [ 10, 10 ] );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->times(3 );
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 }

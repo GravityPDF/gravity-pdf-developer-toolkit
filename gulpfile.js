@@ -1,7 +1,8 @@
 var gulp = require('gulp'),
   uglify = require('gulp-uglify'),
   rename = require('gulp-rename'),
-  wpPot = require('gulp-wp-pot')
+  wpPot = require('gulp-wp-pot'),
+  watch = require('gulp-watch')
 
 /* Minify our non-react JS (handled by webpack) */
 gulp.task('compress', function () {
@@ -24,7 +25,7 @@ gulp.task('language', function () {
 })
 
 gulp.task('watch', function () {
-  watch('src/assets/js/*.js', function () { gulp.start('compress') })
+  watch('src/assets/js/*.js', gulp.series('compress'))
 })
 
 gulp.task('default', gulp.series(['language', 'compress']))

@@ -3,7 +3,7 @@
 namespace GFPDF\Plugins\DeveloperToolkit\Writer\Processes;
 
 use WP_UnitTestCase;
-use \Mpdf\Mpdf;
+use GFPDF\Helper\Helper_Mpdf as Mpdf;
 
 /**
  * @package     Gravity PDF Developer Toolkit
@@ -66,7 +66,7 @@ class TestImport extends WP_UnitTestCase {
 
 		$this->assertEquals( 215.9, $sizes[1]['w'] );
 		$this->assertEquals( 279.4, $sizes[1]['h'] );
-		$this->assertEquals( 1, $ids[1] );
+		$this->assertNotEmpty( $ids[1] );
 
 		$this->class->addPdf( __DIR__ . '/../../pdfs/document2.pdf' );
 
@@ -75,7 +75,7 @@ class TestImport extends WP_UnitTestCase {
 
 		$this->assertEquals( 420, round( $sizes[1]['w'] ) );
 		$this->assertEquals( 297, round( $sizes[1]['h'] ) );
-		$this->assertEquals( 2, $ids[1] );
+        $this->assertNotEmpty( $ids[1] );
 	}
 
 	/**

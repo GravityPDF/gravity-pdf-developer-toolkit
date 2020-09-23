@@ -18,12 +18,12 @@ if ( ! class_exists( 'GFForms' ) ) {
 }
 
 /**
- * All Gravity PDF v4/v5 templates have access to the following variables:
+ * All Gravity PDF v4/v5/v6 templates have access to the following variables:
  *
  * @var array  $form      The current Gravity Form array
  * @var array  $entry     The raw entry data
  * @var array  $form_data The processed entry data stored in an array
- * @var array  $settings  The current PDF configuration
+ * @var object $settings  The current PDF configuration
  * @var array  $fields    An array of Gravity Form fields which can be accessed with their ID number
  * @var array  $config    The initialised template config class – eg. /config/zadani.php
  * @var object $gfpdf     The main Gravity PDF object containing all our helper classes
