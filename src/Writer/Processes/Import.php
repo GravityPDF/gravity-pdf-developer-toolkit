@@ -172,7 +172,10 @@ class Import extends AbstractWriter {
 	 */
 	protected function setPdfPageSizes( $path ) {
 		$class  = get_class( $this->mpdf );
-		$config = ( $class === 'mPDF' ) ? 'c' : [ 'mode' => 'c', 'tempDir' => $this->mpdf->tempDir ];
+		$config = ( $class === 'mPDF' ) ? 'c' : [
+			'mode'    => 'c',
+			'tempDir' => $this->mpdf->tempDir,
+		];
 		$this->loadPdfPages( new $class( $config ), $path, true );
 	}
 
