@@ -15,12 +15,14 @@
 
     <!-- Include the WordPress Core standard. -->
     <rule ref="WordPress-Core">
-        <exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
-        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
-        <exclude name="WordPress.PHP.YodaConditions"/>
-        <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis"/>
-        <exclude name="WordPress.NamingConventions"/>
-        <exclude name="WordPress.PHP.DontExtract"/>
+		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.PHP.YodaConditions"/>
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis"/>
+		<exclude name="WordPress.WhiteSpace.PrecisionAlignment"/>
+		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
+		<exclude name="WordPress.NamingConventions.ValidFunctionName"/>
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
     </rule>
 
     <!-- Include the best parts of PSR-1 -->
