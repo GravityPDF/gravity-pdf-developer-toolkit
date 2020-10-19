@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package  GFPDF\Templates\Config
  *
- * @Internal See https://gravitypdf.com/documentation/v4/developer-template-configuration-and-image/ for more information about this class
+ * @Internal See https://docs.gravitypdf.com/v5/install-template-via-template-manager for more information about this class
  */
 class <?php echo $data['name']; ?> implements Helper_Interface_Config, Helper_Interface_Setup_TearDown {
 
