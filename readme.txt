@@ -8,6 +8,9 @@ User's with a valid, active license key can receive support for this plugin by f
 
 == Changelog ==
 
+= 1.0.0-beta8, 23 October 2020 =
+* Add Gravity PDF 6.0 Support
+
 = 1.0.0-beta7, 24 March 2020 =
 * Reset the page references when multiple PDFs are imported into a single template
 
