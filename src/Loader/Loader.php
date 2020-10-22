@@ -193,7 +193,10 @@ class Loader implements Helper_Interface_Filters, Helper_Interface_Actions {
 	protected function loadTemplate( $template, $args, $pdfHelper ) {
 		do_action( 'gfpdf_developer_toolkit_pre_load_template', $template, $args, $pdfHelper );
 
+		/* phpcs:disable -- disable warning about `extract` */
 		extract( $args, EXTR_SKIP );
+		/* phpcs:enable */
+
 		include $template;
 
 		do_action( 'gfpdf_developer_toolkit_post_load_template', $template, $args, $pdfHelper );

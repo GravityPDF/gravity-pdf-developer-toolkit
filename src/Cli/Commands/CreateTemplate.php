@@ -171,7 +171,7 @@ class CreateTemplate {
 		if ( ! is_file( $fullPathToFile ) ) {
 			$this->saveToFileAndMessage(
 				$fullPathToFile,
-				$this->loadTemplate( [ 'name' => $className ], 'config-base' ),
+				$this->loadTemplate( [ 'name' => $className ], version_compare( PDF_EXTENDED_VERSION, '6.0.0-beta1', '<' ) ? 'config-base-v5' : 'config-base-v6' ),
 				sprintf(
 					__( 'Your template configuration file has been generated and saved to %s.', 'gravity-pdf-developer-toolkit' ),
 					$fullPathToFile

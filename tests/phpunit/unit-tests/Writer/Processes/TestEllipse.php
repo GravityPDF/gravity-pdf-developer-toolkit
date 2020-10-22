@@ -70,9 +70,8 @@ class TestEllipse extends WP_UnitTestCase {
 	public function testEllipse() {
 		$e = null;
 
-		$mpdf = $this->getMockBuilder( Mpdf::class )->getMock();
-		$mpdf->expects( $this->exactly( 2 ) )
-			 ->method( 'Ellipse' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('Ellipse' );
 
 		$this->class->setMpdf( $mpdf );
 
@@ -84,5 +83,8 @@ class TestEllipse extends WP_UnitTestCase {
 		}
 
 		$this->assertNull( $e );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->twice();
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 }

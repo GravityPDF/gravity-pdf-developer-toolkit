@@ -70,44 +70,50 @@ class TestSingle extends WP_UnitTestCase {
 	 * @since 1.0
 	 */
 	public function testadd() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->exactly( 3 ) )
-		     ->method( 'WriteFixedPosHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->class->add( '', [ 10, 10, 10, 10 ] );
 		$this->class->add( '', [ 10, 10, 10, 10 ] );
 		$this->class->add( '', [ 10, 10, 10, 10 ] );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->times(3 );
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 
 	/**
 	 * @since 1.0.0-beta2
 	 */
 	public function testaddCenter() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->exactly( 3 ) )
-		     ->method( 'WriteFixedPosHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->class->addCenter( '', [ 10, 10, 10, 10 ] );
 		$this->class->addCenter( '', [ 10, 10, 10, 10 ] );
 		$this->class->addCenter( '', [ 10, 10, 10, 10 ] );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->times(3 );
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 
 	/**
 	 * @since 1.0.0-beta2
 	 */
 	public function testaddRight() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->exactly( 3 ) )
-		     ->method( 'WriteFixedPosHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteFixedPosHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
 		$this->class->addRight( '', [ 10, 10, 10, 10 ] );
 		$this->class->addRight( '', [ 10, 10, 10, 10 ] );
 		$this->class->addRight( '', [ 10, 10, 10, 10 ] );
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->times(3 );
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 }

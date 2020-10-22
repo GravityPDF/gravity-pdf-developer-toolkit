@@ -37,8 +37,8 @@ abstract class AbstractWriter implements InterfaceWriter {
 	 * @since 1.0
 	 */
 	public function setMpdf( $mpdf ) {
-		if ( ! $mpdf instanceof \mPDF && ! $mpdf instanceof \Mpdf\Mpdf ) {
-			throw new \BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf' );
+		if ( ! class_exists( 'GravityPdfDeveloperToolkitUnitTestsBootstrap' ) && ! $mpdf instanceof \mPDF && ! $mpdf instanceof \Mpdf\Mpdf && ! $mpdf instanceof \GFPDF_Vendor\Mpdf\Mpdf ) {
+			throw new \BadMethodCallException( '$mpdf must be \mPDF or \Mpdf\Mpdf or \GFPDF_Vendor\Mpdf\Mpdf' );
 		}
 
 		$this->mpdf = $mpdf;

@@ -83,6 +83,13 @@ class Javascript implements Helper_Interface_Actions {
 		$version = GFPDF_DEVELOPER_TOOLKIT_VERSION;
 
 		wp_register_script( 'gfpdf_js_dev_toolbox_settings', $url . 'dist/assets/js/gfpdf-settings.min.js', [ 'gfpdf_js_settings' ], $version );
+		wp_localize_script(
+			'gfpdf_js_dev_toolbox_settings',
+			'GPDFDEVTOOLKIT',
+			[
+				'gpdfVersion' => PDF_EXTENDED_VERSION,
+			]
+		);
 	}
 
 	/**

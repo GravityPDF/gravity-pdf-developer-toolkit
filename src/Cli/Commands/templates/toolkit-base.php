@@ -24,7 +24,7 @@ if ( ! class_exists( 'GFForms' ) ) {
  * @var array  $form      The current Gravity Form array
  * @var array  $entry     The raw entry data
  * @var array  $form_data The processed entry data stored in an array
- * @var array  $settings  The current PDF configuration
+ * @var object $settings  The current PDF configuration
  * @var array  $fields    An array of Gravity Form fields which can be accessed with their ID number
  * @var array  $config    The initialised template config class – eg. /config/zadani.php
  * @var object $gfpdf     The main Gravity PDF object containing all our helper classes
@@ -33,7 +33,7 @@ if ( ! class_exists( 'GFForms' ) ) {
 
 /**
  * @var GFPDF\Plugins\DeveloperToolkit\Writer\Writer $w    A helper class that does the heavy lifting and PDF manipulation
- * @var \mPDF|\Mpdf\Mpdf                             $mpdf The raw Mpdf object
+ * @var \mPDF|\Mpdf\Mpdf|GFPDF_Vendor\Mpdf\Mpdf      $mpdf The raw Mpdf object
  */
 
 /* Load PDF Styles */

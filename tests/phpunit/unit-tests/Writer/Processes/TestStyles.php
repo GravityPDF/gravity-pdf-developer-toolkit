@@ -43,9 +43,8 @@ class TestStyles extends WP_UnitTestCase {
 	}
 
 	public function testStyles() {
-		$mpdf = $this->getMockBuilder( mPDF::class )->getMock();
-		$mpdf->expects( $this->once() )
-		     ->method( 'WriteHTML' );
+        $mpdf = \Spies\mock_object( new Mpdf( [ 'mode' => 'c' ] ) );
+        $spy = $mpdf->spy_on_method('WriteHTML' );
 
 		$this->class->setMpdf( $mpdf );
 
@@ -59,5 +58,8 @@ class TestStyles extends WP_UnitTestCase {
 		$this->class->beginStyles();
 		echo '<style>div {}</style>';
 		$this->class->endStyles();
+
+        $expectation = \Spies\expect_spy( $spy )->to_be_called->once();
+        $this->assertTrue( $expectation->met_expectations() );
 	}
 }
