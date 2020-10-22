@@ -8,8 +8,8 @@ download() {
     fi
 }
 
-if [ ! -f ./sami.phar ]; then
-    download http://get.sensiolabs.org/sami.phar ./sami.phar
+if [ ! -f ./doctum.phar ]; then
+    download https://doctum.long-term.support/releases/latest/doctum.phar ./doctum.phar
 fi
 
-php ./sami.phar update .samiconfig.php --force
+php ./doctum.phar update .doctumconfig.php --force

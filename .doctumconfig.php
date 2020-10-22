@@ -6,14 +6,14 @@
  * @internal see https://github.com/FriendsOfPHP/Sami
  */
 
-use Sami\Sami;
-use Sami\Parser\Filter\PublicFilter;
+use Doctum\Doctum;
+use Doctum\Parser\Filter\PublicFilter;
 
-return new Sami(
+return new Doctum(
 	__DIR__ . '/src/',
 	[
 		'build_dir'           => __DIR__ . '/dev-documentation',
-		'cache_dir'           => __DIR__ . '/tmp/sami',
+		'cache_dir'           => __DIR__ . '/tmp/doctum',
 		'filter'              => new PublicFilter(),
 		'include_parent_data' => false,
 	]
